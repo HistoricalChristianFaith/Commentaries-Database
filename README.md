@@ -39,6 +39,7 @@ Each file is in a format called [TOML](https://github.com/toml-lang/toml). This 
 A single file can contain multiple "commentaries". 
 
 A "commentary" consists of:
+
     - Mandatory keys
         - `quote`: The source quotation, can include unicode as HTML entities but should not include any html
         - `sources`: One or more "url" and "title" values, should always include at least one source.
