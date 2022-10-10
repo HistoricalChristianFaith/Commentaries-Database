@@ -102,7 +102,7 @@ def process_toml():
                         father_name,
                         append_to_author_name,
                         time,
-                        book_name.lower(),
+                        book_name.lower().replace(" ", ""),
                         location_start,
                         location_end,
                         c['quote'],
