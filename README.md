@@ -11,6 +11,8 @@ python3 compile_data.py sqlite
 python3 compile_data.py json
 ```
 
+[Here is an example](https://github.com/HistoricalChristianFaith/Example-Commentary-Api) of the sqlite file being utilized in a simple PHP api to show commentaries for a user-specified passage of the Bible.
+
 ## FILE NAME FORMATS:
 
 ```
