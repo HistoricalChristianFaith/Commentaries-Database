@@ -2,6 +2,15 @@
 
 See this database in action at https://historicalchristian.faith/
 
+To compile these files into a single data object, use the "compile_data.py" script in this repository. It's a python3 script, and requires you to `pip install tomlkit` first. You can select CSV, SQLITE, or JSON as the output format (resulting in a new file called data.json, data.csv, or data.sqlite). 
+
+Invoke it like so:
+```
+python3 compile_data.py csv
+python3 compile_data.py sqlite
+python3 compile_data.py json
+```
+
 ## FILE NAME FORMATS:
 
 ```
