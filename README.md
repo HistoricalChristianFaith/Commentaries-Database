@@ -13,6 +13,8 @@ python3 compile_data.py json
 
 [Here is an example](https://github.com/HistoricalChristianFaith/Example-Commentary-Api) of the sqlite file being utilized in a simple PHP api to show commentaries for a user-specified passage of the Bible.
 
+Want to make a contribution to the repository? See below for details on file formats, and see [this pull request](https://github.com/HistoricalChristianFaith/Commentaries-Database/pull/1) for an example. We use the pull request feature to add notes/discussion about sources and such.
+
 ## FILE NAME FORMATS:
 
 ```
