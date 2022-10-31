@@ -181,7 +181,7 @@ def output_csv():
 def main():
     if len(sys.argv) != 2:
         print(f'Usage: python3 {sys.argv[0]} <output_format>')
-        print("\t[Where output_format is one of: SQLITE, JSON, CSV]")
+        print("\t[Where output_format is one of: SQLITE, JSON, CSV, DRYRUN]")
         return
 
     output_format = sys.argv[1].lower().strip()
@@ -189,8 +189,10 @@ def main():
         output_json()
     elif(output_format == 'csv'):
         output_csv()
-    else: #sqlite
-        output_sqlite()
+    elif(output_format == 'sqlite'):
+        output_csv()
+    else: #dryrun
+        process_toml()
 
 if __name__ == '__main__':
     main()
