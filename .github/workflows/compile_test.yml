@@ -1,7 +1,6 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# This workflow will install Python dependencies and then dryrun the compile script
 
-name: Python application
+name: Test Proper TOML Format
 
 on:
   push:
@@ -28,6 +27,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install tomlkit
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Test with pytest
+    - name: Test compile data
       run: |
         python compile_data.py dryrun
