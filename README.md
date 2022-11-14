@@ -44,6 +44,9 @@ Having to dig into problems like that increase the rate at which my gray hair gr
 We also accept that for some people, it is not possible/necessary. For example, `Jerome` is universally understood to refer to a single man, and he doesn't have any kind of commonly known longer-form name. However, while `Augustine` is universally understood to refer to a single man, he does have a common longer-form name which we therefore use, `Augustine of Hippo`.
 </details>
 
+Why Psalms instead of Psalm?
+
+We're standardizing on [these names](https://github.com/HistoricalChristianFaith/Example-Commentary-Api/blob/master/func.php#L82), which are basically just based off of [this Logos page](https://www.logos.com/bible-book-abbreviations).
 
 ## File Contents Format
 
