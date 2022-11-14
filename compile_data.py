@@ -190,12 +190,16 @@ def main():
 
     output_format = sys.argv[1].lower().strip()
     if(output_format == 'json'):
+        print("Compiling into JSON...")
         output_json()
     elif(output_format == 'csv'):
+        print("Compiling into CSV...")
         output_csv()
     elif(output_format == 'sqlite'):
-        output_csv()
+        print("Compiling into SQLITE...")
+        output_sqlite()
     else: #dryrun
+        print("Dryrun...")
         process_toml()
 
 if __name__ == '__main__':
