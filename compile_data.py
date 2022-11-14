@@ -28,7 +28,7 @@ def process_toml():
                 toml_str = tomlfile.read()
             toml_obj = tomlkit.parse(toml_str)
             default_data[folder_name] = toml_obj['default_year']
-        else:
+        elif f.endswith(".toml"):
             total_file_count += 1
 
     data_values = []
@@ -113,6 +113,7 @@ def process_toml():
             except:
                 print("******Error in", f)
                 raise
+    print ("*Files processed: "+str(current_file_count))
     return data_values          
 
 def output_sqlite():
