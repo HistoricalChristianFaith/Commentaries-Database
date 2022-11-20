@@ -97,10 +97,10 @@ def process_toml():
                         append_to_author_name = "";
                         if('append_to_author_name' in c):
                             append_to_author_name = c['append_to_author_name']
-                        
                         data_values.append([
                             str(uuid.uuid4()),
                             father_name,
+                            f.split('/')[-1],
                             append_to_author_name,
                             time,
                             book_name.lower().replace(" ", ""),
@@ -128,6 +128,7 @@ def output_sqlite():
         cursor.execute('''CREATE TABLE IF NOT EXISTS "commentary" (
             "id" VARCHAR,
             "father_name" VARCHAR,
+            "file_name" VARCHAR,
             "append_to_author_name" VARCHAR,
             "ts" INTEGER,
             "book" VARCHAR,
@@ -144,8 +145,8 @@ def output_sqlite():
         cursor.execute('''CREATE INDEX idx_commentary_location_end ON commentary (location_end);''')
         
         sqlite_insert_query = """INSERT INTO commentary
-                            (id, father_name, append_to_author_name, ts, book, location_start, location_end, txt, source_url, source_title) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
+                            (id, father_name, file_name, append_to_author_name, ts, book, location_start, location_end, txt, source_url, source_title) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
         cursor.executemany(sqlite_insert_query, process_toml())
         sqliteConnection.commit()
         print("Total", cursor.rowcount, "Records inserted successfully")
@@ -164,14 +165,15 @@ def output_json():
         final_data.append({
             "id": d[0],
             "father_name": d[1],
-            "append_to_author_name": d[2],
-            "ts": d[3],
-            "book": d[4],
-            "location_start": d[5],
-            "location_end": d[6],
-            "txt": d[7],
-            "source_url": d[8],
-            "source_title": d[9],
+            "file_name": d[2],
+            "append_to_author_name": d[3],
+            "ts": d[4],
+            "book": d[5],
+            "location_start": d[6],
+            "location_end": d[7],
+            "txt": d[8],
+            "source_url": d[9],
+            "source_title": d[10],
         })
     with open('data.json', 'w') as f:
         json.dump(final_data, f)
@@ -179,7 +181,7 @@ def output_json():
 def output_csv():
     data = process_toml()
     writer = csv.writer(open("data.csv", 'w'))
-    writer.writerow(["id", "father_name", "append_to_author_name", "ts", "book", "location_start", "location_end", "txt", "source_url", "source_title"])
+    writer.writerow(["id", "father_name", "file_name", "append_to_author_name", "ts", "book", "location_start", "location_end", "txt", "source_url", "source_title"])
     for row in data:
         writer.writerow(row)
 
