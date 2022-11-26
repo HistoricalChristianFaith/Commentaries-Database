@@ -13,7 +13,7 @@ def process_toml():
         for file in files:
             filelist.append(os.path.join(root,file));
 
-    default_data = {}
+    father_meta_data = {}
 
     # First loop through all metadata files, build them up into default lookup table
     total_file_count = 0
@@ -27,7 +27,7 @@ def process_toml():
             with open(f, 'r') as tomlfile:
                 toml_str = tomlfile.read()
             toml_obj = tomlkit.parse(toml_str)
-            default_data[folder_name] = toml_obj['default_year']
+            father_meta_data[folder_name] = toml_obj
         elif f.endswith(".toml"):
             total_file_count += 1
 
@@ -89,8 +89,8 @@ def process_toml():
                             source_title = c['sources'][0]['title']
 
                         time = 9999999;
-                        if(father_name in default_data):
-                            time = default_data[father_name]
+                        if(father_name in father_meta_data):
+                            time = father_meta_data[father_name]['default_year']
                         if('time' in c):
                             time = c['time']
 
@@ -114,7 +114,17 @@ def process_toml():
                 print("******Error in", f)
                 raise
     print ("*Files processed: "+str(current_file_count))
-    return data_values          
+    formatted_father_meta_data = []
+    for fn in father_meta_data:
+        formatted_father_meta_data.append([
+            fn,
+            father_meta_data[fn]['default_year'],
+            father_meta_data[fn]['wiki'],
+        ])
+    return {
+        "father_meta_data": formatted_father_meta_data,
+        "commentary_data": data_values
+    }
 
 def output_sqlite():
     database_file_location = 'data.sqlite'
@@ -125,6 +135,13 @@ def output_sqlite():
         sqliteConnection = sqlite3.connect(database_file_location)
         cursor = sqliteConnection.cursor()
 
+        cursor.execute('''CREATE TABLE IF NOT EXISTS "father_meta" (
+            "name" VARCHAR,
+            "default_year" VARCHAR,
+            "wiki_url" VARCHAR
+        )
+        ;''')
+        cursor.execute('''CREATE UNIQUE INDEX idx_father_meta_name ON father_meta (name);''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS "commentary" (
             "id" VARCHAR,
             "father_name" VARCHAR,
@@ -144,10 +161,15 @@ def output_sqlite():
         cursor.execute('''CREATE INDEX idx_commentary_location_start ON commentary (location_start);''')
         cursor.execute('''CREATE INDEX idx_commentary_location_end ON commentary (location_end);''')
         
+        toml_data = process_toml()
+        sqlite_insert_query = """INSERT INTO father_meta
+                            (name, default_year, wiki_url) 
+                            VALUES (?, ?, ?);"""
+        cursor.executemany(sqlite_insert_query, toml_data['father_meta_data'])
         sqlite_insert_query = """INSERT INTO commentary
                             (id, father_name, file_name, append_to_author_name, ts, book, location_start, location_end, txt, source_url, source_title) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
-        cursor.executemany(sqlite_insert_query, process_toml())
+        cursor.executemany(sqlite_insert_query, toml_data['commentary_data'])
         sqliteConnection.commit()
         print("Total", cursor.rowcount, "Records inserted successfully")
         sqliteConnection.commit()
@@ -161,7 +183,7 @@ def output_sqlite():
           
 def output_json():
     final_data = []
-    for d in process_toml():
+    for d in process_toml()['commentary_data']:
         final_data.append({
             "id": d[0],
             "father_name": d[1],
@@ -179,7 +201,7 @@ def output_json():
         json.dump(final_data, f)
 
 def output_csv():
-    data = process_toml()
+    data = process_toml()['commentary_data']
     writer = csv.writer(open("data.csv", 'w'))
     writer.writerow(["id", "father_name", "file_name", "append_to_author_name", "ts", "book", "location_start", "location_end", "txt", "source_url", "source_title"])
     for row in data:
