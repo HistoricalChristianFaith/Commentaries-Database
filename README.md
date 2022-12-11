@@ -102,3 +102,18 @@ time = 383
 url = 'https://www.newadvent.org/fathers/3007.htm'
 title = 'Against Helvidius'
 ```
+
+## Useful Tools
+
+#### Sites that have many church father texts available for free online:
+* https://www.ccel.org/
+* https://www.newadvent.org/fathers/
+* https://www.tertullian.org/fathers/ and https://www.tertullian.org/fathers2/
+* https://earlychristianwritings.com/churchfathers.html
+* https://catholiclibrary.org/library/browse/ [*Contains many Latin versions not available in English]
+
+#### Other Electronic Catenas
+* https://catenabible.com/mt/1/1
+* https://www.earlychristianwritings.com/e-catena/
+* https://www.catholiccrossreference.online/fathers/index.php/matthew%201:1
+* [$$$] https://www.logos.com/product/31152/ancient-christian-commentary-on-scripture-complete-set-updated-edition-accs
