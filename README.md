@@ -109,6 +109,7 @@ title = 'Against Helvidius'
 * https://www.tertullian.org/fathers/ and https://www.tertullian.org/fathers2/
 * https://earlychristianwritings.com/churchfathers.html
 * https://catholiclibrary.org/library/browse/ [*Contains many Latin versions not available in English]
+* https://www.mlat.uzh.ch/browser?path=/38 [Migne's Patrologia Latina]
 
 #### Other Electronic Catenas
 * https://catenabible.com/mt/1/1
