@@ -33,7 +33,7 @@ def process_toml():
 
     data_values = []
 
-    # Then loop through all files, load them into sql
+    # Then loop through all files, load them into an object
     current_file_count = 0
     for f in filelist:
         if f.endswith(".toml"):
