@@ -11,10 +11,10 @@ quote='''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 [[commentary.sources]]
 url='https://www.ecatholic2000.com/catena/untitled-111.shtml'
-title='Catena Aurea by Aquinas'
+title="Catena Aurea by Aquinas"
 [[commentary.sources]]
 url='https://ccel.org/ccel/aquinas/catena1/catena1.i.html'
-title='Catena Aurea by Aquinas'
+title="Catena Aurea by Aquinas"
 
 [[commentary]]
 quote='''
@@ -23,7 +23,6 @@ At first he makes it abundantly clear that these things are not to be sought as 
 [[commentary.sources]]
 url=''
 title="SERMON ON THE MOUNT 2.16.53"
-
 
 [[commentary]]
 quote='''
