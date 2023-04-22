@@ -4,8 +4,7 @@ import json
 import sqlite3
 import csv
 from pathlib import Path
-
-import tomlkit
+import rtoml
 import uuid
 
 
@@ -21,7 +20,7 @@ def process_toml():
         short_file_name = file.relative_to(Path.cwd())
         if short_file_name.name == 'metadata.toml':
             toml_str = file.read_text()
-            toml_obj = tomlkit.parse(toml_str)
+            toml_obj = rtoml.load(toml_str)
             father_meta_data[file.parent.name] = toml_obj
         elif file.suffix == '.toml':
             total_file_count += 1
@@ -69,7 +68,7 @@ def process_toml():
             # print(father_name + " / " + book_name + " / " + start_verse_CHAPTER + " / " + start_verse_VERSE + " / " + end_verse_CHAPTER + " / " + end_verse_VERSE + "|||" + str(location_start) + "/" + str(location_end))
 
             toml_str = file.read_text(encoding='utf-8')
-            toml_obj = tomlkit.parse(toml_str)
+            toml_obj = rtoml.load(toml_str)
 
             for c in toml_obj['commentary']:
                 source_url = ""
