@@ -6,8 +6,9 @@ import csv
 from pathlib import Path
 import rtoml
 import uuid
-from typing import NamedTuple
+from typing import NamedTuple, Dict
 import re
+import argparse
 
 
 class VerseRange(NamedTuple):
@@ -83,6 +84,7 @@ def process_toml():
                 if current_file_count == int(total_file_count * (0.1 * i)):
                     print(f"{i}0% done ({current_file_count} / {total_file_count})")
             current_file_count += 1
+
             father_name = file.parent.name
             file_name = file.stem
             fn_pieces = file_name.split(" ")
@@ -109,9 +111,8 @@ def process_toml():
                 if 'time' in c:
                     time = c['time']
 
-                append_to_author_name = ""
-                if 'append_to_author_name' in c:
-                    append_to_author_name = c['append_to_author_name']
+                append_to_author_name = c.get('append_to_author_name', '')
+
                 data_values.append([
                     str(uuid.uuid4()),
                     father_name,
@@ -129,28 +130,30 @@ def process_toml():
             print("******Error in", file)
             print("Error Reads: ", error)
             raise
-    print("*Files processed: " + str(current_file_count))
-    formatted_father_meta_data = []
-    for fn in father_meta_data:
-        formatted_father_meta_data.append([
+    print(f"*Files processed: {current_file_count}")
+
+    formatted_father_meta_data = [
+        [
             fn,
             father_meta_data[fn]['default_year'],
             father_meta_data[fn]['wiki'],
-        ])
+        ] for fn in father_meta_data
+    ]
     return {
         "father_meta_data": formatted_father_meta_data,
         "commentary_data": data_values
     }
 
 
-def output_sqlite():
-    database_file_location = 'data.sqlite'
-    if os.path.isfile(database_file_location):
-        os.remove(database_file_location)
+def to_sqlite(toml_data: Dict, out_path: Path):
+    if out_path.is_file():
+        os.remove(out_path)
+
+    sqlite_connection = None
 
     try:
-        sqliteConnection = sqlite3.connect(database_file_location)
-        cursor = sqliteConnection.cursor()
+        sqlite_connection = sqlite3.connect(out_path)
+        cursor = sqlite_connection.cursor()
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS "father_meta" (
             "name" VARCHAR,
@@ -178,7 +181,6 @@ def output_sqlite():
         cursor.execute('''CREATE INDEX idx_commentary_location_start ON commentary (location_start);''')
         cursor.execute('''CREATE INDEX idx_commentary_location_end ON commentary (location_end);''')
 
-        toml_data = process_toml()
         sqlite_insert_query = """INSERT INTO father_meta
                             (name, default_year, wiki_url) 
                             VALUES (?, ?, ?);"""
@@ -187,21 +189,21 @@ def output_sqlite():
                             (id, father_name, file_name, append_to_author_name, ts, book, location_start, location_end, txt, source_url, source_title) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
         cursor.executemany(sqlite_insert_query, toml_data['commentary_data'])
-        sqliteConnection.commit()
+        sqlite_connection.commit()
         print("Total", cursor.rowcount, "Records inserted successfully")
-        sqliteConnection.commit()
+        sqlite_connection.commit()
         cursor.close()
 
     except sqlite3.Error as error:
         print("Error:", error)
     finally:
-        if sqliteConnection:
-            sqliteConnection.close()
+        if sqlite_connection:
+            sqlite_connection.close()
 
 
-def output_json():
+def to_json(toml_data: Dict, out_path: Path):
     final_data = []
-    for d in process_toml()['commentary_data']:
+    for d in toml_data['commentary_data']:
         final_data.append({
             "id": d[0],
             "father_name": d[1],
@@ -215,38 +217,46 @@ def output_json():
             "source_url": d[9],
             "source_title": d[10],
         })
-    with open('data.json', 'w') as f:
+    with out_path.open('w') as f:
         json.dump(final_data, f)
 
 
-def output_csv():
-    data = process_toml()['commentary_data']
-    writer = csv.writer(Path('data.csv').open('w', encoding='utf-8'))
+def to_csv(toml_data: Dict, out_path: Path):
+    data = toml_data['commentary_data']
+    writer = csv.writer(out_path.open('w', encoding='utf-8'))
     writer.writerow(["id", "father_name", "file_name", "append_to_author_name", "ts", "book", "location_start", "location_end", "txt", "source_url",
                      "source_title"])
     for row in data:
         writer.writerow(row)
 
 
-def main():
-    if len(sys.argv) != 2:
-        print(f'Usage: python3 {sys.argv[0]} <output_format>')
-        print("\t[Where output_format is one of: SQLITE, JSON, CSV, DRYRUN]")
-        return
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        prog='CompileData',
+        description='Compiles the Commentaries Database into various formats'
+    )
 
-    output_format = sys.argv[1].lower().strip()
-    if (output_format == 'json'):
-        print("Compiling into JSON...")
-        output_json()
-    elif (output_format == 'csv'):
-        print("Compiling into CSV...")
-        output_csv()
-    elif (output_format == 'sqlite'):
-        print("Compiling into SQLITE...")
-        output_sqlite()
+    parser.add_argument('output_format', choices=['json', 'csv', 'sqlite', 'dryrun'], default='dryrun')
+    parser.add_argument('-o', '--out', type=Path)
+    return parser.parse_args()
+
+
+def main():
+    args = parse_arguments()
+
+    print('Starting to Compile')
+    toml_data = process_toml()
+    if args.output_format == 'json':
+        print("Saving into JSON...")
+        to_json(toml_data, args.out)
+    elif args.output_format == 'csv':
+        print("Saving into CSV...")
+        to_csv(toml_data, args.out)
+    elif args.output_format == 'sqlite':
+        print("Saving into SQLITE...")
+        to_sqlite(toml_data, args.out)
     else:  # dryrun
-        print("Dryrun...")
-        process_toml()
+        print("Dryrun finished")
 
 
 if __name__ == '__main__':
