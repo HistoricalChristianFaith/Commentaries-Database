@@ -237,7 +237,7 @@ def parse_arguments():
     )
 
     parser.add_argument('output_format', choices=['json', 'csv', 'sqlite', 'dryrun'], default='dryrun')
-    parser.add_argument('-o', '--out', type=Path)
+    parser.add_argument('-o', '--out', type=Path, default=Path('data.out'))
     return parser.parse_args()
 
 
