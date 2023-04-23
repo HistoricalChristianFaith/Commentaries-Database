@@ -6,6 +6,51 @@ import csv
 from pathlib import Path
 import rtoml
 import uuid
+from typing import NamedTuple
+import re
+
+
+class VerseRange(NamedTuple):
+    start_chapter: int
+    start_verse: int
+    end_chapter: int
+    end_verse: int
+
+
+def string_to_verse_range(verse_string: str) -> VerseRange:
+    """
+
+    :param verse_string: A verse string i.e. 1_57-58 or 1_57-2_32
+    :return:
+    """
+    verse_pieces = re.split('[_-]', verse_string)
+    start_chapter = verse_pieces[0]
+    start_verse = verse_pieces[1]
+    if len(verse_pieces) == 2:
+        # i.e. 1_56
+        end_chapter = start_chapter
+        end_verse = start_verse
+    elif len(verse_pieces) == 3:
+        # i.e. 1_57-57
+        end_chapter = start_chapter
+        end_verse = verse_pieces[2]
+    elif len(verse_pieces) == 4:
+        # i.e. 1_57-2_32
+        end_chapter = verse_pieces[2]
+        end_verse = verse_pieces[3]
+    else:
+        raise ValueError(f'Unexpected format of verse_string: {verse_string}')
+
+    return VerseRange(
+        start_chapter=int(start_chapter),
+        start_verse=int(start_verse),
+        end_chapter=int(end_chapter),
+        end_verse=int(end_verse)
+    )
+
+
+def encode_chapter_verse(chapter: int, verse: int) -> int:
+    return (chapter * 1000000) + verse
 
 
 def process_toml():
@@ -39,33 +84,14 @@ def process_toml():
                     print(f"{i}0% done ({current_file_count} / {total_file_count})")
             current_file_count += 1
             father_name = file.parent.name
-            fn = file.stem
-            fn_pieces = fn.split(" ")
-            verse_pieces = fn_pieces[-1].split("-")
+            file_name = file.stem
+            fn_pieces = file_name.split(" ")
             book_name = " ".join(fn_pieces[:-1])
 
-            start_verse = verse_pieces[0]
-            start_verse_pieces = start_verse.split("_")
-            start_verse_CHAPTER = start_verse_pieces[0]
-            start_verse_VERSE = start_verse_pieces[1]
-            end_verse_CHAPTER = start_verse_pieces[0]
-            end_verse_VERSE = start_verse_pieces[1]
+            verse_range = string_to_verse_range(fn_pieces[-1])
 
-            if len(verse_pieces) > 1:
-                # There is an ending verse
-                endverse_pieces = verse_pieces[1].split("_")
-                if len(endverse_pieces) == 2:
-                    # 19_24
-                    end_verse_CHAPTER = endverse_pieces[0]
-                    end_verse_VERSE = endverse_pieces[1]
-                else:
-                    # 19, borrows chapter from starting verse
-                    end_verse_VERSE = endverse_pieces[0]
-
-            location_start = (int(start_verse_CHAPTER) * 1000000) + int(start_verse_VERSE)
-            location_end = (int(end_verse_CHAPTER) * 1000000) + int(end_verse_VERSE)
-
-            # print(father_name + " / " + book_name + " / " + start_verse_CHAPTER + " / " + start_verse_VERSE + " / " + end_verse_CHAPTER + " / " + end_verse_VERSE + "|||" + str(location_start) + "/" + str(location_end))
+            location_start = encode_chapter_verse(verse_range.start_chapter, verse_range.start_verse)
+            location_end = encode_chapter_verse(verse_range.end_chapter, verse_range.end_verse)
 
             toml_str = file.read_text(encoding='utf-8')
             toml_obj = rtoml.load(toml_str)
