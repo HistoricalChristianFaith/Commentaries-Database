@@ -28,9 +28,18 @@ jobs:
       - name: Compile data
         run: |
           python compile_data.py sqlite -o commentaries.sqlite
-      - name: Test
-        run: ls 
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/latest',
+              sha: context.sha
+            })
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: commentaries.sqlite
