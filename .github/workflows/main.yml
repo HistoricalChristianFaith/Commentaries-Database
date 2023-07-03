@@ -6,7 +6,8 @@ on:
   push:
     branches: [ "master" ]
 
-permissions: read-all|write-all
+permissions:
+  contents: read-all|write-all
 
 jobs:
   build:
