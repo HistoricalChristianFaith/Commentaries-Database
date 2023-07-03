@@ -1,5 +1,11 @@
 # Commentaries-Database
 
+## Latest Release
+
+Get the latest compiled sqlite database with all this data in the [Releases on this repository](https://github.com/HistoricalChristianFaith/Commentaries-Database/releases/tag/latest).
+
+## Compile yourself
+
 To compile these files into a single data object, use the "compile_data.py" script in this repository. It's a python3 script, and requires you to `pip install rtoml` first. You can select CSV, SQLITE, or JSON as the output format (resulting in a new file called data.json, data.csv, or data.sqlite).
 
 Invoke it like so:
@@ -25,6 +31,8 @@ optional arguments:
   -h, --help            show this help message and exit
   -o OUT, --out OUT
 ```
+
+## Reference Implementation
 
 [Here is our reference implementation](https://github.com/HistoricalChristianFaith/Commentaries-Interface) of the sqlite file being utilized in a simple PHP app to show commentaries for a user-specified passage of the Bible.
 
