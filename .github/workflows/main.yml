@@ -26,12 +26,6 @@ jobs:
       - name: Compile data
         run: |
           python compile_data.py sqlite -o commentaries.sqlite
-      - name: Delete latest tag
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const { owner, repo } = context.repo
-            await github.rest.git.deleteRef({ owner, repo, ref: 'tags/latest' })
       - name: Delete latest release
         uses: actions/github-script@v4
         with:
@@ -39,6 +33,12 @@ jobs:
             const { owner, repo } = context.repo
             const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
             await github.repos.deleteRelease({ owner, repo, release_id: id })
+      - name: Delete latest tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            await github.rest.git.deleteRef({ owner, repo, ref: 'tags/latest' })
       - name: Build latest release
         uses: softprops/action-gh-release@v1
         with:
