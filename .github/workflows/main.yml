@@ -28,12 +28,14 @@ jobs:
       - name: Compile data
         run: |
           python compile_data.py sqlite -o commentaries.sqlite
-      - name: Cut a new release
+      - name: Delete latest release
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            await github.rest.git.deleteRef({ owner, repo, ref: 'tags/latest' })
+      - name: Build latest release
         uses: softprops/action-gh-release@v1
         with:
-          allowUpdates: true
-          makeLatest: true
-          name: Latest
-          replacesArtifacts: true
+          tag_name: latest
           files: commentaries.sqlite
-          tag_name: ${{ steps.tag.outputs.tag }}
