@@ -28,15 +28,6 @@ jobs:
       - name: Compile data
         run: |
           python compile_data.py sqlite -o commentaries.sqlite
-      - name: Tag the repository
-        id: tag
-        run: |
-          git config user.name "GitHub Action"
-          git config user.email "githubaction@teachthe.net"
-          TAG=latest
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          git tag -a $TAG -m "Published version $TAG" ${GITHUB_SHA}
-          git push origin $TAG
       - name: Cut a new release
         uses: softprops/action-gh-release@v1
         with:
