@@ -34,7 +34,6 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "githubaction@teachthe.net"
           TAG=latest
-          echo "$TAG"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           git tag -a $TAG -m "Published version $TAG" ${GITHUB_SHA}
           git push origin $TAG
