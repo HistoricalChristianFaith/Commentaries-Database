@@ -1,0 +1,36 @@
+# This workflow will compile the SQLITE db on each commit
+
+name: Compile SQLITE Database on Commit
+
+on:
+  push:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install rtoml
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Compile data
+        run: |
+          python compile_data.py sqlite -o commentaries.sqlite
+      - name: Test
+        run: ls 
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: commentaries.sqlite
