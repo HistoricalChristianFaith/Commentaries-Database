@@ -46,3 +46,10 @@ jobs:
           draft: false
           prerelease: false
           files: commentaries.sqlite
+      - name: Mark release not a draft
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
+            await github.rest.git.updateRelease({ owner, repo, release_id: id, draft: false })
