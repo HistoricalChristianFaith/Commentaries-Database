@@ -2,7 +2,7 @@
 
 ## Latest Release
 
-Get the latest compiled sqlite database with all this data in the [Releases on this repository](https://github.com/HistoricalChristianFaith/Commentaries-Database/releases/tag/latest).
+Get the latest compiled sqlite database with all this data in the [Releases on this repository](https://github.com/HistoricalChristianFaith/Commentaries-Database/releases).
 
 ## Compile yourself
 
