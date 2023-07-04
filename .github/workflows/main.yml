@@ -48,7 +48,7 @@ jobs:
           prerelease: false
           files: commentaries.sqlite
       - name: Mark release not a draft
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         with:
           script: |
             const { owner, repo } = context.repo
