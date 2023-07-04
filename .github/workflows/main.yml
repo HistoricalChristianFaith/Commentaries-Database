@@ -44,7 +44,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: latest
-          draft: true
+          draft: false
           prerelease: false
           files: commentaries.sqlite
       - name: Mark release not a draft
@@ -52,4 +52,4 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo
-            await github.rest.git.updateRelease({ owner, repo, release_id: ${{ steps.create_release.outputs.id }}, draft: false })
+            await github.repos.updateRelease({ owner, repo, release_id: ${{ steps.create_release.outputs.id }}, draft: false })
