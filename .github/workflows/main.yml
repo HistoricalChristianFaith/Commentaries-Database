@@ -40,6 +40,7 @@ jobs:
             const { owner, repo } = context.repo
             await github.rest.git.deleteRef({ owner, repo, ref: 'tags/latest' })
       - name: Build latest release
+        id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: latest
@@ -50,6 +51,4 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const { owner, repo } = context.repo
-            const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
-            await github.rest.git.updateRelease({ owner, repo, release_id: id, draft: false })
+            await github.rest.git.updateRelease({ owner, repo, release_id: ${{ steps.create_release.outputs.id }}, draft: false })
