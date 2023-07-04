@@ -44,12 +44,13 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: latest
-          draft: false
+          draft: true
           prerelease: false
           files: commentaries.sqlite
       - name: Mark release not a draft
         uses: actions/github-script@v4
         with:
           script: |
-            const { owner, repo } = context.repo
-            await github.repos.updateRelease({ owner, repo, release_id: ${{ steps.create_release.outputs.id }}, draft: false })
+            const { owner, repo } = context.repo;
+            const release_id = ${{ steps.create_release.outputs.id }};
+            await github.repos.updateRelease({ owner, repo, release_id: release_id, draft: false })
