@@ -54,3 +54,8 @@ jobs:
             const { owner, repo } = context.repo;
             const release_id = ${{ steps.create_release.outputs.id }};
             await github.repos.updateRelease({ owner, repo, release_id: release_id, draft: false })
+    - name: Update UI database
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://historicalchristian.faith/update_db.php?hieronymus=jerome'
+        method: 'GET'
