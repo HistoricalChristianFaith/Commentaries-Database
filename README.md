@@ -72,6 +72,8 @@ Why Psalms instead of Psalm?
 
 We're standardizing on [these names](https://github.com/HistoricalChristianFaith/Example-Commentary-Api/blob/master/func.php#L82), which are basically just based off of [this Logos page](https://www.logos.com/bible-book-abbreviations).
 
+Note: There is a common problem when automating importation of bulk commentaries from early church fathers, where certain commentaries from early church fathers are ascribed to them, but in reality in that work the church father was quoting a heretic verbatim in order to refute him later on - and the commentary came from the heretic (that the church father was quoting) and not the church father themselves. It is important to avoid putting this as a commentary under the church father, in that case (or if it's done accidentally, when one stumbles across it - removing it).
+
 ## File Contents Format
 
 Each file is in a format called [TOML](https://github.com/toml-lang/toml). This format fits well, as it's a nice balance of human readable/editable and machine-readable.
