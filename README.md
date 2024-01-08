@@ -87,7 +87,7 @@ A "commentary" consists of:
     - `sources`: One or more "url" and "title" values, should always include at least one source.
 - Optional keys
     - `append_to_author_name`: Use this for things like when you are quoting from a secondary source, e.g. if Aquinas said that Jerome said something, put the quote under Jerome, but in append_to_author_name put the value " (as quoted by Aquinas, AD 1274)"
-    - `time`: The year A.D. that the writing was written. Use a negative value for B.C. Should be just a single numerical value. If not supplied, defaults to metadata.toml's value (which is often the death year of the Church Father)
+    - `time`: The year A.D. that the writing was written. Use a negative value for B.C. Should be just a single numerical value. If not supplied, defaults to metadata.toml's value (which is often the death year of the Church Father). Note that 9999 is a special value, used to indicate "unknown date" (9999 is used to make it sort to the end of all other entries, when sorted by date).
 
 Minimal Example:
 
