@@ -32,11 +32,17 @@ optional arguments:
   -o OUT, --out OUT
 ```
 
-## Reference Implementation
+## Implementation
 
 [Here is our reference implementation](https://github.com/HistoricalChristianFaith/Commentaries-Interface) of the sqlite file being utilized in a simple PHP app to show commentaries for a user-specified passage of the Bible.
 
-Want to make a contribution to the repository? See below for details on file formats, and see [this pull request](https://github.com/HistoricalChristianFaith/Commentaries-Database/pull/1) for an example. We use the pull request feature to add notes/discussion about sources and such.
+There are also a number of other applications that have started making use of this database! Check them out:
+
+- [biblesearch.es](https://www.biblesearch.es) (semantic Bible search engine)
+- [Catena Vetus](https://github.com/jimbob88/CatenaVetus) (A Terminal User Interface frontend for Historical Christian Commentaries which does not require an internet connection)
+- https://github.com/jimbob88/CatenaVetus
+
+(Got a project of your own using this database? Open a pull request to add it here!)
 
 ## FILE NAME FORMATS:
 
@@ -130,6 +136,10 @@ time = 383
 url = 'https://www.newadvent.org/fathers/3007.htm'
 title = 'Against Helvidius'
 ```
+
+## Pull Requests
+
+Want to make a contribution to the repository? See below for details on file formats, and see [this pull request](https://github.com/HistoricalChristianFaith/Commentaries-Database/pull/1) for an example. We use the pull request feature to add notes/discussion about sources and such.
 
 ## Useful Tools
 
