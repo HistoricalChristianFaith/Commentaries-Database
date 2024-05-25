@@ -6,3 +6,11 @@ quote='''
 url = "http://ccel.org/fathers2/ANF-03/anf03-37.htm#P8295_2348434"
 title = "Tertullian Against Hermogenes"
 
+
+[[commentary]]
+quote='''
+-having been first "cast into the bottomless pit; "[110]
+'''
+[[commentary.sources]]
+url = "http://ccel.org/fathers2/ANF-03/anf03-37.htm#P8295_2348434"
+title = "Against Hermogenes"
