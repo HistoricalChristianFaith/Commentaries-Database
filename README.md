@@ -150,6 +150,7 @@ Want to make a contribution to the repository? See below for details on file for
 * https://www.tertullian.org/fathers/ and https://www.tertullian.org/fathers2/
 * https://earlychristianwritings.com/churchfathers.html
 * https://catholiclibrary.org/library/browse/ [*Contains many Latin versions not available in English]
+* https://www.thelatinlibrary.com/christian.html [*More Latin texts]
 * https://www.mlat.uzh.ch/browser?path=/38 [Migne's Patrologia Latina] [Link2](https://www.roger-pearse.com/weblog/patrologia-latina-pl-volumes-available-online/) [Link3](https://docs.google.com/spreadsheets/d/e/2PACX-1vRkUFBfVVqv5Tr2aZS4apFNpTJ-ys6VqeQxgsAI1v7cH5putIgchYWJAVGHuu0lWGmdD2DU7Vb1o7XH/pubhtml#)
 * https://roger-pearse.com/wiki/index.php?title=Main_Page [Encyclopedia of Syriac Literature]
 * https://github.com/OpenGreekAndLatin/csel-dev/ [Corpus Scriptorum Ecclesiasticorum Latinorum: a machine-corrected EpiDoc version of public domain volumes of the monumental collection of Latin Church Fathers]
