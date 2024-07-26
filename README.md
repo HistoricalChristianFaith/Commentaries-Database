@@ -154,6 +154,8 @@ Want to make a contribution to the repository? See below for details on file for
 * https://mlat.uzh.ch/ [Migne's Patrologia Latina] [Link2](https://www.roger-pearse.com/weblog/patrologia-latina-pl-volumes-available-online/) [Link3](https://docs.google.com/spreadsheets/d/e/2PACX-1vRkUFBfVVqv5Tr2aZS4apFNpTJ-ys6VqeQxgsAI1v7cH5putIgchYWJAVGHuu0lWGmdD2DU7Vb1o7XH/pubhtml#)
 * https://github.com/OGL-PatrologiaGraecaDev [OCR version of Patrologia Graeca]
 * http://khazarzar.skeptik.net/pgm/PG_Migne/ [Another OCR version of PG]
+* https://scaife.perseus.org/library/ [More texts online]
+* https://stephanus.tlg.uci.edu/abridged.php
 * https://roger-pearse.com/wiki/index.php?title=Main_Page [Encyclopedia of Syriac Literature]
 * https://github.com/OpenGreekAndLatin/csel-dev/ [Corpus Scriptorum Ecclesiasticorum Latinorum: a machine-corrected EpiDoc version of public domain volumes of the monumental collection of Latin Church Fathers]
 * https://docs.google.com/spreadsheets/d/e/2PACX-1vRkUFBfVVqv5Tr2aZS4apFNpTJ-ys6VqeQxgsAI1v7cH5putIgchYWJAVGHuu0lWGmdD2DU7Vb1o7XH/pubhtml?gid=627485545 [List of links]
