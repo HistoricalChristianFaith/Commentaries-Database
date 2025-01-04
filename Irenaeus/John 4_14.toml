@@ -2,8 +2,8 @@
 quote='''
 Himself: thus does Jesus now give to His believing people power to drink spiritual waters, which spring up to life eternal.
 '''
-url = "http://ccel.org/fathers2/ANF-01/anf01-64.htm"
-title = "Fragments from the Lost Writings of Irenaeus"
+source_url="http://ccel.org/fathers2/ANF-01/anf01-64.htm"
+source_title="Fragments from the Lost Writings of Irenaeus"
 
 
 [[commentary]]
@@ -11,4 +11,4 @@ quote='''
 Since the Son of God is always one and the same, He gives to those who believe on Him a well of water
 '''
 source_url="https://historicalchristian.faith/by_father.php?file=Irenaeus%2FIrenaeus%2520Against%2520Heresies%2520Book%25204.html"
-title = "Against Heresies Book IV"
+source_title="Against Heresies Book IV"

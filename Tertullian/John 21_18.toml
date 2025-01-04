@@ -2,5 +2,5 @@
 quote='''
 We read the lives of the Caesars: At Rome Nero was the first who stained with blood the rising faith. Then is Peter girt by another, when he is made fast to the cross.
 '''
-url = "https://historicalchristian.faith/by_father.php?file=Tertullian%2FScorpiace.html"
-title = "Scorpiace"
+source_url="https://historicalchristian.faith/by_father.php?file=Tertullian%2FScorpiace.html"
+source_title="Scorpiace"
