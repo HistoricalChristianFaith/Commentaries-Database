@@ -90,8 +90,9 @@ A "commentary" consists of:
 
 - Mandatory keys
     - `quote`: The source quotation, can include unicode as HTML entities but should not include any html
-    - `sources`: One or more "url" and "title" values, should always include at least one source.
+    - `source_title`: The work the quotation is from.
 - Optional keys
+    - `source_url`: Strongly recommended/preferred to have. A link to the work available online, preferably in the public domain. If not available in public domain, then a link to the Google book is acceptable.
     - `append_to_author_name`: Use this for things like when you are quoting from a secondary source, e.g. if Aquinas said that Jerome said something, put the quote under Jerome, but in append_to_author_name put the value " (as quoted by Aquinas, AD 1274)"
     - `time`: The year A.D. that the writing was written. Use a negative value for B.C. Should be just a single numerical value. If not supplied, defaults to metadata.toml's value (which is often the death year of the Church Father). Note that 9999 is a special value, used to indicate "unknown date" (9999 is used to make it sort to the end of all other entries, when sorted by date).
 
@@ -102,8 +103,8 @@ Minimal Example:
 quote = '''
 commentary by a church father goes here.
 '''
-url = 'https://example.com'
-title = 'Name of book church father wrote'
+source_url = 'https://example.com'
+source_title = 'Name of book church father wrote'
 ```
 
 Kitchen-Sink Example:
@@ -114,10 +115,6 @@ quote = '''
 short quotation from a church father with multiple sources
 '''
 append_to_author_name = ' (as quoted by Aquinas, AD 1274)'
-
-source_url='https://www.ecatholic2000.com/catena/untitled-111.shtml'
-source_title='Catena Aurea by Aquinas'
-
 source_url='https://ccel.org/ccel/aquinas/catena1/catena1.i.html'
 source_title='Catena Aurea by Aquinas'
 
@@ -128,9 +125,8 @@ Long quotation from a church father
 This text is on a new line
 '''
 time = 383
-
-url = 'https://www.newadvent.org/fathers/3007.htm'
-title = 'Against Helvidius'
+source_url = 'https://www.newadvent.org/fathers/3007.htm'
+source_title = 'Against Helvidius'
 ```
 
 ## Pull Requests
@@ -157,11 +153,34 @@ Want to make a contribution to the repository? See below for details on file for
 * https://docs.google.com/spreadsheets/d/e/2PACX-1vRkUFBfVVqv5Tr2aZS4apFNpTJ-ys6VqeQxgsAI1v7cH5putIgchYWJAVGHuu0lWGmdD2DU7Vb1o7XH/pubhtml?gid=627485545 [List of links]
 * [$$$] [The Church's Bible project](https://www.amazon.com/Matthew-Churchs-Bible-D-H-Williams/dp/0802825788)
 
+#### Alternative Commentary Collections
 
-#### Other Electronic Catenas
+- https://catenabible.com
+    - The most polished app, and a wonderful bible companion!
+    - It's a closed database, which contains data from a wide variety of sources (not just the ANF/NPNF series)
+    - Negatives:
+        - It identifies the person behind a quote, but not the work in which the quote appears.
+        - Its commentaries are tied only to individual verses (and not passages that span multiple verses) 
+        - Its commentaries from the ANF/NPNF often are lacking context / are cut off.
 
-* https://catenabible.com/mt/1/1
-* https://www.biblindex.org/en/story
-* https://www.earlychristianwritings.com/e-catena/
-* https://www.catholiccrossreference.online/fathers/index.php/matthew%201:1
-* [$$$] https://www.logos.com/product/31152/ancient-christian-commentary-on-scripture-complete-set-updated-edition-accs
+- https://www.earlychristianwritings.com/e-catena/
+    - A wonderful quick reference
+    - Only includes citations from the ANF/NPNF
+    - But does identify the work in which a quote appears, AND provides a link directly to that work!
+    
+- https://www.catholiccrossreference.online/fathers/
+    - Similar to earlychristianwritings.com/e-catena
+    - Uses citations from the ANF/NPNF
+    - Identifies the work in which a quote appears, AND provides a link directly to that work!
+
+- https://www.biblindex.org/
+    - The most... scholarly?
+    - Laborious to use
+    - Requires a bigger brain than I have.
+
+- [Ancient Christian Commentary on Scripture](https://www.logos.com/product/31152/ancient-christian-commentary-on-scripture-complete-set-accs)
+    - Contains commentaries from a wide variety of sources, many of which appear to be custom translated just for this product!
+    - Identifies the work in which a quote appears, and often provides good historical background!
+    - The commentaries shown are not exhaustive, but are curated... usually with just a couple chosen per verse.
+    - Costs enough to empty your wallet.
+    

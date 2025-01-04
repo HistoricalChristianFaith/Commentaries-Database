@@ -99,11 +99,8 @@ def process_toml():
             toml_obj = rtoml.load(toml_str)
 
             for c in toml_obj['commentary']:
-                source_url = ""
-                source_title = ""
-                if 'sources' in c:
-                    source_url = c['sources'][0]['url']
-                    source_title = c['sources'][0]['title']
+                source_url = c.get('source_url', '')
+                source_title = c.get('source_title', '')
 
                 time = 9999999
                 if father_name in father_meta_data:
