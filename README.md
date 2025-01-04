@@ -78,13 +78,13 @@ We also accept that for some people, it is not possible/necessary. For example, 
 <details>
     <summary><b>Why Psalms instead of Psalm? / Which version of a book's name do we use?</b></summary>
 
-    We're standardizing on [these names](https://github.com/HistoricalChristianFaith/Commentaries-Interface/blob/master/func.php#L82), which are basically just based off of [this Logos page](https://www.logos.com/bible-book-abbreviations).
+We're standardizing on [these names](https://github.com/HistoricalChristianFaith/Commentaries-Interface/blob/master/func.php#L82), which are basically just based off of [this Logos page](https://www.logos.com/bible-book-abbreviations).
 </details>
 
 <details>
     <summary><b>How do we handle Church Father quotations of heretics who are quoting Bible passages?</b></summary>
 
-    There is a common problem when automating importation of bulk commentaries from early church fathers, where certain commentaries from early church fathers are ascribed to them, but in reality in that work the church father was quoting a heretic verbatim in order to refute him later on - and the commentary came from the heretic (that the church father was quoting) and not the church father themselves. It is important to avoid putting this as a commentary under the church father, in that case (or if it's done accidentally, when one stumbles across it - removing it).
+There is a common problem when automating importation of bulk commentaries from early church fathers, where certain commentaries from early church fathers are ascribed to them, but in reality in that work the church father was quoting a heretic verbatim in order to refute him later on - and the commentary came from the heretic (that the church father was quoting) and not the church father themselves. It is important to avoid putting this as a commentary under the church father, in that case (or if it's done accidentally, when one stumbles across it - removing it).
 </details>
 
 ## File Contents Format
