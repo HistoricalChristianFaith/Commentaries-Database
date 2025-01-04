@@ -59,4 +59,4 @@ jobs:
         with:
           url: 'https://historicalchristian.faith/update_db.php?hieronymus=jerome'
           method: 'GET'
-          timeout: 30000
+          timeout: 60000
