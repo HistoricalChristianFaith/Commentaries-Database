@@ -3,8 +3,8 @@ quote='''
 He says, "Perfect love casts out fear." For the perfection of a believing man is love.
 '''
 append_to_author_name=' (as quoted by Cassiodorus, AD 585)'
-url='https://www.newadvent.org/fathers/0211.htm'
-title='Fragment from the Latin Translation of Cassiodorus'
+source_url='https://www.newadvent.org/fathers/0211.htm'
+source_title='Fragment from the Latin Translation of Cassiodorus'
 
 [[commentary]]
 quote='''
@@ -18,5 +18,5 @@ title = "Clement of Alexandria Who is the Rich Man that Shall Be Saved?"
 quote='''
 The perfection of a faithful man is love.
 '''
-url=''
-title="ADUMBRATIONS"
+source_url=''
+source_title="ADUMBRATIONS"

@@ -115,11 +115,11 @@ short quotation from a church father with multiple sources
 '''
 append_to_author_name = ' (as quoted by Aquinas, AD 1274)'
 
-url='https://www.ecatholic2000.com/catena/untitled-111.shtml'
-title='Catena Aurea by Aquinas'
+source_url='https://www.ecatholic2000.com/catena/untitled-111.shtml'
+source_title='Catena Aurea by Aquinas'
 
-url='https://ccel.org/ccel/aquinas/catena1/catena1.i.html'
-title='Catena Aurea by Aquinas'
+source_url='https://ccel.org/ccel/aquinas/catena1/catena1.i.html'
+source_title='Catena Aurea by Aquinas'
 
 [[commentary]]
 quote = '''

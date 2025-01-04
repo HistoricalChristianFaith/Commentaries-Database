@@ -3,12 +3,12 @@ quote='''
 "But sanctify the Lord Christ," he says, "in your hearts." For so you have in the Lord's prayer, "Hallowed be Your name." [Matthew 6:9]
 '''
 append_to_author_name=' (as quoted by Cassiodorus, AD 585)'
-url='https://www.newadvent.org/fathers/0211.htm'
-title='Fragment from the Latin Translation of Cassiodorus'
+source_url='https://www.newadvent.org/fathers/0211.htm'
+source_title='Fragment from the Latin Translation of Cassiodorus'
 
 [[commentary]]
 quote='''
 This is just what the Lord’s Prayer says: “Hallowed be your name.”
 '''
-url=''
-title="ADUMBRATIONS"
+source_url=''
+source_title="ADUMBRATIONS"
