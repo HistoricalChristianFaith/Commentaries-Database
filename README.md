@@ -102,7 +102,6 @@ Minimal Example:
 quote = '''
 commentary by a church father goes here.
 '''
-[[commentary.sources]]
 url = 'https://example.com'
 title = 'Name of book church father wrote'
 ```
@@ -116,11 +115,9 @@ short quotation from a church father with multiple sources
 '''
 append_to_author_name = ' (as quoted by Aquinas, AD 1274)'
 
-[[commentary.sources]]
 url='https://www.ecatholic2000.com/catena/untitled-111.shtml'
 title='Catena Aurea by Aquinas'
 
-[[commentary.sources]]
 url='https://ccel.org/ccel/aquinas/catena1/catena1.i.html'
 title='Catena Aurea by Aquinas'
 
@@ -132,7 +129,6 @@ This text is on a new line
 '''
 time = 383
 
-[[commentary.sources]]
 url = 'https://www.newadvent.org/fathers/3007.htm'
 title = 'Against Helvidius'
 ```
