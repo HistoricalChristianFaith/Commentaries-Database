@@ -34,13 +34,12 @@ optional arguments:
 
 ## Implementation
 
-[Here is our reference implementation](https://github.com/HistoricalChristianFaith/Commentaries-Interface) of the sqlite file being utilized in a simple PHP app to show commentaries for a user-specified passage of the Bible.
+[Here is our reference implementation](https://github.com/HistoricalChristianFaith/Website-Interface) of the sqlite file being utilized in a simple PHP app to show commentaries for a user-specified passage of the Bible.
 
 There are also a number of other applications that have started making use of this database! Check them out:
 
 - [biblesearch.es](https://www.biblesearch.es) (semantic Bible search engine)
 - [Catena Vetus](https://github.com/jimbob88/CatenaVetus) (A Terminal User Interface frontend for Historical Christian Commentaries which does not require an internet connection)
-- https://github.com/jimbob88/CatenaVetus
 
 (Got a project of your own using this database? Open a pull request to add it here!)
 
@@ -60,6 +59,8 @@ Examples:
 
 So the basic rule is write the 'long form' name of everything (books/people), and replace colons (:) with underscores (_). That's it.
 
+## FAQ
+
 <details>
     <summary><b>Why do we use the long form of people's names? Why Augustine of Hippo, rather than just Augustine?</b></summary>
 
@@ -74,11 +75,17 @@ Having to dig into problems like that increase the rate at which my gray hair gr
 We also accept that for some people, it is not possible/necessary. For example, `Jerome` is universally understood to refer to a single man, and he doesn't have any kind of commonly known longer-form name. However, while `Augustine` is universally understood to refer to a single man, he does have a common longer-form name which we therefore use, `Augustine of Hippo`.
 </details>
 
-Why Psalms instead of Psalm?
+<details>
+    <summary><b>Why Psalms instead of Psalm? / Which version of a book's name do we use?</b></summary>
 
-We're standardizing on [these names](https://github.com/HistoricalChristianFaith/Commentaries-Interface/blob/master/func.php#L82), which are basically just based off of [this Logos page](https://www.logos.com/bible-book-abbreviations).
+    We're standardizing on [these names](https://github.com/HistoricalChristianFaith/Commentaries-Interface/blob/master/func.php#L82), which are basically just based off of [this Logos page](https://www.logos.com/bible-book-abbreviations).
+</details>
 
-Note: There is a common problem when automating importation of bulk commentaries from early church fathers, where certain commentaries from early church fathers are ascribed to them, but in reality in that work the church father was quoting a heretic verbatim in order to refute him later on - and the commentary came from the heretic (that the church father was quoting) and not the church father themselves. It is important to avoid putting this as a commentary under the church father, in that case (or if it's done accidentally, when one stumbles across it - removing it).
+<details>
+    <summary><b>How do we handle Church Father quotations of heretics who are quoting Bible passages?</b></summary>
+
+    There is a common problem when automating importation of bulk commentaries from early church fathers, where certain commentaries from early church fathers are ascribed to them, but in reality in that work the church father was quoting a heretic verbatim in order to refute him later on - and the commentary came from the heretic (that the church father was quoting) and not the church father themselves. It is important to avoid putting this as a commentary under the church father, in that case (or if it's done accidentally, when one stumbles across it - removing it).
+</details>
 
 ## File Contents Format
 
@@ -112,21 +119,14 @@ Kitchen-Sink Example:
 ```
 [[commentary]]
 quote = '''
-short quotation from a church father with multiple sources
-'''
-append_to_author_name = ' (as quoted by Aquinas, AD 1274)'
-source_url='https://ccel.org/ccel/aquinas/catena1/catena1.i.html'
-source_title='Catena Aurea by Aquinas'
-
-[[commentary]]
-quote = '''
 Long quotation from a church father
 
 This text is on a new line
 '''
+append_to_author_name = ' (as quoted by Aquinas, AD 1274)'
 time = 383
-source_url = 'https://www.newadvent.org/fathers/3007.htm'
-source_title = 'Against Helvidius'
+source_url='https://ccel.org/ccel/aquinas/catena1/catena1.i.html'
+source_title='Catena Aurea by Aquinas'
 ```
 
 ## Pull Requests
