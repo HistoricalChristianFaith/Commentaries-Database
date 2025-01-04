@@ -4,3 +4,11 @@ Whose name was Bar-Jesus. It is incorrectly read as Barjesus, when it should be 
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Acts.html"
 source_title = "Commentary on Acts"
+
+
+[[commentary]]
+quote='''
+They found a certain magician, a Jewish false prophet, whose name was Barjesus. In Greek it adds more: Which is interpreted as Elimas.
+'''
+source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FRetractions%2520on%2520Acts.html"
+source_title = "Retractions on Acts"
