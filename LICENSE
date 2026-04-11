@@ -1,11 +1,30 @@
-PUBLIC DOMAIN
+PUBLIC DOMAIN DEDICATION
 
-This database compilation is released into the public domain. You may
-copy, modify, distribute, and use it for any purpose, without restriction
-or attribution.
+The compilation in this repository — including the folder structure,
+filenames, metadata, the `compile_data.py` build script, and all
+commentary excerpts drawn from public-domain sources (such as the
+ANF/NPNF series, CCEL, and similar collections) — is released into the
+public domain. You may copy, modify, distribute, and use this material
+for any purpose, without restriction or attribution.
 
-The vast majority of texts included here are from public domain
-translations of ancient works. It is possible that a small number of
-quotes may originate from copyrighted translations. If you are the
-copyright holder of any such translation and would like it removed,
-please open an issue on this repository.
+FAIR USE NOTICE
+
+Some commentaries in this repository are limited excerpts from works
+still under copyright by their authors or estates. These excerpts are
+included under the fair use doctrine (17 U.S.C. § 107, and equivalents
+in other jurisdictions) for nonprofit, educational, and scholarly
+purposes: the excerpts are limited in length relative to the original
+work, they are reorganized transformatively by Scripture passage for
+study and reference, and they are not intended to substitute for the
+original works.
+
+Copyright in those excerpts remains with their original rights holders
+and/or their estates. Nothing in the public-domain dedication above
+transfers, waives, or limits those rights. If you are the copyright
+holder of any such excerpt and would like it removed, please open an
+issue on this repository.
+
+Downstream users who redistribute this database are responsible for
+their own fair-use analysis in their jurisdiction and use case. The
+public-domain dedication in the first section does not extend to the
+fair-use excerpts covered by this notice.
