@@ -12,3 +12,20 @@ quote='''
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
 source_title = "On the Gospel of Luke"
+
+
+[[commentary]]
+quote='''
+He said, “You are witnesses of these things. And I send upon you the promise of my Father.” He calls the gift of the Holy Spirit “the promise of his Father.” … He added something about their promised waiting when he said, “Stay in the city until you are clothed with power from on high.” He pledged that power would come down upon them from on high, because although they already possessed the Holy Spirit, they received him more fully once Christ ascended into heaven. Even before his passion, by the power of the Holy Spirit they were casting out many demons, healing many sick persons and preaching the word of life to whom they could. Once he had risen from the dead, they were especially refreshed by the grace of the same Spirit. John writes, “Receive the Holy Spirit. If you forgive the sins of any, they are forgiven; if you retain the sins of any, they are retained.” He clothed them with his greater virtue from on high when they received him in fiery tongues ten days after the Lord’s ascension. They were inflamed with such great assurance of strength that any threats from the rulers could not prevent them from speaking to everyone in the name of Jesus.
+'''
+source_url='https://historicalchristian.faith/by_father.php?file=Bede%2FHomilies%2520on%2520the%2520Gospels.html'
+source_title="Homilies on the Gospels 11.15"
+
+
+[[commentary]]
+quote='''
+But concerning the power, that is, the Holy Spirit, the Angel also says to Mary, And the power of the Highest shall overshadow thee. (Luke 1:35.) And the Lord Himself says elsewhere, For I know that virtue is gone out of me. (Luke 8:45.)
+'''
+append_to_author_name=' (as quoted by Aquinas, AD 1274)'
+source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%252024.html'
+source_title='Catena Aurea by Aquinas'

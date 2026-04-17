@@ -4,3 +4,11 @@ Sell all that you have, and give to the poor, and you will have treasure in heav
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
 source_title = "On the Gospel of Luke"
+
+[[commentary]]
+quote='''
+Whoever then wishes to be perfect must sell all that he hath, not a part only, as Ananias and Sapphira did, but the whole.
+'''
+append_to_author_name=' (as quoted by Aquinas, AD 1274)'
+source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%252018.html'
+source_title='Catena Aurea by Aquinas'

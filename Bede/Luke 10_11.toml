@@ -4,3 +4,12 @@ Into whatever city you enter and they do not receive you, going out into its str
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
 source_title = "On the Gospel of Luke"
+
+
+[[commentary]]
+quote='''
+Either as a testimony to the earthly toil which they had in vain undergone for them, or to show that so far from seeking any thing earthly from them, they suffer not even the dust from their land to cleave to them. Or by the feet is meant the very labour and walking to and fro of preaching; but the dust with which they are sprinkled is the lightness of worldly thoughts, from which even the greatest teachers cannot be free. Those then who have despised the teaching, turn the labours and dangers of the teachers into a testimony of their condemnation.
+'''
+append_to_author_name=' (as quoted by Aquinas, AD 1274)'
+source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%252010.html'
+source_title='Catena Aurea by Aquinas'

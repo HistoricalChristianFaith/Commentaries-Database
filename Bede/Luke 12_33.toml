@@ -20,3 +20,15 @@ A treasure unfailing in the heavens, where a thief does not approach, nor moth c
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
 source_title = "On the Gospel of Luke"
+
+[[commentary]]
+quote='''
+But sell that ye have for alms' sake, which then is done worthily, when a man having once for his Lord's sake forsaken all that he hath, nevertheless afterwards labours with his hands that he may be able both to gain his living, and give alms.
+
+That is, by doing alms, the reward of which abideth for ever; which must not be taken as a command that no money be kept by the saints either for their own, or the use of the poor, since we read that our Lord Himself, to whom the angels ministered, (Matt. 4:11) had a bag in which he kept the offerings of the faithful; (John 12:6.) but that God should not be obeyed for the sake of such things, and righteousness be not forsaken from fear of poverty.
+
+Whether then should it be simply understood, that money kept faileth, but given away to our neighbour bears everlasting fruit in heaven; or, that the treasure of good works, if it be stored up for the sake of earthly advantage, is soon corrupted and perishes; but if it be laid up solely from heavenly motives, neither outwardly by the favour of men, as by the thief which steals from without, nor inwardly by vainglory, as by the moth which devours within, can it be defiled.
+'''
+append_to_author_name=' (as quoted by Aquinas, AD 1274)'
+source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%252012.html'
+source_title='Catena Aurea by Aquinas'
