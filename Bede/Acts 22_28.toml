@@ -3,7 +3,7 @@ quote='''
 I have obtained this citizenship for a great sum of money. Another edition indicates more clearly what he had said. The tribune said: Do you say so easily that you are a Roman citizen? For I know at what price I obtained this citizenship.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Acts.html"
-source_title = "Commentary on Acts"
+source_title="Commentary on Acts"
 
 
 [[commentary]]
@@ -11,7 +11,7 @@ quote='''
 And Paul said: But I was born so. That is, in this I am more of a Roman than you because I did not buy the Roman name elsewhere, but I was born in their city.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Acts.html"
-source_title = "Commentary on Acts"
+source_title="Commentary on Acts"
 
 
 [[commentary]]
@@ -19,4 +19,4 @@ quote='''
 I acquired this city with a great sum of money. In Greek, for city it has πολιτείαν: which signifies rather civil society, that is, social interaction among citizens, or the administration of the republic, than city. For the tribune had not bought the Roman citizenship he possessed, but the partnership of the Roman commonwealth of which he was a participant. But Paul was even more a Roman citizen, because he had this not by purchase, but by birth.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FRetractions%2520on%2520Acts.html"
-source_title = "Retractions on Acts"
+source_title="Retractions on Acts"

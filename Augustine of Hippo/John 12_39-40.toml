@@ -4,7 +4,7 @@ quote='''
 '''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520John%2FChapter%252012.html'
-source_title='Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"
 
 [[commentary]]
 quote='''
@@ -13,4 +13,4 @@ But the words of the Gospel also, that follow, are still more pressing, and star
 "They could not believe," because that Isaiah the prophet foretold it; and the prophet foretold it because God foreknew that such would be the case. But if I am asked why they could not, I reply at once, because they would not; for certainly their depraved will was foreseen by God, and foretold through the prophet by Him from whom nothing that is future can be hid.
 '''
 source_url='https://historicalchristian.faith/by_father.php?file=Augustine%2520of%2520Hippo%2FTRACTATES%2520ON%2520JOHN%2FTractate%252053.html'
-source_title='Tractates on John 53'
+source_title="Tractates on John 53"

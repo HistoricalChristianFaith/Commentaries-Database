@@ -3,7 +3,7 @@ quote='''
 Whose name was Bar-Jesus. It is incorrectly read as Barjesus, when it should be read as Bar-Jew, that is, sorcerer, or in evil. I believe that the name Jesus is written with the same letters but with a mark above. For it is not fitting for a wicked man and sorcerer to be called the son of Jesus, that is, the Savior, whom conversely Paul calls the son of the devil.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Acts.html"
-source_title = "Commentary on Acts"
+source_title="Commentary on Acts"
 
 
 [[commentary]]
@@ -11,4 +11,4 @@ quote='''
 They found a certain magician, a Jewish false prophet, whose name was Barjesus. In Greek it adds more: Which is interpreted as Elimas.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FRetractions%2520on%2520Acts.html"
-source_title = "Retractions on Acts"
+source_title="Retractions on Acts"

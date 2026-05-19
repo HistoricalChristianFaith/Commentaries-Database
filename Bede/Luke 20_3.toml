@@ -3,7 +3,7 @@ quote='''
 But answering, he said to them, "I will also ask you one thing. Answer me. Was the baptism of John from heaven or from men?" The Lord could have confuted the slander of the tempters with an open answer, but prudently he asks so that by their own silence or response, they might be condemned.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
-source_title = "On the Gospel of Luke"
+source_title="On the Gospel of Luke"
 
 [[commentary]]
 quote='''
@@ -11,4 +11,4 @@ Now our Lord by a simple answer might have refuted such a calumny; but He wisely
 '''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%252020.html'
-source_title='Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"

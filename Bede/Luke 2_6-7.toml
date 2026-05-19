@@ -16,11 +16,11 @@ He who sits at His Father's right hand, finds no room in an inn, that He might p
 '''
 append_to_author_name = ' (as quoted by Aquinas, AD 1274)'
 source_url = 'https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%25202.html'
-source_title = 'Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"
 
 [[commentary]]
 quote = '''
-He calls the Lord “firstborn,” not because we should believe that Mary gave birth to other sons after him, since it is true that she was memorable for her unique perpetual chastity with Joseph her husband. But he properly names him “firstborn” because, as John says, “But to as many as received him he gave them the power to become sons of God.” Among these sons he rightfully holds the primacy who, before he was born in the flesh, was Son of God, born without beginning. However, he descended to earth. He shared in our nature and lavished upon us a sharing in his grace, so that “he should be the firstborn of many brothers.”
+He calls the Lord "firstborn," not because we should believe that Mary gave birth to other sons after him, since it is true that she was memorable for her unique perpetual chastity with Joseph her husband. But he properly names him "firstborn" because, as John says, "But to as many as received him he gave them the power to become sons of God." Among these sons he rightfully holds the primacy who, before he was born in the flesh, was Son of God, born without beginning. However, he descended to earth. He shared in our nature and lavished upon us a sharing in his grace, so that "he should be the firstborn of many brothers."
 '''
 source_url = 'https://historicalchristian.faith/by_father.php?file=Bede%2FHomilies%2520on%2520the%2520Gospels.html'
-source_title = 'Homilies on the Gospels 1.6'
+source_title="Homilies on the Gospels 1.6"

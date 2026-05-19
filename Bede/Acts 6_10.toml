@@ -3,7 +3,7 @@ quote='''
 And they could not withstand the wisdom and the Spirit with which he spoke. This is what the Lord Himself says to His martyrs: For I will give you words and wisdom that none of your adversaries will be able to resist or contradict. It was fitting that in the first martyr, what He deigned to promise to all who are betrayed for His name should be confirmed.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Acts.html"
-source_title = "Commentary on Acts"
+source_title="Commentary on Acts"
 
 
 [[commentary]]
@@ -11,4 +11,4 @@ quote='''
 And they were not able to resist the wisdom and the Holy Spirit who spoke. In the Greek text, there is more: "And they were not able to resist the wisdom that was in him, and the Holy Spirit who spoke: for which reason they were reproved by him with all confidence." Therefore, when they could not contradict the truth, then they suborned men who said, etc.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FRetractions%2520on%2520Acts.html"
-source_title = "Retractions on Acts"
+source_title="Retractions on Acts"

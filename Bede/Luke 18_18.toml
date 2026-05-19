@@ -3,7 +3,7 @@ quote='''
 And a certain ruler asked him, saying: Good teacher, what shall I do to inherit eternal life? I believe this ruler had heard from the Lord that only those who want to be like children will enter the kingdom of God, and therefore, concerned with obtaining clear guidance, he asks to be told openly, not in parables, by what merits of works he may gain eternal life.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
-source_title = "On the Gospel of Luke"
+source_title="On the Gospel of Luke"
 
 [[commentary]]
 quote='''
@@ -11,4 +11,4 @@ A certain ruler having heard our Lord say, that only those who would be like lit
 '''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%252018.html'
-source_title='Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"

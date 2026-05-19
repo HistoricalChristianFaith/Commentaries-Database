@@ -3,7 +3,7 @@ quote='''
 Then his disciples, leaving him, all fled. The word of the Lord which he had spoken was fulfilled, that all his disciples would be scandalized in him that very night. For even if, by the crowd permitting to the Lord's request, they fled, as John writes, they nonetheless showed the fear and timidity of their mind, that they were more ready to take refuge in flight than to endure suffering with Christ in confidence.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Mark.html"
-source_title = "On the Gospel of Mark"
+source_title="On the Gospel of Mark"
 
 [[commentary]]
 quote='''
@@ -11,4 +11,4 @@ quote='''
 '''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Mark%2FChapter%252014.html'
-source_title='Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"

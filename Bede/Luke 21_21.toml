@@ -3,7 +3,7 @@ quote='''
 Then let those who are in Judea flee to the mountains. The ecclesiastical history narrates that all the Christians who were in Judea, warned by the Lord at the imminent destruction of Jerusalem, left the place, and until the desolation of Judea was fulfilled, lived in a certain city named Pella across the Jordan.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
-source_title = "On the Gospel of Luke"
+source_title="On the Gospel of Luke"
 
 
 [[commentary]]
@@ -11,7 +11,7 @@ quote='''
 And those who are in the midst of it, let them depart. And those who are in the regions, let them not enter into it. For these are the days of vengeance, that all things which are written may be fulfilled. It indeed seems to pertain to appropriate admonition, that those who are outside should not enter into it, but how will those who are in the midst depart from a city already surrounded by an army? Unless perhaps what was stated before, that is, then those who are in Judea should flee, does not pertain to the exact time of the siege, but to the time before the siege, when the Roman soldiers first began to spread through the boundaries of Galilee or Samaria, so that then everyone would hasten to flee while there was still time for flight. But these are the days of vengeance, namely seeking vengeance for the blood of the Lord.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
-source_title = "On the Gospel of Luke"
+source_title="On the Gospel of Luke"
 
 [[commentary]]
 quote='''
@@ -21,4 +21,4 @@ But how, while the city was already compassed with an army, were they to depart 
 '''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%252021.html'
-source_title='Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"

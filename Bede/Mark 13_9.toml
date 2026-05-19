@@ -3,7 +3,7 @@ quote='''
 But watch yourselves, for they will deliver you up to councils, and you will be beaten in synagogues, and you will stand before kings and governors for my sake, for a testimony to them. Indeed, the very fact that the Jewish people, either alone or as the greatest cause, were the cause of their own destruction, because after the killing of the Lord Savior, they tormented the heralds and confessors of his name and faith with impious cruelty.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Mark.html"
-source_title = "On the Gospel of Mark"
+source_title="On the Gospel of Mark"
 
 [[commentary]]
 quote='''
@@ -11,4 +11,4 @@ quote='''
 '''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Mark%2FChapter%252013.html'
-source_title='Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"

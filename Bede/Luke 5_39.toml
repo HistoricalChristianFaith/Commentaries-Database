@@ -3,7 +3,7 @@ quote='''
 And no one having drunk old wine, immediately desires new, for he says, "The old is better." This signifies the Jews, to whom, being steeped in the dregs of an old way of life, the precepts of new grace had become tainted. For indeed, being defiled by the traditions of their ancestors, they were by no means able to perceive the sweetness of spiritual words.
 '''
 source_url = "https://historicalchristian.faith/by_father.php?file=Bede%2FCommentary%2520on%2520Luke.html"
-source_title = "On the Gospel of Luke"
+source_title="On the Gospel of Luke"
 
 [[commentary]]
 quote='''
@@ -11,4 +11,4 @@ It follows, No man also having drank old wine straightway desireth new, for he s
 '''
 append_to_author_name=' (as quoted by Aquinas, AD 1274)'
 source_url='https://historicalchristian.faith/by_father.php?file=Thomas%2520Aquinas%2FCatena%2520Aurea%2FCommentary%2520on%2520Luke%2FChapter%25205.html'
-source_title='Catena Aurea by Aquinas'
+source_title="Catena Aurea by Aquinas"
