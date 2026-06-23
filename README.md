@@ -57,7 +57,7 @@ Examples:
 - A commentary by Jerome on Matthew 23:35-41 = Filename: `Jerome/Matthew 23_35-41.toml`
 - A commentary by Basil of Caesarea on 1 Kings 19:10-20:3 = Filename: `Basil of Caesarea/1 Kings 19_10-20_3.toml`
 
-So the basic rule is write the 'long form' name of everything (books/people), and replace colons (:) with underscores (_). That's it.
+So the basic rule is write the 'long form' name of everything (books/people), and replace colons (:) with underscores (_). That's it. For the list of accepted book names, see [`book_names.json`](book_names.json).
 
 ## FAQ
 
@@ -78,7 +78,7 @@ We also accept that for some people, it is not possible/necessary. For example, 
 <details>
     <summary><b>Why Psalms instead of Psalm? / Which version of a book's name do we use?</b></summary>
 
-We're standardizing on [these names](https://github.com/HistoricalChristianFaith/Commentaries-Interface/blob/master/func.php#L82), which are basically just based off of [this Logos page](https://www.logos.com/bible-book-abbreviations).
+We maintain a canonical list of accepted book names in [`book_names.json`](book_names.json). The compile script (`compile_data.py`) validates all filenames against this list and will reject unrecognized book names. The names are broadly based on [this Logos page](https://www.logos.com/bible-book-abbreviations).
 </details>
 
 <details>

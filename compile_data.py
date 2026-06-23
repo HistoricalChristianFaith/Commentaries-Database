@@ -57,6 +57,11 @@ def encode_chapter_verse(chapter: int, verse: int) -> int:
 def process_toml():
     file_list = [path for path in Path.cwd().glob('**/*') if path.is_file() and path.suffix == '.toml']
 
+    book_names_path = Path(__file__).parent / 'book_names.json'
+    with book_names_path.open('r', encoding='utf-8') as f:
+        book_names_data = json.load(f)
+    canonical_books = set(book_names_data['canonical_names'])
+
     father_meta_data = {}
 
     # First loop through all metadata files, build them up into default lookup table
@@ -89,6 +94,12 @@ def process_toml():
             file_name = file.stem
             fn_pieces = file_name.split(" ")
             book_name = " ".join(fn_pieces[:-1])
+
+            if book_name not in canonical_books:
+                raise ValueError(
+                    f'Unrecognized book name "{book_name}" in {file.relative_to(Path.cwd())}. '
+                    f'See book_names.json for the list of valid book names.'
+                )
 
             verse_range = string_to_verse_range(fn_pieces[-1])
 
