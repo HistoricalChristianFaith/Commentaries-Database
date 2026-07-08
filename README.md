@@ -40,6 +40,7 @@ There are also a number of other applications that have started making use of th
 
 - [biblesearch.es](https://www.biblesearch.es) (semantic Bible search engine)
 - [Catena Vetus](https://github.com/jimbob88/CatenaVetus) (A Terminal User Interface frontend for Historical Christian Commentaries which does not require an internet connection)
+- [Biblians](https://biblians.com) (AI Bible app with historical commentary synced to the verse)
 
 (Got a project of your own using this database? Open a pull request to add it here!)
 
