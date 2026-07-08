@@ -145,6 +145,8 @@ def process_toml():
             fn,
             father_meta_data[fn]['default_year'],
             father_meta_data[fn]['wiki'],
+            father_meta_data[fn].get('father_category', ''),
+            1 if father_meta_data[fn].get('condemned_by_council', False) else 0,
         ] for fn in father_meta_data
     ]
     return {
@@ -166,7 +168,9 @@ def to_sqlite(toml_data: Dict, out_path: Path):
         cursor.execute('''CREATE TABLE IF NOT EXISTS "father_meta" (
             "name" VARCHAR,
             "default_year" VARCHAR,
-            "wiki_url" VARCHAR
+            "wiki_url" VARCHAR,
+            "father_category" VARCHAR,
+            "condemned_by_council" INTEGER
         )
         ;''')
         cursor.execute('''CREATE UNIQUE INDEX idx_father_meta_name ON father_meta (name);''')
@@ -190,8 +194,8 @@ def to_sqlite(toml_data: Dict, out_path: Path):
         cursor.execute('''CREATE INDEX idx_commentary_location_end ON commentary (location_end);''')
 
         sqlite_insert_query = """INSERT INTO father_meta
-                            (name, default_year, wiki_url) 
-                            VALUES (?, ?, ?);"""
+                            (name, default_year, wiki_url, father_category, condemned_by_council)
+                            VALUES (?, ?, ?, ?, ?);"""
         cursor.executemany(sqlite_insert_query, toml_data['father_meta_data'])
         sqlite_insert_query = """INSERT INTO commentary
                             (id, father_name, file_name, append_to_author_name, ts, book, location_start, location_end, txt, source_url, source_title) 
