@@ -64,10 +64,11 @@ def opening_lemma_end(body):
     greek = r"[Ͱ-Ͽἀ-῿]+(?: [Ͱ-Ͽἀ-῿]+)*, that is, [^<,]{1,40},"
     # Micah 1:1 introduces its LXX with `Or according to the Seventy:`, and 6:1-2 with `: LXX.`;
     # Hosea 13:3 with `LXX: likewise; changing only this, which is at the end:`, and 13:4 with
-    # `In place of which one reads in the LXX:`.
+    # `In place of which one reads in the LXX:`; Amos 1:1 with `But the Seventy, intending I know
+    # not what, translated:`.
     pat = (r"(?:\s|[÷※⁚.,;:—\"“”'‘’-]|\[[^\]]{0,40}\]|\bor\b|\bthen\b|LXX: likewise; changing only "
            r"this, which is at the end:|In place of which one reads in the LXX:|LXX[:.]|Or according "
-           r"to the Seventy:|" + paren + "|" + dashed + "|" + greek + r")*<i>.*?</i>")
+           r"to the Seventy:|But the Seventy, intending I know not what, translated:|" + paren + "|" + dashed + "|" + greek + r")*<i>.*?</i>")
     while True:
         m = re.match(pat, body[j:], re.S)
         if m:

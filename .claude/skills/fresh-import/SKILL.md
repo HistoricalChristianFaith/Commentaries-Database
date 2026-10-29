@@ -60,7 +60,8 @@ point them elsewhere.
 - **Who does what:** the Python driver cuts the work into pieces and hands each piece to a
   headless `claude` agent, which decides the verse file for every stretch of text. You, the
   orchestrating agent, prepare the notes, review each batch, fix mechanical problems, and bring
-  the judgment calls to the user. The user runs the long import commands in their own terminal.
+  the judgment calls to the user. The user runs the long import commands in their own terminal,
+  except for the pilot, which you run yourself if the user asks you to (Phase 3).
 
 ## 2. Tools
 
@@ -99,7 +100,9 @@ folder), so it works on any checkout.
   matching parenthesis, which can run on with remarks about the Origenian signs), inline
   alternatives `(or <i>…</i>)`, Joel's dashed gloss inside an LXX run, and a Hebrew lemma whose
   first paragraph holds only a half-verse and runs on in the next paragraph before the LXX
-  (Habakkuk 1:3b-4, 3:3b-4; Obadiah 1:13b-14). For a new layout,
+  (Habakkuk 1:3b-4, 3:3b-4; Obadiah 1:13b-14), and LXX runs introduced by a phrase instead of
+  "LXX:" (Micah 1:1 "Or according to the Seventy:", Hosea 13:4 "In place of which one reads in
+  the LXX:", Amos 1:1 "But the Seventy, intending I know not what, translated:"). For a new layout,
   confirm that it finds every lemma before trusting LEMMA CUT, and extend it if needed. Then make
   sure the earlier works' results don't change, except for improvements.
 - Editorial marks the user wants left out of the import (e.g. Zechariah's ⟦ ⟧ Migne brackets and
@@ -310,8 +313,17 @@ Choose 2–6 pieces that exercise the risky parts:
 - one with a closing note;
 - the last piece.
 
-Give the user one command per piece, to run one at a time from the Commentaries-Database root, e.g.
+Propose the pilot pieces, each with the risk it exercises, and one command per piece, to run one
+at a time from the Commentaries-Database root, e.g.
 `python3 .claude/skills/fresh-import/scripts/process_jerome_commentary.py <Work> Part003_Ch02.html`.
+
+Then ask the user (with AskUserQuestion) who runs the pilot:
+- **The user runs it** in their own terminal and tells you when it's done. Wait for that.
+- **You run it.** Run the commands yourself, in the order given, chained with `&&` in ONE
+  background Bash call (`run_in_background`), so a failed piece stops the rest. Each piece
+  takes minutes, beyond the foreground timeout. Send the output to a log in your scratchpad,
+  not into your context. Wait for the completion notification; don't poll. Then check the tail
+  of that log for an `ABORTING` line before reviewing.
 
 **⏸ After the pilot:**
 - `audit_jerome_import.py <Work> <BASE> <pilot pieces…>`.
