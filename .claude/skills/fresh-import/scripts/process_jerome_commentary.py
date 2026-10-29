@@ -3,8 +3,7 @@
 Commentaries-Database, one piece at a time, by driving a headless ``claude`` agent.
 
 Written for the run of "fresh Jerome" import issues (Commentaries-Database #32-#38:
-Philemon, Galatians, Titus, Isaiah, Obadiah, Ezekiel, Haggai) and follows the same flow as
-process_ambrosiaster_romans.py and the other importers. Each of those works lives in the
+Philemon, Galatians, Titus, Isaiah, Obadiah, Ezekiel, Haggai). Each of those works lives in the
 Writings-Database as ONE html file laid out the same way:
 
     Writings-Database/Jerome/Commentary on <Book>.html
