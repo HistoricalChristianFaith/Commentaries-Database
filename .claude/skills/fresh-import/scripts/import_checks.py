@@ -22,12 +22,14 @@ import tomllib
 
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPTS_DIR)
-from process_jerome_commentary import (  # noqa: E402
+# The audit picks the importer module (Jerome's, or a per-father copy) by the work key.
+from audit_jerome_import import (  # noqa: E402
     FATHER, PROJECT_DIR, SPLIT_CHARS, WORKS, _clean, _norm, load_work, make_units,
     paragraphs_of, source_url_for, unit_html, units_dir_for)
 from audit_jerome_import import load_kjv, opening_lemma_end, paragraph_sections  # noqa: E402
 
-HEAD_RE = re.compile(r"(\d+):(\d+)([a-d]?)(?:-(?:(\d+):)?(\d+)([a-d]?))?(?:\s*ff?\.)?")
+# (Berengaudus labels parts of a verse up to "21:20h".)
+HEAD_RE = re.compile(r"(\d+):(\d+)([a-h]?)(?:-(?:(\d+):)?(\d+)([a-h]?))?(?:\s*ff?\.)?")
 
 
 def parse_heading(h):
@@ -94,10 +96,11 @@ def cmd_boundaries(work, pre, secs):
         if not s["chapter"]:
             continue
         body = s["body"].strip()
-        rest = _clean(body[opening_lemma_end(body):])
+        bold = work.get("bold_lemmas", False)
+        rest = _clean(body[opening_lemma_end(body, bold):])
         if len(rest) < 60:
             print(f"  lemma-only? [{s['heading']}]: {_clean(body)[:100]!r}")
-        if not body.startswith("<i>"):
+        if not body.startswith("<b>" if bold else "<i>"):
             print(f"  does not open with italics [{s['heading']}]: {_clean(body)[:100]!r}")
     print("\nWhat opens each piece (a piece must not start mid-lemma):")
     for u in make_units(pre, secs, SPLIT_CHARS):

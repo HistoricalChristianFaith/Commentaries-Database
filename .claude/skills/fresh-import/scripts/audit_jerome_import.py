@@ -20,10 +20,29 @@ old import (everything after it is the new import). Reports, for this work's blo
     then correct), blocks far outside their heading, wide ranges and very small blocks;
   * where each non-verse section (Prologue, Book N) went, and a per-section LAYOUT for reading.
 """
-import os, re, sys, subprocess, sqlite3, tomllib, collections
+import os, re, sys, glob, importlib, subprocess, sqlite3, tomllib, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from process_jerome_commentary import (WORKS, load_work, make_units, paragraphs_of, _norm,
-                                       _clean, source_url_for, SPLIT_CHARS, PROJECT_DIR, FATHER)
+
+
+def _importer():
+    """The importer whose WORKS has this run's work key (argv[1]): process_jerome_commentary,
+    or a per-father copy such as process_berengaudus_commentary (see ../SKILL.md)."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    mods = [importlib.import_module(os.path.basename(p)[:-3])
+            for p in sorted(glob.glob(os.path.join(here, "process_*_commentary.py")))]
+    key = sys.argv[1] if len(sys.argv) > 1 else None
+    hits = [m for m in mods if key in m.WORKS]
+    if len(hits) > 1:
+        sys.exit(f"work {key!r} is in several importers: {[m.__name__ for m in hits]}")
+    return hits[0] if hits else importlib.import_module("process_jerome_commentary")
+
+
+_imp = _importer()
+(WORKS, load_work, make_units, paragraphs_of, _norm, _clean, source_url_for, SPLIT_CHARS,
+ PROJECT_DIR, FATHER, unit_html, units_dir_for) = (
+    _imp.WORKS, _imp.load_work, _imp.make_units, _imp.paragraphs_of, _imp._norm, _imp._clean,
+    _imp.source_url_for, _imp.SPLIT_CHARS, _imp.PROJECT_DIR, _imp.FATHER, _imp.unit_html,
+    _imp.units_dir_for)
 
 KJV_DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kjv.sqlite")
 STOP = set("the and of to a in that he shall be his is they for i you your will them their which "
@@ -45,10 +64,16 @@ def head_range(h):
     return (n[0], n[1]), (n[0], max(n[1:]) + (6 if "ff" in h or h.endswith("f.") else 0))
 
 
-def opening_lemma_end(body):
+def opening_lemma_end(body, bold=False):
     """html offset where the opening italic run(s) end (Hebrew lemma, then LXX run(s)).
     Handles Isaiah's `LXX: <i>..</i>` and Ezekiel's plain `(LXX: "..")`, plus inline
-    alternatives such as `(or <i>..</i>)` and short editorial parentheses."""
+    alternatives such as `(or <i>..</i>)` and short editorial parentheses.
+    `bold` (WORKS `bold_lemmas`, Berengaudus): the lemma is the whole first paragraph, a bold
+    one (`<b><i>..</i></b>`, its verse label already dropped by load_work), sometimes with
+    inline remarks (`<b><i>The seven stars,</i></b> he says, <b><i>are ..</i></b>`)."""
+    if bold:
+        m = re.match(r"\s*<b>.*?(?=(?:<br\s*/?>\s*){2,}|$)", body, re.S)
+        return m.end() if m else 0
     # Habakkuk 1:3b-4 and 3:3b-4 (and Obadiah 1:13b-14): the first paragraph holds only the
     # first half-verse, and the lemma runs on in the next paragraph, followed by the LXX.
     # (Hosea 4:5b-6, 5:2b-4, 10:13b-15 etc.: a period or comma after each italic run.)
@@ -158,6 +183,7 @@ def main():
         sys.exit(__doc__)
     work = WORKS[sys.argv[1]]
     book = work["book"]
+    bold = work.get("bold_lemmas", False)
     pre, chapter_secs = load_work(work)
     kjv = load_kjv(book)
     secs = (paragraph_sections(chapter_secs, kjv) if work.get("lemma_paragraphs")
@@ -198,7 +224,7 @@ def main():
             c0, v0, best, sc = best_verse(s)
             if best != v0 and sc(best) > sc(v0) + 0.15:
                 print(f"  [{s['heading']}] lemma opens like KJV {c0}:{best}: {lemma_opening(s)[:90]!r}")
-            if not s["body"].strip().startswith("<i>"):
+            if not s["body"].strip().startswith("<b>" if bold else "<i>"):
                 print(f"  [{s['heading']}] does not open with italics: {_clean(s['body'])[:90]!r}")
             if len(_clean(re.sub(r"<i>.*?</i>", " ", s["body"], flags=re.S))) < 40:
                 print(f"  [{s['heading']}] is (almost) lemma-only -- check the piece boundary after it")
@@ -314,7 +340,7 @@ def main():
             continue
         if not fb or fb["a"] != offs[i][0]:
             problems.append(f"LEMMA [{s['heading']}]: no block starts at the section start"); continue
-        lem_end = len(_norm(_clean(s["body"][:opening_lemma_end(s["body"])])))
+        lem_end = len(_norm(_clean(s["body"][:opening_lemma_end(s["body"], bold)])))
         if not lem_end:
             problems.append(f"LEMMA? [{s['heading']}]: section does not open with italics")
         elif fb["e"] - fb["a"] < lem_end:

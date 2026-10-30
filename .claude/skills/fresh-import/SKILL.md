@@ -82,10 +82,24 @@ per paragraph, and `audit --headings` lists every paragraph's guessed verse ("LO
 
 **Other fathers:** `process_jerome_commentary.py` hard-codes `FATHER = "Jerome"` and assumes the
 `<h2>` layout above. For another father, copy it to `scripts/process_<father>_commentary.py`,
-change `FATHER` and the prompt wording, and keep the same two-prompt flow and `--check`. The audit
-and `import_checks.py` import from the Jerome module, so point them at the copy. The process below
-stays the same. Keep the copy's paths the same way as the original's (relative to the skill
-folder), so it works on any checkout.
+change `FATHER`, the units/logs folder prefix and the prompt wording, give it its own `WORKS`, and
+keep the same two-prompt flow and `--check`. `process_berengaudus_commentary.py` (Berengaudus on
+Revelation) is the model. The audit and `import_checks.py` find the right module themselves: they
+load every `process_*_commentary.py` and use the one whose `WORKS` has the work key, so a key must
+not be in two importers. The process below stays the same. Keep the copy's paths the same way as
+the original's (relative to the skill folder), so it works on any checkout.
+- **A different source layout** is handled in the copy's `load_work`, which should still return
+  one section per lemma (heading = its verse label, `html` = the raw source text the agent sees,
+  `body` = the text that is imported and checked). Then pieces, prompts, `--check`, the audit and
+  `import_checks.py` all work unchanged. Berengaudus's chapters hold bold lemmas labelled
+  `<b>Revelation 1:1a <i>…</i></b>`: `load_work` cuts a section at each label, keeps the label in
+  `html` as a hint, and drops it from `body`. The text before a chapter's first lemma (a vision
+  preface) is its own non-verse section.
+- **A work in a subfolder** (`Berengaudus/Commentary on Revelation/English.html`): the Jerome
+  `source_url_for` would encode the inner `/` as `%252F`; the copy keeps `%2F` between segments,
+  as the existing urls do. Compare the result with the old blocks' url before deleting.
+- A translator's introduction or essay before the work goes in `strip` (as a `(?s)` regex), so
+  it is neither sent to the agents nor checked.
 
 **Gotchas with the tools**
 - Every run deletes the units folder at the end (even a single piece). Only a run that reaches the
@@ -95,14 +109,18 @@ folder), so it works on any checkout.
 - The audit's "files added or changed since BASE" counts only tracked (pre-existing) files. New
   files are untracked and don't appear there.
 - In zsh an unquoted `$VAR` holding several piece names is passed as ONE argument. Write the names
-  out, or use `${=VAR}`.
+  out, or use `${=VAR}`. The same goes for a command held in a variable (`P="python3 …"; $P
+  Part001…` fails with "no such file or directory"): write the commands out.
 - The audit's lemma detector knows Isaiah/Obadiah's `LXX: <i>…</i>`, Ezekiel's `(LXX: "…")` (to its
   matching parenthesis, which can run on with remarks about the Origenian signs), inline
   alternatives `(or <i>…</i>)`, Joel's dashed gloss inside an LXX run, and a Hebrew lemma whose
   first paragraph holds only a half-verse and runs on in the next paragraph before the LXX
   (Habakkuk 1:3b-4, 3:3b-4; Obadiah 1:13b-14), and LXX runs introduced by a phrase instead of
   "LXX:" (Micah 1:1 "Or according to the Seventy:", Hosea 13:4 "In place of which one reads in
-  the LXX:", Amos 1:1 "But the Seventy, intending I know not what, translated:"). For a new layout,
+  the LXX:", Amos 1:1 "But the Seventy, intending I know not what, translated:"). With the work's
+  `bold_lemmas` set (Berengaudus), the lemma is the whole first paragraph, a bold one with its
+  verse label already dropped by `load_work`, including asides between the bold stretches
+  ("The seven stars, he says, are …"). For a new layout,
   confirm that it finds every lemma before trusting LEMMA CUT, and extend it if needed. Then make
   sure the earlier works' results don't change, except for improvements.
 - Editorial marks the user wants left out of the import (e.g. Zechariah's ⟦ ⟧ Migne brackets and
