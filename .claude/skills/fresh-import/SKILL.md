@@ -77,8 +77,11 @@ All are in `scripts/`. Read them before using them.
 | `kjv_lookup.py "<Book> <C>:<V>[-<V>]"` | KJV text of a verse or range (e.g. `"Psalms 118:8-9"`). The data is `kjv.sqlite` (table `bible_kjv`, `book` lowercase without spaces, `txt_location = chapter*1000000 + verse`), which the audit also reads. The import prompt tells the piece agents to use this lookup. |
 
 **Chapter-headed works:** when the `<h2>` headings are chapters and each paragraph opens with its
-own lemma (Matthew), set `chapter_re` and `lemma_paragraphs` in `WORKS`. Rules 3 and 4 then apply
-per paragraph, and `audit --headings` lists every paragraph's guessed verse ("LOW" = weak match).
+own lemma (Matthew, Jeremiah), set `chapter_re` and `lemma_paragraphs` in `WORKS`. Rules 3 and 4 then
+apply per paragraph, and `audit --headings` lists every paragraph's guessed verse ("LOW" = weak match).
+A chapter is one section, so it is never cut: a long chapter makes one big piece (Jeremiah 31, 53k
+chars, imported cleanly). The guesses are weak where a lemma quotes a long passage, so expect OUTSIDE
+HEADING flags there.
 
 **Other fathers:** `process_jerome_commentary.py` hard-codes `FATHER = "Jerome"` and assumes the
 `<h2>` layout above. For another father, copy it to `scripts/process_<father>_commentary.py`,
@@ -124,7 +127,8 @@ the original's (relative to the skill folder), so it works on any checkout.
   confirm that it finds every lemma before trusting LEMMA CUT, and extend it if needed. Then make
   sure the earlier works' results don't change, except for improvements.
 - Editorial marks the user wants left out of the import (e.g. Zechariah's ⟦ ⟧ Migne brackets and
-  notes) go in `WORKS[…]["strip"]`: a list of regexes that `load_work` removes from the sections
+  notes, Jeremiah's edition section numbers: a Roman numeral opening every paragraph, sometimes as
+  a paragraph of its own, and Arabic sub-section numbers "2." mid-text) go in `WORKS[…]["strip"]`: a list of regexes that `load_work` removes from the sections
   (not the preamble), so the pieces, `--check`, the audit and `import_checks.py` all see the same
   text. Say in the notes that the full source html still has them.
 - Never re-serialize TOML files with rtoml or tomlkit. Edit the text and verify by re-parsing.
