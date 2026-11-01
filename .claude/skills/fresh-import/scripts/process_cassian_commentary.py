@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Import the Scripture commentary in John Cassian's Conferences, Part I (Conferences 1-10, in
-Edgar C. S. Gibson's public-domain translation, NPNF 2nd series vol. 11) into the
+"""Import the Scripture commentary in John Cassian's Conferences, Parts I and II (Conferences
+1-17, in Edgar C. S. Gibson's public-domain translation, NPNF 2nd series vol. 11) into the
 Commentaries-Database, one piece at a time, by driving a headless ``claude`` agent.
 
 A per-father copy of process_cyril_commentary.py (see ../SKILL.md, "Other fathers") with the
@@ -12,7 +12,8 @@ verse; the rest is left out. There is no lemma and no commented book, the checks
 every block is verbatim, but not coverage.
 
 Each conference is its own file in the Writings-Database, with its own url, so each is its own
-WORKS entry ("Conf01" .. "Conf10"); the Preface (dedicatory) has none.
+WORKS entry ("Conf01" .. "Conf17"); the Part prefaces (dedicatory) and Conference 12 (not
+translated by Gibson) have none.
 
     Writings-Database/John Cassian/Conferences of John Cassian - Part I/9. The First Conference of Abbot Isaac.html
 
@@ -77,24 +78,42 @@ RATE_LIMIT_DELAYS = [60, 120, 240]
 # --- Per-work configuration ---------------------------------------------------
 
 PART_I = "John Cassian/Conferences of John Cassian - Part I"
+PART_II = "John Cassian/Conferences of John Cassian - Part II"
 
-# (key, file name in PART_I, notes for that conference)
+# (key, folder, file name, notes for that conference). Part II's Conference 12 ("On Chastity")
+# is "Not translated." in Gibson/NPNF, and the Part prefaces are dedicatory: no entries.
 _CONFERENCES = [
-    ("Conf01", "1. First Conference of Abbot Moses.html", ""),
-    ("Conf02", "2. Second Conference of Abbot Moses.html", ""),
-    ("Conf03", "3. Conference of Abbot Paphnutius.html", ""),
-    ("Conf04", "4. Conference of Abbot Daniel.html", ""),
-    ("Conf05", "5. Conference of Abbot Serapion.html", ""),
-    ("Conf06", "6. Conference of Abbot Theodore.html", ""),
-    ("Conf07", "7. First Conference of Abbot Serenus.html", ""),
-    ("Conf08", "8. The Second Conference of Abbot Serenus.html", ""),
-    ("Conf09", "9. The First Conference of Abbot Isaac.html", ""),
-    ("Conf10", "10. The Second Conference of Abbot Isaac.html", ""),
+    ("Conf01", PART_I, "1. First Conference of Abbot Moses.html", ""),
+    ("Conf02", PART_I, "2. Second Conference of Abbot Moses.html", ""),
+    ("Conf03", PART_I, "3. Conference of Abbot Paphnutius.html", ""),
+    ("Conf04", PART_I, "4. Conference of Abbot Daniel.html", ""),
+    ("Conf05", PART_I, "5. Conference of Abbot Serapion.html", ""),
+    ("Conf06", PART_I, "6. Conference of Abbot Theodore.html", ""),
+    ("Conf07", PART_I, "7. First Conference of Abbot Serenus.html", ""),
+    ("Conf08", PART_I, "8. The Second Conference of Abbot Serenus.html", ""),
+    ("Conf09", PART_I, "9. The First Conference of Abbot Isaac.html", ""),
+    ("Conf10", PART_I, "10. The Second Conference of Abbot Isaac.html", ""),
+    ("Conf11", PART_II, "11. The First Conference of Abbot Chaeremon.html",
+     "In Chapters VII and XI the italic chapter summary is broken off and ends on a line of its "
+     "own (\"permanence there is in it.\", \"imperfect.\"): that line is part of the summary, so "
+     "leave it out too and start any block at Cassian's text (\"IF then any one\", \"Germanus: "
+     "You have indeed\")."),
+    ("Conf13", PART_II, "13. The Third Conference of Abbot Chaeremon.html", ""),
+    ("Conf14", PART_II, "14. The First Conference of Abbot Nesteros.html", ""),
+    ("Conf15", PART_II, "15. The Second Conference of Abbot Nesteros.html", ""),
+    ("Conf16", PART_II, "16. The First Conference of Abbot Joseph.html",
+     "In Chapter XXVI the italic chapter summary is broken off and ends on a line of its own "
+     "(\"borne.\"): that line is part of the summary, so leave it out too and start any block at "
+     "\"Joseph: I did not say\"."),
+    ("Conf17", PART_II, "17. The Second Conference of Abbot Joseph.html",
+     "The chapter summaries of Chapters II and X are printed without italics (\"Of the anxiety "
+     "of Abbot Germanus at the recollection of our promise.\", \"Our question about our fear of "
+     "the oath which we gave in the monastery in Syria.\"): leave them out like the others."),
 ]
 
 WORKS = {
     key: {
-        "html": f"{PART_I}/{fn}",
+        "html": f"{folder}/{fn}",
         # No commented book: the agents choose any book of book_names.json.
         "book": None,
         "selective": True,
@@ -105,7 +124,7 @@ WORKS = {
         "source_title": fn.split(". ", 1)[1].removesuffix(".html"),
         "notes": notes,
     }
-    for key, fn, notes in _CONFERENCES
+    for key, folder, fn, notes in _CONFERENCES
 }
 
 
@@ -148,8 +167,15 @@ ROMAN_VALUES = {"I": 1, "V": 5, "X": 10, "L": 50}
 # the dialogue), so it is cut from the body too, or a block crossing chapters fails the check.
 # Irregular ones: run straight on into the text (1.XIV "<i>Of the continuance of the
 # soul.</i>Wherefore", 5.XI), split over several italic runs (5.XVII, 5.XXIII); 5.XVIII has none.
+# Part II: the italic run ends mid-summary and the rest follows on its own line (11.VII, 11.XI,
+# 16.XXVI: "<i> A question why he has called ... hope</i><br/><br/>\n imperfect.<br/><br/>"),
+# and two summaries are not italic at all (17.II, 17.X).
 SUMMARY_RE = re.compile(
-    r"\s*(?:<i>[^<]*</i>(?:<sup><a [^>]*>\d+</a></sup>)?(?:<i>\s*</i>)?<br/><br/>\n"
+    r"\s*(?:<i>[^<]*</i><br/><br/>\n [a-z][^<]*?\.<br/><br/>\n"
+    r"|(?:Of the anxiety of Abbot Germanus at the recollection of our promise\."
+    r"|Our question about our fear of the oath which we gave in the monastery in Syria\.)"
+    r"<br/><br/>\n"
+    r"|<i>[^<]*</i>(?:<sup><a [^>]*>\d+</a></sup>)?(?:<i>\s*</i>)?<br/><br/>\n"
     r"|<i> A question with regard to the comparison of seven</i> nationswith <i>eight</i> faults\."
     r"|How<i> it is useful for usto take possession of their lands\.</i><br/><br/>\n"
     r"|<i>[^<]*</i>(?=[A-Z]))")

@@ -174,7 +174,8 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
     Cassian the same defects ran through Parts II and III (Conferences 19, 20, 21, 24, the two
     Part prefaces), and the scan also found shifts in the Institutes and On the Incarnation.
     Conferences 12 and 22 are untranslated in NPNF ("Not translated."), so they have nothing to
-    import.
+    import, and get no `WORKS` entry. Keep their old url-less excerpts (Part II kept
+    `CONFERENCE 12:7.4–5` under Hosea 2_19-20): there is no new text to replace them.
   - Fix the source before the import if you can: this run first mended the mapping in the importer
     instead (since removed), which moved piece boundaries mid-run (next bullet).
 - **Changing `load_work` after the pilot can move the piece boundaries** (the split follows the
@@ -184,8 +185,11 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
   Cassian importer's `--chapters A-B` (one ad-hoc piece of exactly those chapters).
 - **Chapter summaries** (the italic line under each heading) are cut from the body as well as
   left out by the agents, or every block crossing a chapter fails the check. Some summaries are
-  irregular (run straight into the text, split over several italic runs, missing); list the
-  chapters whose opening doesn't fit the usual pattern and handle each in the summary regex.
+  irregular (run straight into the text, split over several italic runs, missing, an italic run
+  broken off with the rest on its own line, printed without italics); list the chapters whose
+  opening doesn't fit the usual pattern (the body should start with the dialogue's first
+  capital), handle each in the summary regex, re-run `--check` on the works already imported,
+  and tell the agents about each one in that conference's notes.
 - **Checks:** there is no coverage, lemma or placement check. `--check` and `audit … <BASE>
   <pieces>|--all` (which branches to `selective_main` for these works) test that every block is
   one verbatim stretch found once, its source_title, no two overlapping blocks of the work in one
@@ -196,7 +200,11 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
   considered and left out, with the reason: read those lists when reviewing, since a GAP check
   can't tell you what was missed. The old excerpts (e.g. the ACCS selection) are a useful
   cross-check at the final review: for each deleted excerpt's chapter and verse, see whether the
-  new import filed that chapter under that verse, and bring the misses to the user.
+  new import filed that chapter under that verse, and bring the misses to the user. (In Part II
+  most misses were deliberate rule-13 omissions the agents had listed: verses inside a chain of
+  paired proof-texts, or a verse used as one instance within the exposition of another.)
+- Agents sometimes name a Psalm file `Psalm 69_28` (the KJV lookup accepts "Psalm"); `--check`
+  flags any filename whose book isn't in `book_names.json`.
 - Source defects show up as chapters out of sequence (`load_work` refuses chapters not numbered
   1..n): Cassian's Conference 2 had lost its `Chapter IV.` heading and Conference 8 had
   `Chapter VI` as plain text. With the user's OK fix them in the Writings-Database (CCEL's NPNF
