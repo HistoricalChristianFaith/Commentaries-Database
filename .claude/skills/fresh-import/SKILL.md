@@ -103,6 +103,29 @@ the original's (relative to the skill folder), so it works on any checkout.
   as the existing urls do. Compare the result with the old blocks' url before deleting.
 - A translator's introduction or essay before the work goes in `strip` (as a `(?s)` regex), so
   it is neither sent to the agents nor checked.
+- **A father folder with spaces** (`Cyril of Alexandria`): the existing urls double-encode the
+  father segment too (`file=Cyril%2520of%2520Alexandria%2F…`, as the project `CLAUDE.md` example
+  shows); `process_cyril_commentary.py`'s `source_url_for` does this. Jerome's and Berengaudus's
+  never needed it.
+- **A work split over many files** in the Writings-Database (Cyril on Luke: 14 sermon files of
+  Pearse's scanning batches, with parenthesised names that had produced 23 url spellings in the
+  old blocks): with the user's approval, merge it into one standard-format file in the
+  Writings-Database first (renumber the footnotes 1..k, state per-page boilerplate once in the
+  source note, check the visible text is the inputs joined), so the import has one url and one
+  `WORKS` entry. Fix source errors found on the way (wrong verse labels) there too, with the
+  user's OK; commit in the Writings-Database only when the user approves.
+- **Labels in the running text** (Cyril on Luke: `7:36-50. <i>lemma</i>` at a paragraph start
+  under `<h2>` sermon headings): `load_work` cuts at each label as Berengaudus's does at each
+  bold one; text under a heading before its first label (a sermon continuing the last one's
+  passage, label-less catena fragments) is a non-verse section the notes describe. Editorial
+  matter inside the sermons (provenance notes `[From Mai.]`, notes on lost text, standalone
+  lacuna lines, manuscript rubrics and colophons) goes in `strip`; the translator's bracketed
+  supplements stay. Unlinked note marks (`turn<sup>2</sup> away`) are dropped in `load_work`,
+  or agents silently "correct" them and the check fails.
+- **Old excerpts under several titles:** survey url-less blocks by every title form of the work
+  (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
+  the second was found only after the import, by the log digest), and match their text against
+  the source to confirm they are this work.
 
 **Gotchas with the tools**
 - Every run deletes the units folder at the end (even a single piece). Only a run that reaches the
