@@ -166,6 +166,15 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
     marker. Then check that the visible text is unchanged, markers and notes pair 1..n, and
     every note matches CCEL's apart from "Ib."/"Ibid." expansions and CCEL's silent corrections
     of Gibson's references (keep Gibson's).
+  - CCEL can be wrong too: in Conference 17 it swaps two notes (its "Increase and multiply" note
+    is "Ps. 5:7; …"). Before moving a note, read the text before its marker and confirm the
+    note's reference really is the quotation there.
+  - Survey every file of the father's works at once (heading sequence, glued headings like
+    `Chapter. XII.The answer …` or `Chapter Xiof …`, markers vs notes, offset alignment): for
+    Cassian the same defects ran through Parts II and III (Conferences 19, 20, 21, 24, the two
+    Part prefaces), and the scan also found shifts in the Institutes and On the Incarnation.
+    Conferences 12 and 22 are untranslated in NPNF ("Not translated."), so they have nothing to
+    import.
   - Fix the source before the import if you can: this run first mended the mapping in the importer
     instead (since removed), which moved piece boundaries mid-run (next bullet).
 - **Changing `load_work` after the pilot can move the piece boundaries** (the split follows the
