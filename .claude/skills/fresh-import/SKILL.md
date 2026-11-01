@@ -150,14 +150,26 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
 - **Editors' footnotes** that give Scripture references (Gibson's "S. Matt. vi. 19.") are the
   best placement hints there are: `load_work` puts them inline in the pieces as
   `<sup>[note: …]</sup>` and drops them from the body, so a block that copies one fails the check.
-  **Check that the notes line up with their markers before trusting them:** in Cassian's Part I
-  they were out of step by four from late in Conference 7 to the end (notes lost in one place,
-  each file ending with the next file's first notes), which two pilot agents noticed. Match each
-  note's KJV text against the words before its marker, at offset 0 and at shifts of ±1..6, per
-  file and per run of ten markers; where a shift wins, mend the mapping in the importer
-  (`NOTE_FIXES`) and report the source defect to the user rather than rewriting the notes.
+  **Check, in Phase 1, that the notes line up with their markers before trusting them.** In
+  Cassian's Part I they were out of step by four from late in Conference 7 to the end of the
+  Part: four notes lost around one marker run, each file ending with the next file's first four
+  notes, Conference 10's last three belonging to the Part II preface (which had no markers),
+  and a one-note swap at the Conference 6/7 boundary. It was found only by the pilot agents.
+  - Measure it: match each note's KJV text against the words before its marker, at offset 0 and
+    at shifts of ±1..6, per file and per run of ten markers. A swap of one note at a file
+    boundary doesn't move these scores, so also compare every note with an authoritative copy.
+  - Fix it in the Writings-Database source, with the user's OK. CCEL's NPNF pages
+    (`ccel.org/ccel/cassian/conferences.ii.<conference+1>.<page>.html`, roman numerals, page
+    numbers one ahead of the chapters) carry every footnote in order with its text. Align them with
+    the file's markers by the text before each one, move or insert the notes (keeping Gibson's
+    printed wording and the file's markup; copy CCEL's only for lost notes), and add any lost
+    marker. Then check that the visible text is unchanged, markers and notes pair 1..n, and
+    every note matches CCEL's apart from "Ib."/"Ibid." expansions and CCEL's silent corrections
+    of Gibson's references (keep Gibson's).
+  - Fix the source before the import if you can: this run first mended the mapping in the importer
+    instead (since removed), which moved piece boundaries mid-run (next bullet).
 - **Changing `load_work` after the pilot can move the piece boundaries** (the split follows the
-  pieces' html sizes, hints included): after `NOTE_FIXES`, Conference 9's pieces were renamed and
+  pieces' html sizes, hints included): after the hint mapping changed, Conference 9's pieces were renamed and
   the chained `--through Part001_Ch01-14.html` stopped with "No piece named". Re-run `--dry-run`
   for every work after such a change, and run the stretches the pilot didn't cover with the
   Cassian importer's `--chapters A-B` (one ad-hoc piece of exactly those chapters).

@@ -92,21 +92,6 @@ _CONFERENCES = [
     ("Conf10", "10. The Second Conference of Abbot Isaac.html", ""),
 ]
 
-# Gibson's notes in the Writings-Database are out of step with their markers from late in
-# Conference 7 to the end of Part I (found in the pilot, by matching each note's KJV text with the
-# words before its marker): in Conference 7 four notes are missing around markers 56-61 (on
-# Macarius, Paul and Moses, Panephysis, ...), so from marker 62 on, marker n's note is printed as
-# note n-4; and each of Conferences 7-9 ends with the four notes of the NEXT conference's first
-# four markers (Conference 10's last four belong to the Part II preface). Until the source is
-# fixed, load_work maps the hints the right way: {"shift": 4, "from": first shifted marker,
-# "none": markers left without a hint, "carry_from": the work whose last notes open this one}.
-NOTE_FIXES = {
-    "Conf07": {"shift": 4, "from": 62, "none": range(56, 62)},
-    "Conf08": {"shift": 4, "from": 1, "carry_from": "Conf07"},
-    "Conf09": {"shift": 4, "from": 1, "carry_from": "Conf08"},
-    "Conf10": {"shift": 4, "from": 1, "carry_from": "Conf09"},
-}
-
 WORKS = {
     key: {
         "html": f"{PART_I}/{fn}",
@@ -119,7 +104,6 @@ WORKS = {
         # ("Conference of Abbot Theodore, Chapter 10").
         "source_title": fn.split(". ", 1)[1].removesuffix(".html"),
         "notes": notes,
-        "key": key,
     }
     for key, fn, notes in _CONFERENCES
 }
@@ -133,23 +117,9 @@ def _raw_notes(work):
 
 
 def note_hints(work, markers):
-    """{marker number: note text} for the hint of each footnote marker, mended by NOTE_FIXES."""
+    """{marker number: note text} for the hint of each footnote marker."""
     notes = _raw_notes(work)
-    fix = NOTE_FIXES.get(work.get("key"))
-    if not fix:
-        return {n: notes[n - 1] for n in markers if n <= len(notes)}
-    carry = _raw_notes(WORKS[fix["carry_from"]])[-fix["shift"]:] if "carry_from" in fix else []
-    out = {}
-    for n in markers:
-        if n in fix.get("none", ()):
-            continue
-        if n < fix["from"]:
-            out[n] = notes[n - 1]
-        elif n - fix["shift"] >= 1:
-            out[n] = notes[n - fix["shift"] - 1]
-        elif carry:
-            out[n] = carry[n - 1]
-    return out
+    return {n: notes[n - 1] for n in markers if n <= len(notes)}
 
 
 def source_url_for(work):
