@@ -19,6 +19,8 @@ old import (everything after it is the new import). Reports, for this work's blo
     the first block's file (often a lemma opening with the previous verse's second half, which is
     then correct), blocks far outside their heading, wide ranges and very small blocks;
   * where each non-verse section (Prologue, Book N) went, and a per-section LAYOUT for reading.
+A SELECTIVE work (WORKS "selective": True, e.g. Cassian's Conferences) gets its own audit
+instead: see selective_main.
 """
 import os, re, sys, glob, importlib, subprocess, sqlite3, tomllib, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -178,10 +180,134 @@ def paragraph_sections(secs, kjv):
     return out
 
 
+def selective_main(work):
+    """The audit for a SELECTIVE work (WORKS "selective": True, e.g. Cassian's Conferences): a
+    work that is not a verse-by-verse commentary, from which the agents extract only the
+    stretches that expound a verse. Its sections are chapters (no verse headings, no lemmas, no
+    commented book), so instead of coverage, lemmas and placement it reports, for this work's
+    blocks: verbatim and unique match, source_title against the chapter(s) the text comes from,
+    overlapping blocks within one file, the same text filed in several files, append-only
+    status, wide ranges and small blocks, and a per-chapter LAYOUT (or, with --headings, the
+    chapters and their Scripture notes before importing)."""
+    pre, secs = load_work(work)
+    if sys.argv[2] == "--headings":
+        for s in secs:
+            notes = re.findall(r"\[note: (.*?)\]</sup>", s["html"])
+            print(f"  {s['heading']:<24} {len(_clean(s['body'])):>6} chars, {len(notes):>2} notes: "
+                  f"{'; '.join(notes)[:110]}")
+        return
+    BASE, args = sys.argv[2], sys.argv[3:]
+    url = source_url_for(work)
+    folder = os.path.join(PROJECT_DIR, FATHER)
+    units = make_units(pre, secs, SPLIT_CHARS)
+    source, offs = _imp.source_offsets(secs)
+    if args == ["--all"]:
+        scope = {s["chapter_no"] for s in secs}
+    else:
+        want = {a.removesuffix(".html") for a in args}
+        names = {u["name"].removesuffix(".html") for u in units}
+        if want - names:
+            sys.exit(f"unknown piece(s): {sorted(want - names)}")
+        scope = {s["chapter_no"] for u in units if u["name"].removesuffix(".html") in want
+                 for s in u["sections"]}
+
+    blocks, problems = [], []
+    for fn in sorted(os.listdir(folder)):
+        if not fn.endswith(".toml"):
+            continue
+        t = open(os.path.join(folder, fn), encoding="utf-8").read()
+        if url not in t:
+            continue
+        for k, c in enumerate(tomllib.loads(t)["commentary"]):
+            if c.get("source_url") != url:
+                continue
+            q = _norm(c["quote"])
+            hits = [m.start() for m in re.finditer(re.escape(q), source)]
+            if not hits:
+                problems.append(f"NOT VERBATIM {fn}#{k}: {q[:90]!r}"); continue
+            if len(hits) > 1:
+                problems.append(f"MULTI-MATCH {fn}#{k} at {hits}")
+            a, e = hits[0], hits[0] + len(q)
+            chs = _imp.chapters_spanned(offs, a, e)
+            if c.get("source_title") != _imp.chapter_title(work, chs):
+                problems.append(f"TITLE {fn}#{k}: {c.get('source_title')!r}, the text is "
+                                f"{_imp.chapter_title(work, chs)!r}")
+            if re.search(r"</?[a-z]+>|\[note:", q):
+                problems.append(f"TAG/NOTE in {fn}#{k}")
+            blocks.append(dict(a=a, e=e, fn=fn[:-5], k=k, chs=chs))
+    inscope = [b for b in blocks if set(b["chs"]) & scope]
+    print(f"blocks of this work: {len(blocks)} in {len({b['fn'] for b in blocks})} files; "
+          f"{len(inscope)} in scope ({len(scope)} chapters)")
+
+    by_file = collections.defaultdict(list)
+    for b in blocks:
+        by_file[b["fn"]].append(b)
+    for fn, bs in by_file.items():
+        bs = sorted(bs, key=lambda b: b["a"])
+        for x, y in zip(bs, bs[1:]):
+            if y["a"] < x["e"]:
+                problems.append(f"OVERLAP IN ONE FILE {fn}#{x['k']}/#{y['k']}: "
+                                f"{source[y['a']:y['a'] + 80]!r}")
+    by_text = collections.defaultdict(list)
+    for b in inscope:
+        by_text[(b["a"], b["e"])].append(b["fn"])
+    for (a, e), fns in sorted(by_text.items()):
+        if len(fns) > 1:
+            print(f"  same text in {len(fns)} files: {', '.join(fns)} ({e - a} chars)")
+    spans = sorted(by_text)
+    for (a1, e1), (a2, e2) in zip(spans, spans[1:]):
+        if a2 < e1:
+            print(f"  overlapping texts in different files: "
+                  f"{by_text[(a1, e1)]} / {by_text[(a2, e2)]} ({e1 - a2} chars shared)")
+
+    diff = subprocess.run(["git", "-C", PROJECT_DIR, "diff", "--numstat", BASE, "--", FATHER],
+                          capture_output=True, text=True, check=True).stdout
+    for line in diff.splitlines():
+        add, rem, path = line.split("\t")
+        old = subprocess.run(["git", "-C", PROJECT_DIR, "show", f"{BASE}:{path}"],
+                             capture_output=True, text=True).stdout
+        if not os.path.exists(os.path.join(PROJECT_DIR, path)):
+            print(f"  note: {path} was deleted since {BASE} -- make sure that was intended")
+            continue
+        new = open(os.path.join(PROJECT_DIR, path), encoding="utf-8").read()
+        if not new.startswith(old.rstrip("\n")):
+            problems.append(f"NOT APPEND-ONLY: {path}")
+        elif rem != "0":
+            print(f"  note: {path} -{rem} line(s) but old text is a prefix (final-newline change)")
+    print(f"files added or changed since {BASE}: {len(diff.splitlines())} (pre-existing ones "
+          "must be append-only)")
+
+    for b in inscope:
+        m = re.fullmatch(r"(.+) (\d+)_(\d+)(?:-(\d+))?(?:_(\d+))?", b["fn"])
+        if m and not m[5] and m[4] and int(m[4]) - int(m[3]) >= 5:
+            print(f"  wide range {b['fn']} ({b['e'] - b['a']} chars): {source[b['a']:b['a'] + 70]!r}")
+        if b["e"] - b["a"] < 250:
+            print(f"  small block {b['fn']}#{b['k']} ({b['e'] - b['a']}): "
+                  f"{source[b['a']:b['e']][:90]!r}")
+    sizes = sorted(b["e"] - b["a"] for b in inscope)
+    if sizes:
+        print(f"block sizes: min {sizes[0]}, median {sizes[len(sizes) // 2]}, max {sizes[-1]}")
+
+    print("\nLAYOUT (chapter: file(chars) ...; '-' = nothing imported)")
+    for s in secs:
+        no = s["chapter_no"]
+        if no not in scope:
+            continue
+        here = sorted((b for b in blocks if no in b["chs"]), key=lambda b: (b["a"], b["fn"]))
+        seq = "  ".join(f"{b['fn']}({b['e'] - b['a']})" for b in here)
+        print(f"  {no:>3} ({len(_clean(s['body'])):>5}): {seq or '-'}")
+
+    print(f"\nPROBLEMS ({len(problems)}):")
+    for p in problems:
+        print("  -", p)
+
+
 def main():
     if len(sys.argv) < 3:
         sys.exit(__doc__)
     work = WORKS[sys.argv[1]]
+    if work.get("selective"):
+        return selective_main(work)
     book = work["book"]
     bold = work.get("bold_lemmas", False)
     pre, chapter_secs = load_work(work)

@@ -139,7 +139,9 @@ def cmd_notes(work, pre, secs):
     segs = work.get("notes", "").split('"')[1:-1]
     checked = missing = 0
     for q in segs:
-        if re.fullmatch(rf"{re.escape(work['book'])} \d+_\d+(?:-\d+)?(?:_\d+)?", q):
+        # (A selective work has no book of its own: any book's filename.)
+        book = re.escape(work["book"]) if work.get("book") else r"(?:\d )?[A-Z][A-Za-z ]+"
+        if re.fullmatch(rf"{book} \d+_\d+(?:-\d+)?(?:_\d+)?", q):
             continue  # a filename
         for part in re.split(r"\s*(?:\.\.\.|…)\s*", q):
             part = _norm(part.strip(" .,;:()"))

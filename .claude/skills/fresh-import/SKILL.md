@@ -70,7 +70,7 @@ All are in `scripts/`. Read them before using them.
 | Tool | Use |
 |---|---|
 | `process_jerome_commentary.py <Work> …` | The importer. Splits the html on `<h2>` into pieces (one per chapter; a chapter over 30k chars is cut at section boundaries, and an oversized section stands alone). For each piece it runs `claude -p` twice in one conversation: the import prompt, then "Double check, was this fully imported properly?". Options: `--dry-run`, `--split-only`, a single piece name, `--start-after NAME`, `--through NAME`, `--check`. Per-work settings are in `WORKS` (html path, book, source_title, `notes` injected into every piece's prompt). Logs go to `work/jerome_<work>_import_logs/run-*.jsonl` (summaries) and `run-*.events.jsonl` (full event stream). |
-| `delete_commentaries.py <Father> <source_url> [--title-prefix P] [--dry-run]` | Deletes blocks whose source_url matches exactly (and whose title starts with P, if given). It cuts blocks out of the file text, so the other blocks keep their exact bytes, and it refuses an empty url without a prefix. **Never run it with an empty url and no prefix.** |
+| `delete_commentaries.py <Father> <source_url> [--title-prefix P] [--titles-file F] [--dry-run]` | Deletes blocks whose source_url matches exactly (and whose title starts with P, or is exactly one of F's lines, if given). It cuts blocks out of the file text, so the other blocks keep their exact bytes, and it refuses an empty url without a prefix. **Never run it with an empty url and no prefix.** |
 | `audit_jerome_import.py <Work> --headings` | Before importing: heading formats, headings not in the KJV, "lemma opens like KJV x:y" hints, sections not opening with italics, lemma-only sections. |
 | `audit_jerome_import.py <Work> <BASE> <pieces…>` / `--all` | After importing: verbatim + unique match of every block, overlaps, coverage gaps (with opening words), append-only status of pre-existing files, LEMMA/LEMMA CUT checks, PLACEMENT? and OUTSIDE HEADING hints, wide ranges, small blocks, where each non-verse section went, and a per-section LAYOUT. `BASE` is the deletion commit. |
 | `import_checks.py <Work> continuity\|boundaries\|pieces\|notes\|order` | Heading continuity, lemma-only sections and piece openings, reassembly of the pieces, verification of every quotation in the notes, and the source-order check after out-of-sequence runs. |
@@ -125,7 +125,61 @@ the original's (relative to the skill folder), so it works on any checkout.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
-  the source to confirm they are this work.
+  the source to confirm they are this work. When the titles are ambiguous (Cassian's
+  `CONFERENCE 1:13` is Conference 1 ch. 13, but `CONFERENCE 2:17.25` is Conference 17), identify
+  each excerpt by its text instead: match it against every chapter of the father's works
+  (word overlap weighted by rarity finds even a different translation's excerpt), settle the
+  cases where title and text disagree by reading them, and delete the result by exact title with
+  `delete_commentaries.py --titles-file`, after checking that no excerpt of another work shares
+  one of those titles.
+
+**Selective works** (not a verse-by-verse commentary; first done for John Cassian's
+*Conferences*, Part I). Some works worth importing are treatises, dialogues or sermons that quote
+and expound Scripture throughout, with no verse sections or lemmas. With the user's approval
+(ask in Phase 0) they are imported **selectively**: the agents read every section and file only
+the stretches that comment on a verse, under rule 13; everything else is left out on purpose.
+- Mark the work's `WORKS` entry `"selective": True`, `"book": None`. The importer's `load_work`
+  returns one section per chapter (or whatever unit the source has), with `chapter` None and a
+  `chapter_no`, and `make_units` packs runs of whole chapters into pieces up to `SPLIT_CHARS`.
+  `process_cassian_commentary.py` is the model: copy it for another father or work.
+- A work whose parts are separate files with their own urls (Cassian's ten conferences) gets one
+  `WORKS` entry per file (`Conf01` … `Conf10`); a dedicatory preface file gets none (rule 6).
+- **source_title** carries the chapter: `"<work title>, Chapter N"`, or `"Chapters N-M"` for a
+  block crossing chapters, as the url'd Cassian blocks already had it. `--check` and the audit
+  check it against the chapter(s) the text really comes from.
+- **Editors' footnotes** that give Scripture references (Gibson's "S. Matt. vi. 19.") are the
+  best placement hints there are: `load_work` puts them inline in the pieces as
+  `<sup>[note: …]</sup>` and drops them from the body, so a block that copies one fails the check.
+  **Check that the notes line up with their markers before trusting them:** in Cassian's Part I
+  they were out of step by four from late in Conference 7 to the end (notes lost in one place,
+  each file ending with the next file's first notes), which two pilot agents noticed. Match each
+  note's KJV text against the words before its marker, at offset 0 and at shifts of ±1..6, per
+  file and per run of ten markers; where a shift wins, mend the mapping in the importer
+  (`NOTE_FIXES`) and report the source defect to the user rather than rewriting the notes.
+- **Changing `load_work` after the pilot can move the piece boundaries** (the split follows the
+  pieces' html sizes, hints included): after `NOTE_FIXES`, Conference 9's pieces were renamed and
+  the chained `--through Part001_Ch01-14.html` stopped with "No piece named". Re-run `--dry-run`
+  for every work after such a change, and run the stretches the pilot didn't cover with the
+  Cassian importer's `--chapters A-B` (one ad-hoc piece of exactly those chapters).
+- **Chapter summaries** (the italic line under each heading) are cut from the body as well as
+  left out by the agents, or every block crossing a chapter fails the check. Some summaries are
+  irregular (run straight into the text, split over several italic runs, missing); list the
+  chapters whose opening doesn't fit the usual pattern and handle each in the summary regex.
+- **Checks:** there is no coverage, lemma or placement check. `--check` and `audit … <BASE>
+  <pieces>|--all` (which branches to `selective_main` for these works) test that every block is
+  one verbatim stretch found once, its source_title, no two overlapping blocks of the work in one
+  file, append-only, and print the same text filed under several verses (allowed, rule 13),
+  overlapping texts in different files, wide ranges, small blocks and a per-chapter LAYOUT.
+  `audit … --headings` lists the chapters with their sizes and footnoted references.
+- The prompt asks each agent to end with a list of the blocks it wrote and of the expositions it
+  considered and left out, with the reason: read those lists when reviewing, since a GAP check
+  can't tell you what was missed. The old excerpts (e.g. the ACCS selection) are a useful
+  cross-check at the final review: for each deleted excerpt's chapter and verse, see whether the
+  new import filed that chapter under that verse, and bring the misses to the user.
+- Source defects show up as chapters out of sequence (`load_work` refuses chapters not numbered
+  1..n): Cassian's Conference 2 had lost its `Chapter IV.` heading and Conference 8 had
+  `Chapter VI` as plain text. With the user's OK fix them in the Writings-Database (CCEL's NPNF
+  pages give the missing summaries); commit there only when the user approves.
 
 **Gotchas with the tools**
 - Every run deletes the units folder at the end (even a single piece). Only a run that reaches the
@@ -230,6 +284,20 @@ the original's (relative to the skill folder), so it works on any checkout.
     - With no issue, leave out ` (#N)` / `, #N`.
     - Ask before making the import commit and the record commit, because the user sometimes makes
       them (and pushes) themselves. Never commit in the Writings-Database.
+13. **What to import from a selective work** (§2, "Selective works"; the user chose this
+    threshold for Cassian's *Conferences*). Import a stretch when the father quotes or plainly
+    refers to a specific verse AND DOES SOMETHING WITH IT: says what it means, interprets its
+    words (literally, morally or spiritually), resolves a difficulty in it, applies a figure in
+    it, builds the argument on its wording, or APPLIES it to the spiritual or monastic life in a
+    way that shows how he reads it (a verse brought in to describe a stage of prayer, a vice or
+    its remedy, and then drawn out). Leave out a verse quoted in passing, a bare proof-text, a
+    chain of proof-texts without comment, and narrative or teaching that merely mentions
+    Scripture. The test: would a reader studying this verse learn something about how the father
+    understood or used it? Each block is one continuous verbatim stretch, from sentence boundary
+    to sentence boundary, able to stand alone (with the question it answers, in a dialogue, when
+    needed), under the smallest verse range its exposition addresses. The same stretch may be
+    filed under two verses when it really expounds both (the project `CLAUDE.md` welcomes this),
+    but never two overlapping blocks of the work in one file.
 
 ## 4. The process
 
@@ -261,6 +329,9 @@ the run can resume cleanly after a pause or a context summary.
    - size and `<h2>` section count;
    - the importer: `process_jerome_commentary.py` for Jerome, or a per-father copy (§2, "Other
      fathers");
+   - whether the work is a verse-by-verse commentary at all. If it isn't (a treatise, dialogue
+     or sermons with no verse sections), stop and ask the user whether to import it selectively
+     (§2, "Selective works"; rule 13), and which old blocks to delete;
    - whether a `WORKS` entry already exists, and whether
      `git log --oneline -i --grep "on <book>: import fresh translation"` finds an earlier fresh
      import (if either does, stop and ask the user before going on);

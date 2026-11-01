@@ -20,16 +20,19 @@ def split_blocks(text):
     return text[:starts[0]], [text[a:b] for a, b in zip(bounds, bounds[1:])]
 
 
-def delete_commentaries(father_name, source_url, dry_run=False, title_prefix=None):
+def delete_commentaries(father_name, source_url, dry_run=False, title_prefix=None,
+                        titles=None):
     """Delete every block whose source_url is exactly `source_url` (and, if `title_prefix`
-    is given, whose source_title also starts with it)."""
-    if not source_url and not title_prefix:
+    is given, whose source_title also starts with it; if `titles` is given, whose source_title
+    is exactly one of them)."""
+    if not source_url and not title_prefix and not titles:
         # An empty url alone would match every url-less block of this father.
-        raise SystemExit("Refusing an empty source_url without --title-prefix")
+        raise SystemExit("Refusing an empty source_url without --title-prefix or --titles-file")
 
     def matches(c):
         return c.get('source_url') == source_url and (
-            title_prefix is None or c.get('source_title', '').startswith(title_prefix))
+            title_prefix is None or c.get('source_title', '').startswith(title_prefix)) and (
+            titles is None or c.get('source_title', '') in titles)
 
     base_path = os.path.join(PROJECT_DIR, father_name)
     files = sorted(f for f in os.listdir(base_path) if f.endswith('.toml'))
@@ -48,6 +51,8 @@ def delete_commentaries(father_name, source_url, dry_run=False, title_prefix=Non
         with open(file_path, 'r', encoding='utf-8') as file:
             text = file.read()
         if source_url not in text or (title_prefix and title_prefix not in text):
+            continue
+        if titles is not None and not any(t in text for t in titles):
             continue
 
         original = tomllib.loads(text).get('commentary', [])
@@ -95,16 +100,29 @@ if __name__ == "__main__":
             sys.exit(1)
         title_prefix = argv[i + 1]
         del argv[i:i + 2]
+    titles = None
+    if "--titles-file" in argv:
+        i = argv.index("--titles-file")
+        if i + 1 >= len(argv):
+            print("--titles-file needs a value")
+            sys.exit(1)
+        # One exact source_title per line (for url-less excerpts whose titles share no safe
+        # prefix, e.g. Cassian's "CONFERENCE 1:13" vs "CONFERENCE 13:9.2, 4").
+        with open(argv[i + 1], encoding='utf-8') as f:
+            titles = {line.rstrip("\n") for line in f if line.strip()}
+        del argv[i:i + 2]
     args = [a for a in argv if a != "--dry-run"]
     if len(args) != 2:
         print("Usage: python delete_commentaries.py <father_name> <source_url> "
-              "[--title-prefix PREFIX] [--dry-run]")
+              "[--title-prefix PREFIX] [--titles-file FILE] [--dry-run]")
         print("  --title-prefix: only blocks whose source_title starts with PREFIX "
-              "(required when <source_url> is \"\")")
+              "(or --titles-file, required when <source_url> is \"\")")
+        print("  --titles-file: only blocks whose source_title is exactly one of the "
+              "file's lines")
         sys.exit(1)
 
     father_name = args[0]
     source_url = args[1]
 
     delete_commentaries(father_name, source_url, dry_run="--dry-run" in argv,
-                        title_prefix=title_prefix)
+                        title_prefix=title_prefix, titles=titles)
