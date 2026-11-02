@@ -148,9 +148,17 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
 - Mark the work's `WORKS` entry `"selective": True`, `"book": None`. The importer's `load_work`
   returns one section per chapter (or whatever unit the source has), with `chapter` None and a
   `chapter_no`, and `make_units` packs runs of whole chapters into pieces up to `SPLIT_CHARS`.
-  `process_cassian_commentary.py` is the model: copy it for another father or work.
+  `process_cassian_commentary.py` is the model: copy it for another father or work. For
+  another work of the same father, add its entries to that importer instead, with a `"kind"`
+  that picks the prompt's work-specific wording from `KIND_WORDING` (Cassian's *Institutes*,
+  `Inst01` … `Inst12`, a treatise in his own voice, uses `"institutes"`: no dialogue sentences,
+  and "this Institutes book" rather than "this book", which an agent could read as a book of
+  Scripture). Compare the *Conferences*' parsed bodies and `--dry-run` prompt before and after
+  any change to that file.
 - A work whose parts are separate files with their own urls (Cassian's ten conferences) gets one
-  `WORKS` entry per file (`Conf01` … `Conf10`); a dedicatory preface file gets none (rule 6).
+  `WORKS` entry per file (`Conf01` … `Conf10`); a dedicatory preface file gets none (rule 6),
+  nor does an untranslated one (the *Institutes*' Book 6: "WE have thought best to omit
+  altogether the translation of this book.").
 - **source_title** carries the chapter: `"<work title>, Chapter N"`, or `"Chapters N-M"` for a
   block crossing chapters, as the url'd Cassian blocks already had it. `--check` and the audit
   check it against the chapter(s) the text really comes from.
@@ -194,7 +202,10 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
   left out by the agents, or every block crossing a chapter fails the check. Some summaries are
   irregular (run straight into the text, split over several italic runs, missing, an italic run
   broken off with the rest on one or more lines of its own, printed without italics, or running
-  on into Cassian's text that is itself printed in italics, as in 19.VI and 24.VI); list the chapters whose
+  on into Cassian's text that is itself printed in italics, as in 19.VI and 24.VI; in the
+  *Institutes*, a note marker splitting the summary into two italic runs, 2.XV, 4.XXVII, 10.XIV,
+  10.XXIV, a last word outside the italics, 2.IX "</i>Eiders<i>.</i>", and a summary running into
+  italic text whose opening quote mark belongs to the text, 10.VIII); list the chapters whose
   opening doesn't fit the usual pattern (the body should start with the dialogue's first
   capital), handle each in the summary regex, re-run `--check` on the works already imported,
   and tell the agents about each one in that conference's notes.
@@ -211,7 +222,8 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
   new import filed that chapter under that verse, and bring the misses to the user. (In Part II
   most misses were deliberate rule-13 omissions the agents had listed: verses inside a chain of
   paired proof-texts, or a verse used as one instance within the exposition of another; in
-  Part III 21 of 47, all on the agents' left-out lists.) Match by verse RANGE, not filename: a
+  Part III 21 of 47, all on the agents' left-out lists; in the *Institutes* 6 of 27, all
+  listed: chains of proof-texts, the paired "the one says… the other…" texts of 12.8.) Match by verse RANGE, not filename: a
   verse may already be covered by a range file (`Proverbs 31_6-7` for an old `Proverbs 31_6`),
   so script the comparison over parsed ranges rather than looking for the exact file.
 - Agents sometimes name a Psalm file `Psalm 69_28` (the KJV lookup accepts "Psalm"); `--check`

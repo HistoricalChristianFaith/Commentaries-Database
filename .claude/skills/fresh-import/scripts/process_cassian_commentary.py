@@ -147,6 +147,63 @@ WORKS = {
     for key, folder, fn, notes in _CONFERENCES
 }
 
+# The Institutes: one file per book, each its own url. Book 6 ("On the Spirit of Fornication")
+# is not translated in Gibson/NPNF ("WE have thought best to omit altogether the translation of
+# this book."): no entry. Gibson's preface to Castor is not in the Writings-Database.
+INSTITUTES = "John Cassian/The Twelve Books on the Institutes of the Coenobia"
+# Notes for every book, then each book's own.
+_INST_GREEK = {1: "a0na/laboi\", \"mafo/rion", 2: "su/acij\", \"kaqi/smata", 3: "yalmo/j",
+               4: "chrofagi/a\", \"a0po/sitoj", 5: "kenodoci/a", 7: "filarguri/a",
+               8: "a0nqrwpopaqw=j\", \"qumw/dhj", 10: "a0khdi/a", 11: "kenodoci/a"}
+
+
+def _inst_note(no):
+    """The note on Gibson's Greek, for a book that has some."""
+    if no not in _INST_GREEK:
+        return ""
+    return (f"Gibson prints Greek words in a transliteration code (\"{_INST_GREEK[no]}\"): copy "
+            "them exactly as printed, with their slashes, zeros and equals signs.")
+
+
+_INSTITUTES = [
+    (1, ""),
+    (2, "In Chapter IX the italic chapter summary ends with words printed outside the italics "
+        "(\"...reserved for the Conferences of the </i>Eiders<i>.</i>\"): \"Eiders.\" is part of "
+        "the summary, so leave it out too and start any block at \"And as the plan of these "
+        "Institutes\"."),
+    (3, ""), (4, ""), (5, ""), (7, ""), (8, ""), (9, ""),
+    (10, "In Chapter VIII the italic chapter summary (\"That he is sure to be restless who will "
+         "not be content with thework of his own hands.\") runs straight on into the text, and "
+         "much of the text from there on is itself printed in italics (a markup slip): that "
+         "italic text is Cassian's, not the summary, so treat it as ordinary text. The text "
+         "starts with the quotation mark after \"hands.\", so a block from the chapter's start "
+         "begins: \"\"Because we were not restless among you.\" When he wants to prove\"."),
+    (11, "In Chapter XVIII the italic chapter summary (\"How a monk ought to avoid women and "
+         "bishops.\") runs straight on into the text, and the text from \"Wherefore\" on is "
+         "itself printed in italics (a markup slip): that italic text is Cassian's, not the "
+         "summary, so treat it as ordinary text and start any block at \"Wherefore this is an "
+         "old maxim\"."),
+    (12, "In Chapter XXXI the italic chapter summary (\"How we can overcome pride and attain "
+         "perfection.\") runs straight on into the text, and the text from \"Wherefore\" on is "
+         "itself printed in italics (a markup slip): that italic text is Cassian's, not the "
+         "summary, so treat it as ordinary text and start any block at \"Wherefore if we wish "
+         "the summit\"."),
+]
+WORKS.update({
+    f"Inst{no:02d}": {
+        "html": f"{INSTITUTES}/Book {no}.html",
+        "book": None,
+        "selective": True,
+        "kind": "institutes",
+        "number": no,
+        # "The Twelve Books on the Institutes of the Coenobia, Book 1, Chapter 2", as the url'd
+        # Institutes block already had it.
+        "source_title": f"The Twelve Books on the Institutes of the Coenobia, Book {no}",
+        "notes": f"{_inst_note(no)} {notes}".strip(),
+    }
+    for no, notes in _INSTITUTES
+})
+
 
 def _raw_notes(work):
     """Gibson's notes of a work's file, in printed order (the text of each)."""
@@ -191,14 +248,21 @@ ROMAN_VALUES = {"I": 1, "V": 5, "X": 10, "L": 50}
 # 16.XXVI: "<i> A question why he has called ... hope</i><br/><br/>\n imperfect.<br/><br/>"),
 # and two summaries are not italic at all (17.II, 17.X). Part III: 24.VII's runs on over two
 # lines ("...considered to</i>" / "interfere with us, ... in the case of" / "those living in Egypt.").
+# Institutes: a note mark in mid-summary splits it into two italic runs (2.XV, 4.XXVII, 10.XIV,
+# 10.XXIV: "<i>How manual labour</i><sup>..</sup><i> prevents many faults.</i><br/><br/>").
+# 2.IX's last word is outside the italics ("...Conferences of the </i>Eiders<i>.</i>"), and
+# 10.VIII's runs straight on into Cassian's italic text: '...his own hands."</i>Because<i> we'
+# (the quote mark opens the text's quotation, "Because we were not restless among you.").
 SUMMARY_RE = re.compile(
     r"\s*(?:<i>[^<]*</i><br/><br/>\n(?: [a-z][^<.]*<br/><br/>\n)* [a-z][^<]*?\.<br/><br/>\n"
     r"|(?:Of the anxiety of Abbot Germanus at the recollection of our promise\."
     r"|Our question about our fear of the oath which we gave in the monastery in Syria\.)"
     r"<br/><br/>\n"
-    r"|<i>[^<]*</i>(?:<sup><a [^>]*>\d+</a></sup>)?(?:<i>\s*</i>)?<br/><br/>\n"
+    r"|<i>[^<]*</i>(?:<sup><a [^>]*>\d+</a></sup>)?(?:<i>[^<]*</i>)?<br/><br/>\n"
     r"|<i> A question with regard to the comparison of seven</i> nationswith <i>eight</i> faults\."
     r"|How<i> it is useful for usto take possession of their lands\.</i><br/><br/>\n"
+    r"|<i>[^<]*</i>Eiders<i>\.</i><br/><br/>\n"
+    r"|<i>That he is sure to be restless who will not be content with thework of his own hands\.(?=\")"
     r"|<i>[^<]*</i>(?=[A-Z]))")
 
 
@@ -335,22 +399,20 @@ def write_units(work_key, preamble, units):
 # --- Prompts ------------------------------------------------------------------
 
 PROMPT1_TEMPLATE = (
-    "We have John Cassian's \"{title}\" (Conference {number} of his Conferences) here: "
+    "We have John Cassian's \"{title}\" ({work_ref}) here: "
     "\"{units_dir}/{first_unit}\" with the files continuing up to \"{units_dir}/{last_unit}\". "
     "These are consecutive pieces cut, in order, from our PUBLIC-DOMAIN English translation of "
-    "the conference (Edgar C. S. Gibson's, 1894), \"{html_path}\" (consult it if you need "
+    "the {unit} (Edgar C. S. Gibson's, 1894), \"{html_path}\" (consult it if you need "
     "surrounding context).\n\n"
-    "THIS IS NOT A VERSE-BY-VERSE COMMENTARY. The Conferences are dialogues on the monastic "
-    "life: Cassian and his friend Germanus question an abbot of the Egyptian desert, and the "
-    "abbot answers at length, quoting Scripture constantly. Your task is to EXTRACT from the "
+    "THIS IS NOT A VERSE-BY-VERSE COMMENTARY. {about} Your task is to EXTRACT from the "
     "piece the stretches that are genuinely commentary on a specific verse of Scripture, and "
     "file each under that verse in the \"{father}/\" folder. Most of the text will NOT be "
     "imported, and that is expected: a chapter with no exposition of a verse gives no block.\n\n"
     "Your task is to process the following file:\n"
     "{unit_name}  (its chapters: {headings})\n\n"
-    "Read the WHOLE file. Each piece repeats the conference's title at the top; that is "
+    "Read the WHOLE file. Each piece repeats the {unit}'s title at the top; that is "
     "background for you, not text to import.\n\n"
-    "WHAT COUNTS AS COMMENTARY. Import a stretch when Cassian (or the abbot speaking) QUOTES or "
+    "WHAT COUNTS AS COMMENTARY. Import a stretch when {speaker} QUOTES or "
     "plainly refers to a specific verse AND DOES SOMETHING WITH IT: says what it means, "
     "interprets its words (literally, morally or spiritually), resolves a difficulty in it, "
     "applies a figure in it (\"by the ... is meant ...\"), builds his argument on its wording, "
@@ -373,36 +435,34 @@ PROMPT1_TEMPLATE = (
     "...): use only the book names in book_names.json.{notes}\n\n"
     "THE BLOCKS. Each block is ONE continuous, verbatim stretch of the text, in Cassian's "
     "order, starting and ending at sentence boundaries, and able to stand on its own: include "
-    "the sentence(s) that bring in the verse and the whole of his exposition of it, and when "
-    "the exposition answers a question of Germanus's, include the question too if the answer "
-    "can't be understood without it. Don't pad a block with unrelated teaching before or after "
+    "the sentence(s) that bring in the verse and the whole of his exposition of it{question}. "
+    "Don't pad a block with unrelated teaching before or after "
     "the exposition. File it under the SMALLEST verse range the exposition really addresses: a "
     "single verse when it expounds one verse, a range only when it expounds several verses as "
     "one argument (a range crossing chapters is written like \"Matthew 5_48-6_1\"). When one "
     "stretch genuinely expounds two different passages (e.g. a Psalm verse and a Gospel verse "
     "interpreted together), file the same text under each, as separate files; that is welcome. "
-    "But never put two overlapping blocks of this conference in the SAME file, and don't split "
+    "But never put two overlapping blocks of this {unit} in the SAME file, and don't split "
     "one exposition into fragments under one verse.\n\n"
     "THE TEXT. Copy Cassian's words VERBATIM: nothing abridged, paraphrased, corrected, added or "
     "rearranged. Drop the html tags (italics simply become plain text; don't turn them into "
     "quotation marks) and separate paragraphs with a single blank line. Leave out the \"[note: "
     "...]\" footnotes, the <h2> chapter headings, and the italic chapter summary under each "
-    "heading (\"Of our stay in Scete, and that which we proposed to Abbot Moses.\"); in a few "
+    "heading ({summary_eg}); in a few "
     "chapters the summary runs straight on into the text, so start the block where Cassian's "
-    "text starts. Keep the speakers' names that open a speech (\"Germanus: ...\", \"Moses: ...\") "
-    "when the block includes that speech, and keep the printed text's run-together words and "
+    "text starts.{speakers} Keep the printed text's run-together words and "
     "misprints as they are. Don't add headings, verse numbers or notes of your own. Don't write "
     "a python script to do this; process the file yourself manually.\n\n"
-    "SOURCE FIELDS. For EVERY block you import from this conference, set:\n"
+    "SOURCE FIELDS. For EVERY block you import from this {unit}, set:\n"
     "  source_url   = {source_url}\n"
     "  source_title = \"{source_title}, Chapter N\"\n"
     "where N is the (Arabic) number of the chapter the block comes from, e.g. \"{source_title}, "
     "Chapter 13\" for a block from \"Chapter XIII.\"; a block running across chapters is "
     "\"{source_title}, Chapters 13-14\".\n\n"
-    "EXISTING BLOCKS. The old imports of this conference have ALREADY been deleted, so you are "
+    "EXISTING BLOCKS. The old imports of this {unit} have ALREADY been deleted, so you are "
     "only ADDING: if a verse file exists, append your [[commentary]] after its existing blocks; "
-    "otherwise create it. Earlier pieces of THIS run (and of the other conferences) may already "
-    "have left blocks from Cassian's Conferences in the files you write to: they are NOT old "
+    "otherwise create it. Earlier pieces of THIS run (and of the other {unit}s) may already "
+    "have left blocks from Cassian's {work_name} in the files you write to: they are NOT old "
     "imports or duplicates; leave them exactly as they are and append yours after them. Blocks "
     "from other works must be left exactly as they are.\n\n"
     "WHEN YOU ARE DONE, list for the reviewer every block you wrote (file <- chapter, opening "
@@ -412,9 +472,51 @@ PROMPT1_TEMPLATE = (
 PROMPT2 = "Double check, was this fully imported properly?"
 
 
+# The wording that differs between the Conferences (dialogues) and the Institutes (a treatise).
+KIND_WORDING = {
+    "conferences": {
+        "work_ref": "Conference {number} of his Conferences",
+        "unit": "conference",
+        "work_name": "Conferences",
+        "about": (
+            "The Conferences are dialogues on the monastic life: Cassian and his friend Germanus "
+            "question an abbot of the Egyptian desert, and the abbot answers at length, quoting "
+            "Scripture constantly."),
+        "speaker": "Cassian (or the abbot speaking)",
+        "question": (
+            ", and when the exposition answers a question of Germanus's, include the question "
+            "too if the answer can't be understood without it"),
+        "summary_eg": "\"Of our stay in Scete, and that which we proposed to Abbot Moses.\"",
+        "speakers": (
+            " Keep the speakers' names that open a speech (\"Germanus: ...\", \"Moses: ...\") "
+            "when the block includes that speech."),
+    },
+    "institutes": {
+        "work_ref": "Book {number} of his Institutes",
+        "unit": "Institutes book",
+        "work_name": "Institutes and Conferences",
+        "about": (
+            "The Institutes are Cassian's treatise on the monasteries of Egypt and Palestine: "
+            "Books 1-4 describe the monks' dress, the canonical system of the night and day "
+            "prayers and psalms, and the training of those who renounce the world; Books 5-12 "
+            "describe the eight principal faults (gluttony, fornication, covetousness, anger, "
+            "dejection, accidie, vainglory and pride) and their remedies. Cassian writes in his "
+            "own voice, telling of the elders' customs and sayings and quoting Scripture "
+            "constantly."),
+        "speaker": "Cassian",
+        "question": "",
+        "summary_eg": "\"Of the Monk's Girdle.\"",
+        "speakers": "",
+    },
+}
+
+
 def build_prompt1(work, units_dir, units, unit):
     notes = work.get("notes", "")
+    words = KIND_WORDING[work.get("kind", "conferences")]
     return PROMPT1_TEMPLATE.format(
+        **{k: v for k, v in words.items() if k != "work_ref"},
+        work_ref=words["work_ref"].format(number=work["number"]),
         title=work["source_title"],
         number=work["number"],
         units_dir=units_dir,
@@ -511,9 +613,9 @@ def run_check(work, sections):
         spans.sort()
         for (a1, e1), (a2, e2) in zip(spans, spans[1:]):
             if a2 < e1:
-                problems.append(f"{fn}: two blocks of this conference overlap in one file")
+                problems.append(f"{fn}: two blocks of this work overlap in one file")
 
-    print(f"\nCHECK: {n} block(s) of this conference in {len(files)} file(s); "
+    print(f"\nCHECK: {n} block(s) of this work in {len(files)} file(s); "
           f"{len(per_chapter)} of {len(sections)} chapters used")
     for no in sorted(per_chapter):
         print(f"  Chapter {no}: {', '.join(per_chapter[no])}")
@@ -708,7 +810,7 @@ def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("work", choices=sorted(WORKS), help="Which conference to import.")
+    parser.add_argument("work", choices=sorted(WORKS), help="Which conference or Institutes book to import.")
     parser.add_argument(
         "single", nargs="?",
         help="Process ONE piece (e.g. Part002_Ch09-16.html); see --dry-run for the names.",
