@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Import the Scripture commentary in John Cassian's Conferences, Parts I and II (Conferences
-1-17, in Edgar C. S. Gibson's public-domain translation, NPNF 2nd series vol. 11) into the
+"""Import the Scripture commentary in John Cassian's Conferences, Parts I-III (Conferences
+1-24, in Edgar C. S. Gibson's public-domain translation, NPNF 2nd series vol. 11) into the
 Commentaries-Database, one piece at a time, by driving a headless ``claude`` agent.
 
 A per-father copy of process_cyril_commentary.py (see ../SKILL.md, "Other fathers") with the
@@ -12,8 +12,8 @@ verse; the rest is left out. There is no lemma and no commented book, the checks
 every block is verbatim, but not coverage.
 
 Each conference is its own file in the Writings-Database, with its own url, so each is its own
-WORKS entry ("Conf01" .. "Conf17"); the Part prefaces (dedicatory) and Conference 12 (not
-translated by Gibson) have none.
+WORKS entry ("Conf01" .. "Conf24"); the Part prefaces (dedicatory) and Conferences 12 and 22
+(not translated by Gibson) have none.
 
     Writings-Database/John Cassian/Conferences of John Cassian - Part I/9. The First Conference of Abbot Isaac.html
 
@@ -79,9 +79,11 @@ RATE_LIMIT_DELAYS = [60, 120, 240]
 
 PART_I = "John Cassian/Conferences of John Cassian - Part I"
 PART_II = "John Cassian/Conferences of John Cassian - Part II"
+PART_III = "John Cassian/Conferences of John Cassian - Part III"
 
 # (key, folder, file name, notes for that conference). Part II's Conference 12 ("On Chastity")
-# is "Not translated." in Gibson/NPNF, and the Part prefaces are dedicatory: no entries.
+# and Part III's Conference 22 ("On Nocturnal Illusions") are not translated in Gibson/NPNF, and
+# the Part prefaces are dedicatory: no entries.
 _CONFERENCES = [
     ("Conf01", PART_I, "1. First Conference of Abbot Moses.html", ""),
     ("Conf02", PART_I, "2. Second Conference of Abbot Moses.html", ""),
@@ -109,6 +111,24 @@ _CONFERENCES = [
      "The chapter summaries of Chapters II and X are printed without italics (\"Of the anxiety "
      "of Abbot Germanus at the recollection of our promise.\", \"Our question about our fear of "
      "the oath which we gave in the monastery in Syria.\"): leave them out like the others."),
+    ("Conf18", PART_III, "18. Conference of Abbot Piamun.html", ""),
+    ("Conf19", PART_III, "19. Conference of Abbot John.html",
+     "In Chapter VI the italic chapter summary (\"Of the conveniences of the coenobium.\") runs "
+     "straight on into the text, and the text from \"Wherefore\" on is itself printed in italics "
+     "(a markup slip): that italic text is Cassian's, not the summary, so treat it as ordinary "
+     "text and start any block at \"Wherefore I will briefly explain\"."),
+    ("Conf20", PART_III, "20. Conference of Abbot Pinufius.html", ""),
+    ("Conf21", PART_III, "21. The First Conference of Abbot Theonas.html", ""),
+    ("Conf23", PART_III, "23. The Third Conference of Abbot Theonas.html", ""),
+    ("Conf24", PART_III, "24. Conference of Abbot Abraham.html",
+     "In Chapter VI the italic chapter summary (\"A comparison showing how a monk ought to keep "
+     "guard overhis thoughts.\") runs straight on into the text, and much of the text from "
+     "\"Wherefore\" on is itself printed in italics (a markup slip): that italic text is "
+     "Cassian's, not the summary, so treat it as ordinary text and start any block at "
+     "\"Wherefore a monk's whole attention\". In Chapter VII the italic chapter summary is broken "
+     "off and runs on over two more lines of its own (\"interfere with us, whereas it does not "
+     "interfere in the case of\", \"those living in Egypt.\"): those lines are part of the "
+     "summary, so leave them out too and start any block at \"Germanus: It is a very useful\"."),
 ]
 
 WORKS = {
@@ -169,9 +189,10 @@ ROMAN_VALUES = {"I": 1, "V": 5, "X": 10, "L": 50}
 # soul.</i>Wherefore", 5.XI), split over several italic runs (5.XVII, 5.XXIII); 5.XVIII has none.
 # Part II: the italic run ends mid-summary and the rest follows on its own line (11.VII, 11.XI,
 # 16.XXVI: "<i> A question why he has called ... hope</i><br/><br/>\n imperfect.<br/><br/>"),
-# and two summaries are not italic at all (17.II, 17.X).
+# and two summaries are not italic at all (17.II, 17.X). Part III: 24.VII's runs on over two
+# lines ("...considered to</i>" / "interfere with us, ... in the case of" / "those living in Egypt.").
 SUMMARY_RE = re.compile(
-    r"\s*(?:<i>[^<]*</i><br/><br/>\n [a-z][^<]*?\.<br/><br/>\n"
+    r"\s*(?:<i>[^<]*</i><br/><br/>\n(?: [a-z][^<.]*<br/><br/>\n)* [a-z][^<]*?\.<br/><br/>\n"
     r"|(?:Of the anxiety of Abbot Germanus at the recollection of our promise\."
     r"|Our question about our fear of the oath which we gave in the monastery in Syria\.)"
     r"<br/><br/>\n"

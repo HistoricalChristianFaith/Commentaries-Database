@@ -132,6 +132,13 @@ the original's (relative to the skill folder), so it works on any checkout.
   cases where title and text disagree by reading them, and delete the result by exact title with
   `delete_commentaries.py --titles-file`, after checking that no excerpt of another work shares
   one of those titles.
+  - Include the url-less blocks with an EMPTY title in the text match, and expect strays: the
+    Cassian Part III survey found an earlier Part's excerpt that the earlier deletion had missed
+    (Conference 14 ch. 17 under Proverbs 31:6), and a Byzantine Nativity sticheron (Kassia's)
+    filed under Cassian because the names look alike. Bring each one to the user; both were
+    deleted with the user's OK (the title file can name another Part's excerpt; an untitled
+    block, which `--titles-file` can't name, is removed by hand after checking it is the file's
+    only block).
 
 **Selective works** (not a verse-by-verse commentary; first done for John Cassian's
 *Conferences*, Part I). Some works worth importing are treatises, dialogues or sermons that quote
@@ -186,7 +193,8 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
 - **Chapter summaries** (the italic line under each heading) are cut from the body as well as
   left out by the agents, or every block crossing a chapter fails the check. Some summaries are
   irregular (run straight into the text, split over several italic runs, missing, an italic run
-  broken off with the rest on its own line, printed without italics); list the chapters whose
+  broken off with the rest on one or more lines of its own, printed without italics, or running
+  on into Cassian's text that is itself printed in italics, as in 19.VI and 24.VI); list the chapters whose
   opening doesn't fit the usual pattern (the body should start with the dialogue's first
   capital), handle each in the summary regex, re-run `--check` on the works already imported,
   and tell the agents about each one in that conference's notes.
@@ -202,7 +210,10 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
   cross-check at the final review: for each deleted excerpt's chapter and verse, see whether the
   new import filed that chapter under that verse, and bring the misses to the user. (In Part II
   most misses were deliberate rule-13 omissions the agents had listed: verses inside a chain of
-  paired proof-texts, or a verse used as one instance within the exposition of another.)
+  paired proof-texts, or a verse used as one instance within the exposition of another; in
+  Part III 21 of 47, all on the agents' left-out lists.) Match by verse RANGE, not filename: a
+  verse may already be covered by a range file (`Proverbs 31_6-7` for an old `Proverbs 31_6`),
+  so script the comparison over parsed ranges rather than looking for the exact file.
 - Agents sometimes name a Psalm file `Psalm 69_28` (the KJV lookup accepts "Psalm"); `--check`
   flags any filename whose book isn't in `book_names.json`.
 - Source defects show up as chapters out of sequence (`load_work` refuses chapters not numbered
