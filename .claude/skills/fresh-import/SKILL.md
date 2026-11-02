@@ -122,6 +122,27 @@ the original's (relative to the skill folder), so it works on any checkout.
   lacuna lines, manuscript rubrics and colophons) goes in `strip`; the translator's bracketed
   supplements stay. Unlinked note marks (`turn<sup>2</sup> away`) are dropped in `load_work`,
   or agents silently "correct" them and the check fails.
+- **Bare verse numbers mid-sentence** (Theodoret on Romans: `<h2>Chapter IX.</h2>` and
+  `…his proposed design; 6. <i>Not as though…</i>`, the lemma sometimes in plain text):
+  `process_theodoret_commentary.py` is the model. `load_work` cuts a section at each number
+  that follows on from the last one in its chapter (prev < v <= prev+5, so references like
+  "(John i. 29, 36.)" aren't cut), joins a number holding only its lemma to the next one
+  ("15:1-2"), drops every number from the body, opens a chapter's first section with its
+  lead-in words, and carries the chapter across `<h2>Book N</h2>` tome headings that fall
+  mid-chapter (their text before the first number is a non-verse preface). The notes tell the
+  agents that a block starts where the number stood, even mid-sentence. Since a comment often
+  rightly covers two numbered verses, `WORKS` sets `label_sections`, and the audit then reports
+  a section covered by a block from the section before as "joined" (or JOINED? if the block's
+  file doesn't include that verse) instead of LEMMA. Survey the numbers' sequence per chapter
+  first: misprints ("39." for 29) and numbers run into the word before them ("eternal.18.")
+  are fixed in the source.
+- **OCR'd sources** (Theodoret's Romans, scanned from an 1839 magazine): the pilot agents'
+  "kept as printed" lists showed many misreads (he/be, "bom", "the (rod of all", "thou shall"
+  in KJV lemmas). A dictionary scan finds almost none of them; two read-only subagents
+  proofreading half the text each (exact unique snippet, correction, confidence) found 60+.
+  Do this after the pilot, before the chunks; check each finding in context; fix the source
+  with the user's OK and apply the same fixes to the pilot blocks (whitespace-tolerant
+  replacement of the plain-text forms), then re-audit the pilot.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against

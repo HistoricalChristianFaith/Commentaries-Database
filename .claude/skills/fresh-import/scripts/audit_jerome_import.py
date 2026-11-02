@@ -464,6 +464,23 @@ def main():
                 and any(b["a"] < offs[i][0] < b["e"] and b["sec"] == i - 1 for b in own)):
             print(f"  joined to lead-in [{s['heading']}]: {prev[-50:]!r}")
             continue
+        # Theodoret (`label_sections`): the sections are the translator's verse numbers in the
+        # running text, so a block may rightly run on over one into the next verse (a comment
+        # treating 5:1-2 together). Fine if the block's file covers this section's verse.
+        span = [b for b in own if b["a"] < offs[i][0] < b["e"]]
+        if work.get("label_sections") and (not fb or fb["a"] != offs[i][0]) and span:
+            b = span[0]
+            m = re.fullmatch(rf"{re.escape(book)} (\d+)_(\d+)(?:-(\d+))?(?:_(\d+))?", b["fn"])
+            (hc, hv), (hc2, hv2) = head_range(s["heading"])
+            if m:
+                lo = (int(m[1]), int(m[2]))
+                hi = (int(m[3]), int(m[4])) if m[4] else (int(m[1]), int(m[3] or m[2]))
+                if hi < (hc, hv) or lo > (hc2, hv2):
+                    problems.append(f"JOINED? [{s['heading']}] runs on inside {b['fn']}#{b['k']}, "
+                                    "whose range doesn't include it")
+                    continue
+            print(f"  joined [{s['heading']}] into {b['fn']}#{b['k']}")
+            continue
         if not fb or fb["a"] != offs[i][0]:
             problems.append(f"LEMMA [{s['heading']}]: no block starts at the section start"); continue
         lem_end = len(_norm(_clean(s["body"][:opening_lemma_end(s["body"], bold)])))
