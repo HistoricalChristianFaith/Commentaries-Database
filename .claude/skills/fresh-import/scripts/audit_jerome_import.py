@@ -20,7 +20,8 @@ old import (everything after it is the new import). Reports, for this work's blo
     then correct), blocks far outside their heading, wide ranges and very small blocks;
   * where each non-verse section (Prologue, Book N) went, and a per-section LAYOUT for reading.
 A SELECTIVE work (WORKS "selective": True, e.g. Cassian's Conferences) gets its own audit
-instead: see selective_main.
+instead: see selective_main. A HOMILY (WORKS "homily": True, Augustine's Tractates on John: one
+section per sermon, no lemma) skips the lemma and placement checks; the rest is the same.
 """
 import os, re, sys, glob, importlib, subprocess, sqlite3, tomllib, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -336,6 +337,18 @@ def main():
                 print(f"  [{s['heading']}] (non-verse, {len(_clean(s['body']))} chars)")
         return
 
+    if sys.argv[2] == "--headings" and work.get("homily"):
+        # A homily (Augustine's Tractates, WORKS "homily": True): one section per sermon, headed
+        # by the passage it preaches on; no lemmas to check.
+        count = collections.Counter(c for c, v in kjv)
+        for s in secs:
+            lo, hi = head_range(s["heading"])
+            bad = [cv for cv in {lo, hi} if cv not in kjv]
+            print(f"  [{s['heading']}] {len(_clean(s['body']))} chars, "
+                  f"{len(paragraphs_of(s))} paragraphs, {s['html'].count('[note:')} notes"
+                  + (f"  NOT IN KJV {bad}" if bad else ""))
+        return
+
     if sys.argv[2] == "--headings":
         count = collections.Counter(c for c, v in kjv)
         print("heading formats:", collections.Counter(
@@ -457,6 +470,11 @@ def main():
         if not s["chapter"]:
             continue
         fb = first.get(i)
+        if work.get("homily"):
+            # No lemma: the sermon's first block must just start where the sermon does.
+            if not fb or fb["a"] != offs[i][0]:
+                problems.append(f"START [{s['heading']}]: no block starts at the sermon's start")
+            continue
         # Matthew: a paragraph whose sentence runs on into this lemma ("For there follows:") is
         # joined with it in one block when both are the same verse.
         prev = _clean(secs[i - 1]["body"]) if i and work.get("lemma_paragraphs") else ""

@@ -143,6 +143,39 @@ the original's (relative to the skill folder), so it works on any checkout.
   Do this after the pilot, before the chunks; check each finding in context; fix the source
   with the user's OK and apply the same fixes to the pilot blocks (whitespace-tolerant
   replacement of the plain-text forms), then re-audit the pilot.
+  - **If an authoritative transcription exists** (CCEL's NPNF pages), diff against it instead,
+    in Phase 1, before anything is imported: Augustine's Tractates on John (OCR'd) gave 606
+    word-level differences across 124 files. Tokenise both texts into words (ignoring case,
+    punctuation and quote style), `difflib` them, and map each difference back to an html offset
+    in the local file so the fix keeps the file's own markup and punctuation. The diff found
+    misreads (shall/shalt ×46, test/lest ×15, cloth/doth, horn/born, layer/laver), ~210 glued
+    words, beta-code Greek, 17 lost lines (Tractates 1, 2, 6, 7) and a duplicated passage
+    (Tractate 6, whose extra footnote marker shifted the notes). Strip CCEL's page-number spans
+    (`<span class="pb">`) first, and reject the differences where CCEL is the odd one out: its
+    page-break word splits ("con cealed", "be cause"; a local whole word in the dictionary or used
+    elsewhere in the work is right) and its own typos. Review every remaining difference, stage
+    the fixed files in the scratchpad, re-diff (only the rejects should remain), then write them
+    with the user's OK. The same CCEL pages give the footnotes, so compare markers by the words
+    before them too (lost markers shifted the notes in five tractates; 79 notes had lost their
+    Hebrew/Greek and were truncated).
+  - A word diff can't see punctuation: some missing paragraph breaks stay (Tractate 104's
+    `Thee."3. The glorification`, a lost break, failed `--check` after the import and was fixed
+    in the source; the agent had already put the break in its block).
+- **A homily series, one file per sermon** (Augustine's Tractates on John: 124 files, each its
+  own url, numbered paragraphs, no lemmas): `process_augustine_commentary.py` is the model. Its
+  `WORKS` is generated, one entry per file (`JohnTr001` … `JohnTr124`, `"homily": True`), each
+  one section and one piece (6–47k chars; a sermon is never cut), headed by the passage read
+  from the italic line under the title (with `PASSAGES` overrides where it says "On the same
+  passage"). The NPNF paragraph numbers are stripped (the user's choice); the notes are inline
+  `[note: …]` hints. The command line takes ranges (`JohnTr031-JohnTr056 JohnTr058-JohnTr072`)
+  and runs `--check` after each tractate. With `homily`, the audit skips the lemma and
+  placement checks and only asks that a block starts at the sermon's start (START). Agents file
+  a sermon's recap of earlier verses under those verses (OUTSIDE HEADING): correct by rule 2.
+  The pilot's tractates run ahead of their neighbours, so files shared by several tractates end
+  up out of tractate order: `--order` finds them and `--fix-order BASE` reorders only the
+  appended blocks. Blocks were large where Augustine dwells on one verse (a 37k block for
+  Tractate 5, all on 1:33; 18.5k of Tractate 1 on 1:1): check the opening of each big block
+  against the next verse's first quotation before calling it under-split.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
