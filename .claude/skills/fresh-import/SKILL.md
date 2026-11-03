@@ -198,6 +198,16 @@ the original's (relative to the skill folder), so it works on any checkout.
     the homily's own psalm. A heuristic scoring each block's opening against the psalm's KJV
     verses flags possible verse slips; nearly all 76 flags were titles, Latin lemmas or the
     Greek wording, and every one checked out.
+  - **Old vs new comparison** (asked for after the import; worth doing whenever the old
+    blocks are of the same translation): map every old block's text to the new blocks
+    covering it, and back. Here the placements agreed almost entirely (739 same file, 60
+    overlapping, 3 real disagreements, all decided for the new import). The useful output was
+    the old cross-references the new import lacks: of 114 (23 same-translation, 91 ACCS),
+    subagents judging each by rule 8 found 13 genuine expositions the agents had missed,
+    mostly a SECOND verse expounded inside a stretch already cross-filed for one verse, plus
+    a psalm title's history (1 Samuel 24:3). They were added from the source paragraphs
+    (check each end for a closing quotation mark), followed by `--fix-order`. The rest were
+    passing proof-texts, thematic tags or wrong verses in the old files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against

@@ -126,7 +126,11 @@ HOMILY_NOTES = {
         "own foot has been caught\" (KJV 9:15), \"All the nations that forget God\" (KJV 9:17), "
         "and \"He sits in ambush with the rich\" (KJV 10:8), and the poor man caught in the "
         "snare (KJV 10:9-10). File each stretch under the KJV verse it expounds, in Psalm 9 or "
-        "Psalm 10."),
+        "Psalm 10. But the 9:15 and 9:17 quotations are only the proof-texts that finish the title "
+        "argument (\"we ought to understand the whole psalm as being about the death of the "
+        "Savior\"): they stay in the 9:1 block; the exposition proper begins with \"He sits in "
+        "ambush with the rich\" (KJV 10:8). (The first run split them off as one-sentence "
+        "fragments, which were then merged back.)"),
     39: "Psalm 114 in the Latin numbering is KJV Psalm 116:1-9.",
     40: "Psalm 115 in the Latin numbering is KJV Psalm 116:10-19 (\"I believed, therefore have "
         "I spoken\" is KJV 116:10).",
