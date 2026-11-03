@@ -208,6 +208,64 @@ the original's (relative to the skill folder), so it works on any checkout.
     a psalm title's history (1 Samuel 24:3). They were added from the source paragraphs
     (check each end for a closing quotation mark), followed by `--fix-order`. The rest were
     passing proof-texts, thematic tags or wrong verses in the old files.
+- **An apologetic treatise, selective, one file per book** (Eusebius's *Proof of the Gospel*,
+  Ferrar 1920, Pearse's transcription; `process_eusebius_commentary.py`, keys `DE01` …
+  `DE10`): a copy of the Cassian importer. Chapters are `<b>CHAPTER N</b>` (not `<h2>`);
+  the text before Chapter 1 is the book's introduction (section 0, "…, Book N,
+  Introduction"/"Preface"), and the fragment of Book 15 printed at the end of Book 10 is its
+  own section (99, "The Proof of the Gospel, Book 15 (Fragment)", Book 10's url). Ferrar's
+  apparatus is dropped from the body by paragraph: bold headings, source lines ("From Micah.",
+  "(46) 3. From the same.", "Psalm xix."; matched on plain text) and every wholly italic
+  paragraph (chapter and sub-section summaries); his "[Passage quoted, Isa. xxxv. 3.]"
+  placeholders stay and open the block whose exposition follows. Fabricius's page marks
+  ("(144)", "(b)", Book 1's "{2}"; only 2-3 digit numbers, since Book 5 has Eusebius's own
+  "(1) … (2) … (3)"), Pearse's `[[ref]]` margin references and his notes on the
+  transcription are in `STRIP`. 582 blocks in 503 files from 45 pieces (five unsplittable
+  chapters of 42-67k imported fine).
+  - **No authoritative transcription, so diff against scans of the print edition**:
+    archive.org has OCR text of Ferrar's volumes (two independent scans of vol. 1, one of
+    vol. 2). Word-diff each book, drop the scan's running headers and hyphenated line ends,
+    treat scan-only runs over 12 words as footnotes (check them for lost prose: none was
+    lost), and flag a Pearse word only where it disagrees with the scan(s). Four read-only
+    reviewers judged ~830 items (fix with an exact unique html replacement, or reject).
+    Then a second pass against the CLEANER scan alone: the noisier scan often shares
+    Pearse's misreads (same print), so "disagrees with every scan" had let some through
+    ("thou shall tithe", "when them earnest"). A dictionary scan of rare words and a pattern
+    sweep (shall/shalt, hut, arc, clay, "1" for "I", line-break hyphens in names) found
+    the rest. Where both scans agree with Pearse (e.g. "Ephiatha"), it is Ferrar's own
+    misprint: keep it. ~180 fixes, committed in the Writings-Database with the user's OK.
+  - **An unconverted Pearse page** (Book 2 was still raw tertullian.org html): the
+    Writings-Database's `standardization/pearse_transform.py --file … --dry-run` said why it
+    had failed closed (a note list with notes 6-7 printed twice and note 49 lost; the scan
+    gave note 49). After repairing the notes in a scratch copy it converted with all its
+    gates passing; run it on the real file only after applying the word fixes to the raw
+    file.
+  - **Spacing around removed marks matters for `--check`**: a mark stripped beside a quote,
+    dash or hyphen leaves a space the agents (rightly) don't copy (`&quot;{6a}&nbsp;Go`,
+    `rejoice&quot; [[John xvi. 20]]----the`, `Only- (232) begotten`), and a footnote mark
+    with no space after it glues words (`Christ.<sup>39</sup>And`). `make_body` replaces
+    every removed mark with a placeholder and `_settle` decides: nothing after an opening
+    quote or paragraph start, before closing punctuation or a dash, or after a hyphen; a
+    space after a footnote mark between words; otherwise one space if there was one. Strip
+    unlinked `<sup>` marks case-insensitively (`<SUP>3</SUP>`), keeping a space for empty
+    ones (`commands,<SUP> </SUP>and`).
+  - **Source debris surfaces as NOT VERBATIM**: the agents silently mend stray characters
+    ("( But" = a lost "(237)", "name 8. is" = a margin ref, "('-')" = "(c)", "Barak<br><br>
+    (d).of"). Diff each failing block against the body at the divergence; check the scan;
+    fix the source (not the block) when the agent was right, and fix blocks that copied an
+    old misprint. Re-run `--check` on every book after each source or `make_body` change.
+  - **Old excerpts** were 7 url'd blocks and 117 url-less ones (ACCS, many paraphrased, one
+    the Book 15 fragment on Daniel 2:31). A rarity-weighted word overlap against every
+    chapter confirmed each was this work even when the text barely matched. After the
+    import, comparing old verse ranges with new ones found 30 old excerpts with no new
+    block in an overlapping range; a subagent judged each by rule 13: 13 were
+    already filed under a nearby or parallel verse, 11 were passing proof-texts or tags, and
+    6 genuine expositions were added from the body text (Colossians 2:16-17, Isaiah 29:11,
+    John 4:10, Judges 1:1-2, Mark 1:2, Romans 5:12), mostly the NT verse of a fulfilment.
+  - A scope slip to watch in a selective run: one exposition of Zech 11:7-14 was copied
+    whole into `11_7`, `11_10` and `11_14`; merged into `Zechariah 11_7-14`. (One stretch
+    expounding two SEPARATE quoted passages, e.g. Isa 19:1-3 with 19:19-21, rightly goes under
+    each.)
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
