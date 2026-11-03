@@ -176,6 +176,28 @@ the original's (relative to the skill folder), so it works on any checkout.
   appended blocks. Blocks were large where Augustine dwells on one verse (a 37k block for
   Tractate 5, all on 1:33; 18.5k of Tractate 1 on 1:1): check the opening of each big block
   against the next verse's first quotation before calling it under-split.
+- **Homilies on the Psalms** (Jerome's 73, two series, `process_jerome_psalms_commentary.py`,
+  keys `PsHom001` … `PsHom073`): the same homily layout, with the psalm numbered as in the
+  Septuagint/Vulgate. `kjv_heading` turns it into the KJV range used as the hint heading (most
+  psalms +1; Latin 9 = KJV 9-10, 114/115 = 116:1-9/10-19, 146/147 = 147:1-11/12-20), and the
+  notes tell the agents to place by the verse's WORDING (the Latin counts titles as verses, and
+  the psalter is translated from the Greek: "Let the just feast" is KJV 68:3). A psalm's title
+  goes under its verse 1. The second series preaches again on psalms of the first, so many
+  files hold both; run the first series first and fix the pilot's leftovers with
+  `--fix-order BASE`. The pilot used six homilies, then the rest went in one run. In the
+  "re-import" case the old blocks were of the SAME translation (a weak earlier import: 94%
+  coverage, 39 blocks not verbatim); the url-less ACCS excerpts (FC's Ewald translation,
+  115 title spellings, FC numbers 1-73 = ours, 75+ = the Mark and other homilies) were matched
+  by title and confirmed by distinctive phrases, since a word-overlap score barely separates
+  homilies across translations.
+  - **Cross-psalm parallels look like own-book blocks:** `--check` and the audit count every
+    `Psalms` file as the book's own, so a homily's parallel under ANOTHER psalm shows as
+    OVERLAP + OUTSIDE HEADING (45, all genuine), and a stretch filed ONLY under another psalm
+    would still pass the coverage checks. So check coverage by each homily's own psalm's files
+    alone as well (it was complete), and confirm that no OUTSIDE HEADING block lies inside
+    the homily's own psalm. A heuristic scoring each block's opening against the psalm's KJV
+    verses flags possible verse slips; nearly all 76 flags were titles, Latin lemmas or the
+    Greek wording, and every one checked out.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
