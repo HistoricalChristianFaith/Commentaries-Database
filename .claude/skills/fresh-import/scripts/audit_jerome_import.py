@@ -67,7 +67,11 @@ def head_range(h):
     return (n[0], n[1]), (n[0], max(n[1:]) + (6 if "ff" in h or h.endswith("f.") else 0))
 
 
-def opening_lemma_end(body, bold=False):
+# Augustine's Propositions on Romans (WORKS `intro_lemmas`): a formula before the italic lemma.
+INTRO_RE = re.compile(r"\s*When [^<:]{0,60}(?:says|said)[^<:]{0,50}: (?=<i>)")
+
+
+def opening_lemma_end(body, bold=False, intro=False):
     """html offset where the opening italic run(s) end (Hebrew lemma, then LXX run(s)).
     Handles Isaiah's `LXX: <i>..</i>` and Ezekiel's plain `(LXX: "..")`, plus inline
     alternatives such as `(or <i>..</i>)` and short editorial parentheses.
@@ -77,6 +81,12 @@ def opening_lemma_end(body, bold=False):
     if bold:
         m = re.match(r"\s*<b>.*?(?=(?:<br\s*/?>\s*){2,}|$)", body, re.S)
         return m.end() if m else 0
+    if intro:
+        # `intro`: "When he says: <i>..</i>": the formula, then the lemma's italic run(s).
+        m = INTRO_RE.match(body)
+        if not m:
+            return 0
+        return m.end() + opening_lemma_end(body[m.end():])
     # Habakkuk 1:3b-4 and 3:3b-4 (and Obadiah 1:13b-14): the first paragraph holds only the
     # first half-verse, and the lemma runs on in the next paragraph, followed by the LXX.
     # (Hosea 4:5b-6, 5:2b-4, 10:13b-15 etc.: a period or comma after each italic run.)
@@ -311,6 +321,7 @@ def main():
         return selective_main(work)
     book = work["book"]
     bold = work.get("bold_lemmas", False)
+    intro = work.get("intro_lemmas", False)
     pre, chapter_secs = load_work(work)
     kjv = load_kjv(book)
     secs = (paragraph_sections(chapter_secs, kjv) if work.get("lemma_paragraphs")
@@ -333,6 +344,18 @@ def main():
             if s["chapter"]:
                 low = "LOW " if s["score"] < 0.4 else "    "
                 print(f"  {low}{s['heading']:>12} {s['score']:.2f} {lemma_opening(s)[:100]!r}")
+            else:
+                print(f"  [{s['heading']}] (non-verse, {len(_clean(s['body']))} chars)")
+        return
+
+    if sys.argv[2] == "--headings" and intro:
+        # No verse labels in the source: the headings are load_work's guesses of the verse each
+        # lemma quotes (audit hints only); list them, with the weak ones marked, to check by eye.
+        for s in secs:
+            if s["chapter"]:
+                low = "LOW " if s["score"] < 0.6 else "    "
+                print(f"  {low}{s['heading']:>14} {s['score']:.2f} {lemma_opening(s)[:100]!r}"
+                      + ("" if INTRO_RE.match(s["body"]) else "  NO INTRO FORMULA"))
             else:
                 print(f"  [{s['heading']}] (non-verse, {len(_clean(s['body']))} chars)")
         return
@@ -501,7 +524,7 @@ def main():
             continue
         if not fb or fb["a"] != offs[i][0]:
             problems.append(f"LEMMA [{s['heading']}]: no block starts at the section start"); continue
-        lem_end = len(_norm(_clean(s["body"][:opening_lemma_end(s["body"], bold)])))
+        lem_end = len(_norm(_clean(s["body"][:opening_lemma_end(s["body"], bold, intro)])))
         if not lem_end:
             problems.append(f"LEMMA? [{s['heading']}]: section does not open with italics")
         elif fb["e"] - fb["a"] < lem_end:

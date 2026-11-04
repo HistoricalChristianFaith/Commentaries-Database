@@ -26,7 +26,7 @@ sys.path.insert(0, SCRIPTS_DIR)
 from audit_jerome_import import (  # noqa: E402
     FATHER, PROJECT_DIR, SPLIT_CHARS, WORKS, _clean, _norm, load_work, make_units,
     paragraphs_of, source_url_for, unit_html, units_dir_for)
-from audit_jerome_import import load_kjv, opening_lemma_end, paragraph_sections  # noqa: E402
+from audit_jerome_import import INTRO_RE, load_kjv, opening_lemma_end, paragraph_sections  # noqa: E402
 
 # (Berengaudus labels parts of a verse up to "21:20h".)
 HEAD_RE = re.compile(r"(\d+):(\d+)([a-h]?)(?:-(?:(\d+):)?(\d+)([a-h]?))?(?:\s*ff?\.)?")
@@ -56,19 +56,22 @@ def follows(prev_hi, lo):
 
 
 def cmd_continuity(work, pre, secs):
-    if work.get("lemma_paragraphs"):
-        # Chapter headings only: check that the paragraph lemmas' guessed verses run forward.
+    if work.get("lemma_paragraphs") or work.get("intro_lemmas"):
+        # No verse headings (Matthew's chapters; Augustine's propositions, WORKS `intro_lemmas`,
+        # whose load_work guesses them): check that the lemmas' guessed verses run forward.
         prev = None
         bad = 0
-        for s in paragraph_sections(secs, load_kjv(work["book"])):
+        guessed = (secs if work.get("intro_lemmas")
+                   else paragraph_sections(secs, load_kjv(work["book"])))
+        for s in guessed:
             if not s["chapter"]:
                 continue
             cv = tuple(map(int, s["heading"].split(" ¶")[0].split(":")))
-            if prev and cv < prev[1] and s["parent"] is prev[2]:
+            if prev and cv < prev[1] and s.get("parent") is prev[2]:
                 print(f"  BACKWARDS: {prev[0]!r} -> {s['heading']!r} (score {s['score']:.2f}): "
                       f"{_clean(s['body'])[:80]!r}")
                 bad += 1
-            prev = (s["heading"], cv, s["parent"])
+            prev = (s["heading"], cv, s.get("parent"))
         print(f"{bad} backward step(s) in the guessed verses. (Usually a weak guess -- see "
               "audit --headings -- or the Vulgate's order, e.g. Matthew 5:4-5.)")
         return
@@ -97,10 +100,14 @@ def cmd_boundaries(work, pre, secs):
             continue
         body = s["body"].strip()
         bold = work.get("bold_lemmas", False)
-        rest = _clean(body[opening_lemma_end(body, bold):])
+        intro = work.get("intro_lemmas", False)
+        rest = _clean(body[opening_lemma_end(body, bold, intro):])
         if len(rest) < 60:
             print(f"  lemma-only? [{s['heading']}]: {_clean(body)[:100]!r}")
-        if not body.startswith("<b>" if bold else "<i>"):
+        if intro:
+            if not INTRO_RE.match(body):
+                print(f"  no opening formula before the lemma [{s['heading']}]: {_clean(body)[:100]!r}")
+        elif not body.startswith("<b>" if bold else "<i>"):
             print(f"  does not open with italics [{s['heading']}]: {_clean(body)[:100]!r}")
     print("\nWhat opens each piece (a piece must not start mid-lemma):")
     for u in make_units(pre, secs, SPLIT_CHARS):

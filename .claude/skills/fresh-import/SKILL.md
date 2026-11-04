@@ -293,6 +293,36 @@ the original's (relative to the skill folder), so it works on any checkout.
     them: 4 genuine expositions added (1 Peter 3:19 for the descent into Hades, Psalms 68:32-33
     and Malachi 4:2 for worshipping toward the East, Romans 11:36 marked by Salmond's note),
     7 already covered (several under the right verse where the old one was wrong), 23 passing.
+- **A fresh translation from the Latin, numbered propositions with no verse labels**
+  (Augustine's *Exposition of Certain Propositions from the Epistle to the Romans*, PL 35 via
+  augustinus.it; `process_augustine_romans_commentary.py`, key `PropRomans`, since `Romans` is
+  Theodoret's; a second Augustine importer, as Jerome's Psalms has its own): a copy of the
+  Theodoret importer. No `<h2>`: 76 paragraphs `<b>N.</b> [M.] When he says: <i>lemma</i> …`, the
+  bracket being the standard numbering 1-84 (joined "[13.-18.]", split "[29. 1.]"). `load_work`
+  cuts one section per proposition, plus the opening sentences as the prologue (→ `Romans 1_1`
+  after the existing block), keeps the numbers in the pieces and shows the footnotes inline as
+  `[note: …]`. Each section's heading is a GUESS of its lemma's verse (`guess_verses`: KJV word
+  overlap on a path that pays for steps back and for long jumps forward), written `3:20 ¶13-18`;
+  it is an audit hint only, and the prompt lists the proposition labels instead (rule 1). Three
+  guesses stay wrong (KJV wording too far from the Latin-based lemma: [5.] 1:24, [7.-8.] 1:32,
+  [81.] 14:22) and show as expected OUTSIDE HEADING flags; check the rest with `audit --headings`.
+  The work's `intro_lemmas` flag makes the audit and `import_checks.py` skip the opening formula
+  before the lemma. Pieces are runs of whole propositions (5 of ~16k); pilot of the first and
+  last, then the other three in one run: 99 blocks (91 in 88 Romans files, 8 cross-references),
+  every check clean, nothing to fix.
+  - **Check a fresh translation against its Latin before importing.** Split both texts at the
+    proposition labels and compare per section: note markers (same ones, same places), length
+    ratio (English/Latin 1.0-1.4 throughout here, so nothing dropped) and the notes'
+    references. Then two read-only subagents proofread half each against the Latin (exact
+    unique snippet, Latin, drop-in correction, confidence; substantive errors only). Of their
+    10 findings, 9 were real (a fact turned into a possibility, wrong referents, garbled
+    clauses, an invented second group, a misquoted Rom 7:13) and were fixed in the source with the user's OK; one was a defensible
+    rendering. The standardization had also dropped the file's provenance comments, so a
+    one-line source note was restored after the `<h1>`.
+  - The old blocks were 89 url-less ACCS excerpts titled `AUGUSTINE ON ROMANS N` (Landes's
+    numbers = the brackets), deleted by `--title-prefix` after matching each one's text to its
+    proposition; two untitled, url-less duplicates (digits stripped, one with a Pelagius sentence
+    glued on that already had its own Pelagius block) were removed by hand.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
@@ -420,7 +450,9 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
   first paragraph holds only a half-verse and runs on in the next paragraph before the LXX
   (Habakkuk 1:3b-4, 3:3b-4; Obadiah 1:13b-14), and LXX runs introduced by a phrase instead of
   "LXX:" (Micah 1:1 "Or according to the Seventy:", Hosea 13:4 "In place of which one reads in
-  the LXX:", Amos 1:1 "But the Seventy, intending I know not what, translated:"). With the work's
+  the LXX:", Amos 1:1 "But the Seventy, intending I know not what, translated:"). With the work's `intro_lemmas` set
+  (Augustine's Propositions on Romans), a formula ("When he says:", "When he says of Abraham:")
+  before the italic lemma is skipped. With the work's
   `bold_lemmas` set (Berengaudus), the lemma is the whole first paragraph, a bold one with its
   verse label already dropped by `load_work`, including asides between the bold stretches
   ("The seven stars, he says, are …"). For a new layout,
