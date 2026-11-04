@@ -266,6 +266,33 @@ the original's (relative to the skill folder), so it works on any checkout.
     whole into `11_7`, `11_10` and `11_14`; merged into `Zechariah 11_7-14`. (One stretch
     expounding two SEPARATE quoted passages, e.g. Isa 19:1-3 with 19:19-21, rightly goes under
     each.)
+- **A dogmatic treatise from a clean CCEL source, selective, one file per book** (John of
+  Damascus's *Exact Exposition of the Orthodox Faith*, Salmond, NPNF2 vol. 9;
+  `process_damascene_commentary.py`, keys `OF01` … `OF04`, `"kind": "exposition"`): a copy of
+  the Cassian importer, the easiest selective run so far. The books had just been rebuilt from
+  CCEL with corrections from the 1899 print, so no proofreading pass was needed; the marker/note
+  offset score (shift 0 clearly best in every book) and a read of the low scorers confirmed the
+  notes. All 100 chapters open with a summary line made only of italic runs, note marks, spaces
+  and a period, so one generic `SUMMARY_RE` replaced Cassian's list of irregular cases, and
+  `load_work` refuses a chapter without one. Salmond's Psalm numbers are the English ones.
+  - **Greek in non-NFC code points**: Salmond's accented Greek uses oxia forms (U+1F73 "έ"),
+    which agents retype as the identical-looking tonos form (U+03AD); `_norm` NFC-normalizes
+    both sides, so the check never fails on an invisible difference. Check `unicodedata.
+    is_normalized` on a new source's Greek before the pilot.
+  - Pilot of 6 pieces (one per risk: Book 1's first piece and its 35k Trinity chapter, Paradise,
+    the descent into Hades, the cross/eucharist chapters, the last piece), then the other 18 in
+    one chained background run: 292 blocks, all checks clean; the pilots left 6 files out of
+    source order (fixed by cutting the file text; across books too, Book 1 → 4). The agents were
+    generous rather than strict (short glosses of a verse inside a doctrinal argument, a type
+    of the cross filed under each of its nine verses), and corrected several wrong footnote
+    references themselves.
+  - **Old excerpts**: 5 url'd, 5 newadvent (III.29, IV.14) and 80 url-less ACCS blocks (52
+    title spellings, all containing "Orthodox Faith"; deleted by `--titles-file`). The 65
+    untitled url-less blocks were the father's Pauline commentary (no text match) and stayed.
+    Comparing old verse ranges with the new blocks' chapters left 34 misses; a subagent judged
+    them: 4 genuine expositions added (1 Peter 3:19 for the descent into Hades, Psalms 68:32-33
+    and Malachi 4:2 for worshipping toward the East, Romans 11:36 marked by Salmond's note),
+    7 already covered (several under the right verse where the old one was wrong), 23 passing.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
