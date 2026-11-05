@@ -356,6 +356,39 @@ the original's (relative to the skill folder), so it works on any checkout.
     one shared title meant one block (Wisdom 8_1) was cut by hand. Two url'd excerpts with
     ACCS text of passages NPNF lacks had their url cleared instead (the user's choice). The
     word-overlap score alone can't decide: unrelated passages score 0.3-0.5.
+- **A collection of letters, selective, one file per letter** (Athanasius's Festal and
+  Personal Letters, NPNF2-04, rebuilt from CCEL and proofread just before, Writings-Database
+  724bc3bc; `process_athanasius_commentary.py`, keys `AthLet01` … `AthLet64` by letter number,
+  46 files; the editor's introduction file with the two chronicles gets no entry): a copy of
+  the Damascene importer with the Tractates' multi-work command line (ranges of keys, every
+  piece of each letter, `--check` after each, `--order`/`--fix-order BASE` across letters).
+  Sections are NPNF's numbers at paragraph starts ("2." → the text before it is Section 1;
+  Letter 52's doubled "1.", Letter 39's "…1."), the fragments of Letters 28-29 ("Another
+  Fragment."), or the whole letter; the numbers are dropped from the body and shown as `<h2>`
+  (an unnumbered letter gets `<h2>The letter.</h2>` so the agent sees where the text starts).
+  The `WORKS` entry's `label` ("Section" / "Fragment" / None) drives the source_title
+  ("Festal Letter 1 (for 329), Section 2"; "Letter 48, To Amun"). Editorial matter is
+  dropped per letter: `head` (heading paragraphs kept as background: Letter 1's Syriac title,
+  the Pachomian narrative framing 57-58), `drop_paras` / `cut_from` (plain-text paragraph
+  starts: the Syriac "Here endeth…" rubrics, Jovian's letter and the Arian petitions with 56,
+  the Memorandum after 64) and `strip`; each must match or `load_work` refuses. Check that
+  nothing else was lost by listing every source paragraph absent from the bodies.
+  - Pilot of 6 letters, then the other 40 in one background run (~1 hour): 366 blocks from
+    36 letters in 313 files (303 new; 10 pre-existing, appended only). Ten letters rightly
+    gave nothing (church business, the creed, borrowed phrasing). The agents were generous
+    rather than strict (one stretch filed under up to five verses), as with the Damascene.
+  - Agent slips: "Psalm 50_16" etc. (four files; one merged into an existing `Psalms 50_16`
+    by appending; NB `git mv -k` silently skips untracked files, so rename with `mv`), and 42
+    new files opening with a blank line (stripped; `run_check` now flags it).
+  - **Old blocks** were 3 url'd, 31 newadvent `fathers/2806NNN.htm` (same translation) and 76
+    url-less ACCS excerpts (`FESTAL LETTER(S) …`, `LETTERS TO MONKS 1:2`, `LETTER TO EPICTETAS
+    59:6`, …; ACCS's Festal numbering is not NPNF's), each confirmed by a rarity-weighted word
+    overlap against every section; the `LETTER TO SERAPION` excerpts are another work and
+    stayed. Comparing old verse ranges with the new blocks' left 51 misses; two read-only
+    subagents judged them: 6 genuine expositions added (Esther 9:21-22, John 7:46, Luke 14:15,
+    Psalms 34:1, Psalms 57:4, Titus 1:15; the Esther sentence also now opens the
+    `Exodus 12_7-8` block, whose "Now as those days…" referred back to it), 13 covered, 32
+    passing.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
