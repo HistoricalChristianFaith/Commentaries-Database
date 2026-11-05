@@ -323,6 +323,39 @@ the original's (relative to the skill folder), so it works on any checkout.
     numbers = the brackets), deleted by `--title-prefix` after matching each one's text to its
     proposition; two untitled, url-less duplicates (digits stripped, one with a Pelagius sentence
     glued on that already had its own Pelagius block) were removed by hand.
+- **Expositions on the Psalms, one file per psalm, the biggest run so far** (Augustine, NPNF
+  1-08, the abridged Oxford translation; `process_augustine_psalms_commentary.py`, keys
+  `PsExp001` … `PsExp150`, a copy of the Tractates importer): 150 files named by the English
+  psalm number, 3.5M chars of text, 6,017 notes, rebuilt from CCEL and proofread against the
+  1886 print just before (Writings-Database 938841f3). The translators' "(ver. N)" marks give
+  KJV verse numbers in order, so placement was easy; they are off in ~50 places (Ps 37 "ver.
+  20" = KJV 21; Pss 48, 53, 57, 63 one off throughout), and the agents placed by wording as
+  told. A psalm over 36k chars of html (inline notes included) is cut into balanced pieces at
+  the editors' headings (Ps 119's Hebrew letters; the "Second Part" headings of 37, 49, 59)
+  or else at paragraph boundaries: 188 pieces, each its own section (`Ps037a.html` …), headed
+  by the KJV range its marks span (an audit hint), and the prompt tells piece 2+ not to touch
+  the earlier pieces' blocks. The psalm's italic title line (Augustine's Latin inscription)
+  is text and opens the first block under verse 1 (the user's choice); a wholly italic
+  paragraph anywhere else, and Ps 41's opening rubric, is an editors' heading (`<h2>` in the
+  piece, dropped from the body). Paragraph numbers are dropped; Coxe's notes quoting
+  sentences of Augustine the edition omits (Ps 119's preface) are notes, not imported.
+  - Pilot of 7 pieces (Pss 1, 6, 37 in three pieces, 108, 150), then the other 181 pieces in
+    one background run (~9.5 hours): 3,065 blocks (2,249 in 2,214 own-psalm files, 152
+    cross-psalm parallels in 120 files, 664 cross-references in 535 files of 45 books), every
+    psalm 100% covered by its own psalm's files, no duplicate within a psalm. The audit's
+    144 OVERLAP and 152 OUTSIDE HEADING entries were all cross-psalm parallels (check
+    coverage and duplicates per psalm by its OWN files, as for Jerome's Psalms). Six files
+    were left out of psalm order by the pilot: `--fix-order BASE`.
+  - **Old blocks in four forms:** 974 url'd to this work, 1,307 newadvent
+    (`fathers/1801NNN.htm`, the same translation, modernized "You"), 83 url-less ACCS
+    excerpts (WSA wording, Latin psalm numbers, mostly under other books). NPNF is ABRIDGED
+    ("…"), so the different-translation excerpts were judged by two read-only subagents
+    against the NPNF text (old excerpt + the best word-overlap windows of the claimed psalm
+    and its Latin→KJV conversion; verdict SAME / PARTIAL / ABSENT): 18 whose passage NPNF
+    lacks (or keeps under half of) were kept, the rest deleted by url and `--titles-file`;
+    one shared title meant one block (Wisdom 8_1) was cut by hand. Two url'd excerpts with
+    ACCS text of passages NPNF lacks had their url cleared instead (the user's choice). The
+    word-overlap score alone can't decide: unrelated passages score 0.3-0.5.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
