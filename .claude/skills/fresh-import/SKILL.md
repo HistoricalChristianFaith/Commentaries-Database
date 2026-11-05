@@ -389,6 +389,41 @@ the original's (relative to the skill folder), so it works on any checkout.
     Psalms 34:1, Psalms 57:4, Titus 1:15; the Esther sentence also now opens the
     `Exodus 12_7-8` block, whose "Now as those days…" referred back to it), 13 covered, 32
     passing.
+- **Several works in one file, sharing one url, plus separate files** (Aphrahat's
+  Demonstrations: Johnston's NPNF2-13 file holds Dem. I, V, VI, VIII, X, XVII, XXI, XXII under
+  `<h2>`s with `§N.` sections; Hallock's Dem. 2 and 7 are their own files with "N." paragraphs;
+  rebuilt and proofread just before, Writings-Database 71e9922e;
+  `process_aphrahat_commentary.py`, keys `AphDem01` … `AphDem22` by Demonstration number, a
+  copy of the Athanasius importer). Each Demonstration is its own `WORKS` entry (`h2` selects
+  it in the shared file), so a block belongs to a work by url AND title prefix: the importer's
+  `block_is_mine(work, c)`, which `--check`, `--order` and the audit's `selective_main` use
+  (the audit falls back to the url when an importer lacks it). `--check` also flags a block
+  with a shared url whose title matches no Demonstration. Titles: "Demonstration 5 (Of Wars),
+  Section 3", as the old newadvent block had it.
+  - Phase 0 decisions (the user's): import selectively; Dem. 1 exists twice (Budge's partial
+    "On Faith.html" too): Johnston's only; the "Letter of an Inquirer" (written TO Aphrahat)
+    is skipped (no entry); delete only the old excerpts of Demonstrations with new text.
+  - Pilot of 4 Demonstrations (1, 7, 17, 22: 6 pieces), then the other 6 in one background
+    run: 353 blocks in 333 files, all new. The agents were generous (one stretch often under
+    2-6 verses; the persecution typology lists of Dem. 21 filed item by item where Aphrahat
+    draws out a type), and corrected many misprinted notes themselves. Johnston's Psalm
+    notes count the title as verse 1 ("Ps. xxii. 17–19" = KJV 22:16-18): the notes said so,
+    and every Psalm file came out in KJV numbering.
+  - Dem. 1's first two attempts died on "API Error: Output blocked by content filtering
+    policy" and the driver's retry restarted the prompt; the second attempt had already
+    written 10 files, which the third found, verified and kept rather than duplicating.
+    `--check` would have caught a duplicate as an overlap in one file.
+  - Agent slips: Hallock's inline translator's remark "(N.B. this whole passage is obscure
+    …)" dropped from two Dem. 2 blocks (NOT VERBATIM; restored, since it is printed text and
+    useful to a reader; his inline references "(S. John 16: 33)" were kept throughout); 20
+    files opening with a blank line (stripped); 5 files left out of work order by the pilot
+    (`--fix-order BASE`).
+  - **Old blocks**: 1 url'd, 1 newadvent (`370117.htm`), 51 url-less ACCS excerpts deleted
+    (by `--titles-file`, after a word-overlap match against every section: 0.67-1.00 for
+    this work's, 0.17-0.35 for the 14 excerpts of Dem. 4 "On Prayer", 14 and 18, which have
+    no new text and stayed; one titled `DEMONSTRATIONS 9.25` was really Dem. 8 §25). Old
+    verse ranges vs the new blocks left 26 misses; two read-only subagents judged them:
+    2 added (1 Kings 15:13, Isaiah 23:15-17), 13 covered, 11 passing or wrongly tagged.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against

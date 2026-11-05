@@ -230,7 +230,10 @@ def selective_main(work):
         if url not in t:
             continue
         for k, c in enumerate(tomllib.loads(t)["commentary"]):
-            if c.get("source_url") != url:
+            # (Works sharing one url, such as Aphrahat's NPNF Demonstrations, are told apart
+            # by the importer's block_is_mine.)
+            if not (_imp.block_is_mine(work, c) if hasattr(_imp, "block_is_mine")
+                    else c.get("source_url") == url):
                 continue
             q = _norm(c["quote"])
             hits = [m.start() for m in re.finditer(re.escape(q), source)]
