@@ -449,6 +449,40 @@ the original's (relative to the skill folder), so it works on any checkout.
     work's name and for garbling). Old verse ranges vs the new blocks left 24 misses; a
     subagent judged them: 5 added (1 Corinthians 10:32, 1 Samuel 3:13, 2 Corinthians 1:9,
     2 Corinthians 6:1, Proverbs 4:23), 9 covered, 9 passing or wrongly tagged, 1 weak and left out.
+- **A big letter collection, many small letters PACKED into each piece** (Basil of Caesarea's
+  Letters, Jackson, NPNF2-08, rebuilt from CCEL and proofread just before, Writings-Database
+  1d8fa325; `process_basil_letters_commentary.py`, keys `BasLet001` … `BasLet366`, a second
+  Basil importer copied from the Athanasius one). 357 files, most letters 1-4k chars, so (the
+  user's choice) `make_batches` packs consecutive letters, in number order over the WHOLE
+  collection, into 56 pieces of up to 25k (`B007_L041-046`); a longer letter gets pieces of its
+  own at section boundaries (`B003_L008_S01-06`). The packing is global, so piece names don't
+  depend on the selection; the command line runs pieces (`B002 B004-B027`), `--list` shows
+  them, and `--check`/`--order` take letter keys. Each letter keeps its own url and title: the
+  prompt's SOURCE FIELDS list every letter of the piece, and a block given another letter's url
+  would fail that letter's verbatim check. The driver checks each letter after its last piece.
+  - `WORKS` is built by scanning the folder. No entry (the user's choices): letters written TO
+    Basil (Julian 39-40, Antipater 187, Libanius ×14), files with no letter text (an address
+    only, or the editor's bracketed summary "[A salutation.]": 30 letters), the Introduction
+    and the two editor's-note files. Sections are NPNF's "2." numbers (text before "2." is
+    Section 1; Letter 203's "[3." keeps its bracket; Letter 99 has no "2.", a `gaps` entry;
+    Letter 233's "I." is stripped); the canonical letters 188/199/217 are cut at Roman canon
+    numerals continuing across the letters (I-XVI, XVII-L, LI-LXXXIV), titled "Letter 188,
+    Canon 12" with the text before the first canon as "…, Introduction". Titles are "Letter 8,
+    Section 2" / plain "Letter 13" (the user's choice). Letter 199 had lost canon XXXII's
+    numeral and paragraph break (run into XXXI); restored in the source with the user's OK.
+  - Pilot of 6 pieces (the first, a split letter's first half, 15 packed short letters, a
+    canonical letter, the most exegetical letter 260, the last), then two chunks of 25 run in
+    the background (~40 min each; 1-4 min per piece): 286 blocks from 81 letters, every check
+    clean; the pilot left 2 files out of letter order (`--fix-order BASE`). The agents were
+    generous, as with Athanasius (one stretch under up to six verses), and corrected Jackson's
+    misprinted references themselves (Ps "xix. 91" = 119:91, "Jer. 4:5" = 5:4-5).
+  - **Old blocks**: 13 url'd, 57 url-less ACCS excerpts (`LETTER 46:5`, `AN APOLOGY TO THE
+    CAESAREANS, LETTER 8`, 42 spellings; each matched its letter by word overlap, deleted by
+    `--titles-file`). Old verse ranges vs the new blocks left 42 misses, more than earlier runs
+    (Letter 44 to a fallen monk gave nothing at all); two read-only judges: 4 added (Amos 2:7
+    from Letter 160, Leviticus 25:8-10 from 260, Jeremiah 2:13 from 8, and Letter 44 §2 under
+    Amos 3:12, Jeremiah 8:4 and Ezekiel 33:11), 21 covered (often the old verse was wrong), 14
+    passing or the translator's "cf.". Final: 292 blocks in 255 files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
