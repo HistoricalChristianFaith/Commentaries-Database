@@ -424,6 +424,31 @@ the original's (relative to the skill folder), so it works on any checkout.
     no new text and stayed; one titled `DEMONSTRATIONS 9.25` was really Dem. 8 §25). Old
     verse ranges vs the new blocks left 26 misses; two read-only subagents judged them:
     2 added (1 Kings 15:13, Isaiah 23:15-17), 13 covered, 11 passing or wrongly tagged.
+- **A monastic rule in questions and answers, one file** (Basil of Caesarea's *Longer Rules*,
+  Clarke 1925, converted and its 447 footnotes transcribed from the page images just before,
+  Writings-Database 57ea5de9; `process_basil_commentary.py`, key `LongRules`, a copy of the
+  Damascene importer). `<h2>Preface</h2>` is section 0 ("The Longer Rules, Preface"), each
+  `<h2>VII. — title (R. 3)</h2>` one Question ("…, Question 7" / "Questions 7-8", the user's
+  choice); the title is in the heading, so there is no summary line to cut. The brethren's
+  question opens many answers with no marker (sometimes run into the answer's paragraph): the
+  prompt says a block may include it. Markers in the `<h1>`/`<h2>` are hinted too.
+  - The text had been word-diffed against scans in the conversion, so no proofreading pass;
+    the note offset score (shift 0 clearly best) confirmed the notes. Clarke's misprinted
+    references, kept as printed (Ps 42:2 as "xli. 2", 2 Cor 6:17 as "vi. 7", Gal 5:10 as
+    "v. 20", Matt 25:26 as "xxv. 36", Ps 77:3 as "xxvii. 3"), and his non-Scripture
+    abbreviations (F. = Longer Rule, B. = Shorter Rule, R. = Rufinus, Garnier's pages) went
+    in the notes; the agents placed every one by wording.
+  - Pilot of 4 pieces (Preface, Q2-6, Q35-37, Q46-55), then the other 5 in one background run:
+    227 blocks in 207 files, all checks clean; the pilot left 4 files out of source order
+    (fixed by cutting the file text). The agents were generous (one stretch under up to four
+    verses; light "rule grounded in a verse" blocks), as with the Damascene and Athanasius.
+  - **Old blocks**: no url'd ones; 64 url-less ACCS excerpts (`THE LONG RULES 7`, `…, Q.37.R`,
+    39 spellings, one with a leading space) deleted by `--titles-file`, and 3 UNTITLED ones
+    found because their text ends "The Long Rules, q…" (two OCR-garbled with every "r"
+    missing, so a word-overlap match scores them near zero: also scan url-less text for the
+    work's name and for garbling). Old verse ranges vs the new blocks left 24 misses; a
+    subagent judged them: 5 added (1 Corinthians 10:32, 1 Samuel 3:13, 2 Corinthians 1:9,
+    2 Corinthians 6:1, Proverbs 4:23), 9 covered, 9 passing or wrongly tagged, 1 weak and left out.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
