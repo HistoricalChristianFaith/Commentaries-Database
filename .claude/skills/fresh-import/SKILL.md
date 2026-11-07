@@ -483,6 +483,43 @@ the original's (relative to the skill folder), so it works on any checkout.
     from Letter 160, Leviticus 25:8-10 from 260, Jeremiah 2:13 from 8, and Letter 44 §2 under
     Amos 3:12, Jeremiah 8:4 and Ezekiel 33:11), 21 covered (often the old verse was wrong), 14
     passing or the translator's "cf.". Final: 292 blocks in 255 files.
+- **Ascetical chapters from the Syriac, one file, selective** (Isaac of Nineveh's *Mystic
+  Treatises*, Wensinck 1923, rebuilt from the print and its 421 notes transcribed from the page
+  images just before, Writings-Database 5968c9bb; `process_isaac_commentary.py`, key
+  `MysticTreatises`, a copy of the Basil importer). 82 `<h2>` chapters ("VII. On …"; II-VI
+  bare numerals), one section each, titled "Mystic Treatises, Chapter 7" (the user's choice);
+  Chapter XVIII's one `<h3>` is dropped from the body. Wensinck's notes give ~190 Scripture
+  references ("Matth. 6, 10.", "Jes."), the rest Bedjan pages, Syriac readings and parallels.
+  - The note offset score was best at shift 0 and every low scorer, read in context, was
+    Wensinck's own slip: misprints (1 Cor 12 = 2 Cor 12:2-4, "Ps. 37, 35" = Isaiah 37:35,
+    "Romans 9, 16" = 1 Cor 9:16, "Exodus 20, 29" = 20:19) and Hebrew Psalm verses (55:23 =
+    KJV 55:22, 84:11 = 84:10, 34:16 = 34:15), all named in the notes. Isaac quotes the
+    Peshitta, so the agents matched by sense (Sirach 18:9-10 and 3:19 for Wensinck's "Cf." Psalms).
+  - **Pieces are packed greedily** (consecutive chapters up to 30k): `split_evenly` gave 44
+    pieces, several tiny, because five oversized chapters pushed its count up; packing gave
+    35. Chapter XXXV (68k) stood alone and imported fine.
+  - **Repeated note references have their own ids** (`<sup><a href="#fn18" id="r18-2">`), which
+    the inherited `FOOTNOTE_REF_RE` missed: their numbers stayed in the body ("part18") and six
+    blocks failed `--check` after the run (the agents had rightly dropped them). Check a new
+    source's markers for `id="rN-M"` before the pilot, and compare the body against the visible
+    text with the importer's OWN regex replaced by a looser one (the reassembly check uses the
+    same regex, so it can't see this).
+  - Pilot of 6 pieces, then the other 29 in one chained background run (~1.5 hours): 203
+    blocks in 188 new files, all checks clean after the regex fix; the pilot left 2 files out
+    of chapter order. The agents were generous (one stretch under up to four verses).
+  - **Old blocks**: 64 url-less ACCS excerpts in the Holy Transfiguration Monastery translation
+    (`ASCETICAL HOMILIES N`, HTM's numbering, plus `DISCOURSE 3`/`22` and `ON ASCETICAL LIFE
+    5:14`, which proved to be Wensinck III, XXII and V). Two read-only judges compared each with
+    its best Wensinck windows: 59 were this work and were deleted (57 by `--titles-file`, the 2
+    untitled ones by hand; a judge missed one, Wensinck's wording being far from HTM's, so read
+    the ABSENT ones yourself); 5 stayed (Epistle to Abba Symeon ×2, "Instructions for Monks,
+    Second Part", "Book of Grace", and a Makarios epistle misfiled under Isaac). Old verse
+    ranges vs the new blocks left 28 misses; two judges: 8 added (Chapter X's chain of
+    punishments, Eli/David/Samson, matched to the Noah and Belshazzar blocks the agents had
+    filed; Sirach 1:28, Psalms 49:14, Jeremiah 2:18, Exodus 25:22, and Galatians 3:27 from the
+    log digest), 10 covered, the rest passing or wrongly tagged; 3 borderline ones were left out
+    (the user's choice). One 2-sentence block was extended back to the sentence that carries its
+    point. Final: 211 blocks in 196 files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
