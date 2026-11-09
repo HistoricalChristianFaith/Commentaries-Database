@@ -520,6 +520,35 @@ the original's (relative to the skill folder), so it works on any checkout.
     log digest), 10 covered, the rest passing or wrongly tagged; 3 borderline ones were left out
     (the user's choice). One 2-sentence block was extended back to the sentence that carries its
     point. Final: 211 blocks in 196 files.
+- **A sermon collection, one file per sermon, packed into pieces** (Leo the Great's Sermons,
+  Feltoe, NPNF2-12, the 48-sermon selection, rebuilt from CCEL and proofread against the 1895
+  print just before, Writings-Database 04e17253; `process_leo_commentary.py`, keys `LeoSer001`
+  … `LeoSer095` by sermon number, a copy of the Basil Letters importer). Each `<h2>` ("IV. The
+  blessedness of mourning discussed.") is one chapter section, shown to the agents as
+  `<h2>Chapter 4: summary</h2>` (the summaries are the editor's); Sermon 1 has no chapters and
+  its italic summary line under the `<h1>` is heading matter (`head: 1`). Titles "Sermon 95,
+  Chapter 2" / "Chapters 2-3", plain "Sermon 1" (the user's choice). 26 pieces of up to 25k.
+  - The source was clean: markers paired 1..n, note offset best at shift 0 everywhere, NFC, the
+    bodies equal the visible text. Feltoe's Psalm numbers are mostly English, but some are the
+    Latin (Sermon 1's cxliv/cxxxv, 28's cix. 1 = 110:1, 24's lxxxiv. 12 = 85:11, 36's vi. 6 =
+    6:5) and some misprinted (59's vii. 4 = 57:4, 24's xxxi. 14 = 132:11): all named in the
+    prompt, and every Psalm block came out under the right KJV verse.
+  - Pilot of 5 pieces, then the other 21 in one background run (~1 hour): 366 blocks from 45
+    sermons (1, 2 and 85 gave none), all checks clean apart from 8 new files opening with a
+    blank line (stripped) and 6 files left out of sermon order by the pilot (`--fix-order`).
+    Agents were generous (an S46.2 list of Gospel miracles filed under 10 ranges; light
+    one-sentence blocks), as in the other selective runs.
+  - **Old blocks**: 20 url'd + 2 newadvent (`3603NN.htm`) + 53 url-less ACCS excerpts that two
+    judges confirmed as text of these 48 (ACCS's Gospel-sermon numbers run 13 low: "SERMON
+    38.5" = 51.5, "41.5.2" = 54.6, "46.5" = 59.5; "8.4" = 59.4, "25.6" = 24.6); 35 excerpts of
+    sermons NPNF lacks stayed, and one PARTIAL (Psalms 17_8, its Psalm exposition not in NPNF).
+    Five strays filed under Leo were deleted with the user's OK: three Bede on Acts (Acts 3:7,
+    3:23, 3:24), the KJV text of Mark 15:15 (Acts 3:14), and Vincent of Lérins' "keep the
+    deposit" (1 Timothy 6:20, titled "SERMONS 85.3"). Old verse ranges vs the new blocks left
+    33 misses; two judges: 3 added by copying an existing new block to the verse it also
+    expounds (2 Peter 1:4 from Sermon 21.3, Hebrews 7:11-12 from 3.1, Psalms 27:1 from 26.4),
+    the rest covered or passing; a weaker one (Psalms 145:14 from 36.4) was left out (the
+    user's choice). Final: 369 blocks in 308 files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
