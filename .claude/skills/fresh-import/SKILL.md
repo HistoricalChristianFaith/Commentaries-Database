@@ -549,6 +549,35 @@ the original's (relative to the skill folder), so it works on any checkout.
     expounds (2 Peter 1:4 from Sermon 21.3, Hebrews 7:11-12 from 3.1, Psalms 27:1 from 26.4),
     the rest covered or passing; a weaker one (Psalms 145:14 from 36.4) was left out (the
     user's choice). Final: 369 blocks in 308 files.
+- **A short homily series on Genesis 1, one file per homily** (Basil of Caesarea's Hexaemeron,
+  Jackson, NPNF2-08, rebuilt from CCEL and proofread against the 1895 print just before,
+  Writings-Database fe650214/012c3a8c; `process_basil_hexaemeron_commentary.py`, keys `Hex01` …
+  `Hex09`, a copy of the Tractates importer, since Basil's other importers are selective).
+  Numbered paragraphs, no lemmas and no passage line, so `PASSAGES` gives each homily's range as
+  an audit hint ("1:20-25" for Homily 8, which opens on 1:24 and then turns back to the birds).
+  Titles "The Hexaemeron, Homily 6: The Creation of Luminous Bodies", as most url'd blocks had
+  them. The source was clean (markers paired 1..n, NFC, English Psalm numbers); Homilies 2, 7 and
+  8 have a note marker in the `<h1>`, hinted too. Basil quotes the LXX, so the notes say to place
+  by sense (LXX 1:8's "God saw that it was good" went under `Genesis 1_8`).
+  - Pilot of 2 homilies (1, 8), then the other 7 in one background run (~20 min): 58 blocks,
+    31 in 22 Genesis files and 27 cross-references in 26 files, every check clean; the pilot left
+    2 files out of homily order (`--fix-order`). Blocks are big where Basil dwells on one verse:
+    Homily 1 is one 27k block in `Genesis 1_1` (he never gets past 1:1), Homily 5 one 26k block
+    in `Genesis 1_11`.
+  - **Old blocks in four forms:** 53 url'd, 16 url-less ACCS excerpts (`HEXAEMERON 5.1`,
+    `HOMILIES ON THE HEXAMERON 3:6`, `HOMILY ONE, CREATION OF THE HEAVENS AND EARTH 1.6`, …;
+    `--titles-file`), 42 UNTITLED url-less blocks of Jackson's own text with the paragraph
+    numbers left in (word overlap 0.98-1.0; they filled `Genesis 1_2`, `1_10`, `1_11`, `1_16`,
+    `1_20`, so those files were removed by hand), and two found only after the import, from an
+    agent's remark: `EXEGETIC HOMILIES 1.1` and `3.8`. FC 46 (Way), *Exegetic Homilies*,
+    numbers the Hexaemeron as its Homilies 1-9 and the Psalm homilies from 10, so search for
+    the work's volume title too. They went in a second deletion commit (a file holding only an
+    old block plus new ones: `git rm --cached`, so the new file stays untracked).
+  - Old verse ranges vs the new blocks: all misses were passing proof-texts (Joel 2:11,
+    2:30-31, Colossians 1:15, Psalms 68:6, Exodus 2:12) or translation differences (the ACCS
+    "Your knowledge is become wonderful" = Ps 139:6 is Jackson's "fearfully and wonderfully
+    made", rightly under 139:14); Acts 28:3 (Paul's viper, one sentence inside the Ps 91:13
+    exposition) was borderline and left out (the user's choice).
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
