@@ -578,6 +578,43 @@ the original's (relative to the skill folder), so it works on any checkout.
     "Your knowledge is become wonderful" = Ps 139:6 is Jackson's "fearfully and wonderfully
     made", rightly under 139:14); Acts 28:3 (Paul's viper, one sentence inside the Ps 91:13
     exposition) was borderline and left out (the user's choice).
+- **A treatise in books, chapters numbered at paragraph starts, selective** (Salvian's *On the
+  Government of God*, Sanford 1930, Pearse's transcription, fixed against the print just before,
+  Writings-Database 1313eabc; `process_salvian_commentary.py`, keys `GG01` … `GG08`, a copy of
+  the Damascene importer). Each book is its own file and url; under `<h2>THE FOURTH BOOK</h2>`
+  every chapter opens a paragraph with `N.&nbsp;`, so `load_work` cuts there, drops the number
+  and shows `<h2>Chapter N.</h2>` to the agent. Book 1's `<h2>PREFACE</h2>` (to Salonius) is
+  chapter 0, titled "On the Government of God, Book 1, Preface"; blocks are "…, Book 4,
+  Chapter 3" / "Chapters 2-3", as the one url'd old block had it. No summaries to cut. 18
+  pieces of 16-28k.
+  - Source checks: markers and notes paired 1..n, note offset best at shift 0 in every book,
+    NFC, no Greek; Sanford's Psalm numbers are English, but his "Ecclesiasticus" uses the
+    Latin verse numbers ("39.10" = KJV Sirach 39:7, named in the prompt). Pearse's markup
+    left empty `<sup> </sup>` (→ a space) and Book 6's `devil<sup>.<sup>…23…</sup> </sup>`
+    (→ ". "): `FIXUPS`, applied before anything else. Three note marks glue words
+    ("Peoples<sup>…</sup>had"): `GLUED_REF_RE` turns a mark between text and a letter into a
+    space in the body. One of them (Book 7 `destroy it.' "<sup>32</sup>And`) the agent ran
+    together anyway, failing `--check` in two files; the blocks were fixed to the body's space.
+  - Pilot of 6 pieces (Book 1's first and last, all of Book 2, Book 4's last, Book 7's first,
+    Book 8), then the other 12 in one background run (~1 hour): 185 blocks in 176 new files,
+    every check clean after that fix. The per-book `order` check can't see files shared by
+    several BOOKS: four (`1 John 3_15`, `Isaiah 50_11`, `Jeremiah 5_8`, `Luke 6_25`) had a
+    later book's pilot block first and were reordered by (book, chapter). The agents filed
+    Salvian's retellings of Scripture narratives as proofs of God's judgment (Flood, Sodom,
+    Abraham, the wilderness, David) under wide ranges (`Genesis 12_1-22_19`, `2 Samuel
+    13_1-16_22`), as the prompt allowed, and were generous with cross-filing as in the other
+    selective runs; three weak cross-filings were deleted at the review (the user's choice:
+    `Genesis 15_16`, an allusion inside a 1 Samuel 26:12 exposition; `Psalms 82_4`, the
+    objector's quotation; `Luke 9_24`, with Matthew 16:25's wording). Final: 182 blocks in 173
+    files.
+  - **Old blocks**: 1 url'd (Book 4) and 50 url-less ACCS excerpts (`THE GOVERNANCE OF GOD
+    7.8`, `ON THE GOVERNANCE OF GOD 4.19`, `GOVERNANCE OF GOD 1.6`; 41 spellings, ACCS's
+    chapter numbers = Sanford's, each confirmed by word overlap), deleted by url and
+    `--titles-file`; the 14 excerpts of *To the Church against Avarice* ("FOUR BOOKS OF
+    TIMOTHY TO THE CHURCH") and Letter 4 stayed. Old ranges vs new blocks: 41 of 51 covered;
+    the 10 misses were covered at a neighbouring verse (James 2:6-7, Jeremiah 5:3, Matthew
+    5:28-30, Zechariah 7:13, Genesis 19:12-13) or passing list items (1 Kings 20, Judges 4,
+    Achan and David's census, Sirach 39:7 in a chain).
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
