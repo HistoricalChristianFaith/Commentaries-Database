@@ -615,6 +615,40 @@ the original's (relative to the skill folder), so it works on any checkout.
     the 10 misses were covered at a neighbouring verse (James 2:6-7, Jeremiah 5:3, Matthew
     5:28-30, Zechariah 7:13, Genesis 19:12-13) or passing list items (1 Kings 20, Judges 4,
     Achan and David's census, Sirach 39:7 in a chain).
+- **A short dogmatic treatise, one file, selective** (Novatian's *On the Trinity*, Wallis, ANF 5;
+  `process_novatian_commentary.py`, key `NovTrinity`, a copy of the Basil *Longer Rules*
+  importer). 31 `<h2>` chapters ("Chapter IX. Argument.—…"; XI has no "Argument"; XV-XXVII carry
+  a note "According to Pamelius, ch. xxiii." in the heading, a different numbering the notes
+  warn about), one section each, titled "On the Trinity, Chapter 9" (the user's choice); the
+  ANF editor's `<h2>Preface.</h2>` (a summary of the treatise) is dropped in `load_work`.
+  8 pieces of 19-26k.
+  - **Dashes lost as single hyphens**: the source had no em dashes at all (116 dashes typed as
+    `-`: `all things-Lord`, `form,-a`, `"<sup>16</sup> -so`), which the Writings-Database's
+    four-hyphen dash conversion had missed, and 27 closing/opening quotes on the wrong side of
+    their space (`"Come; "and then`, `it is said," of Him`). Both were settled against CCEL's
+    ANF 5 pages by alignment: for each local `-` or `"`, the letters on either side were
+    looked up in CCEL's text to see whether it prints `—` / `-` and `“` / `”` there (a word
+    diff can't see punctuation). Real hyphens and the notes' verse ranges stayed. Fixed in the
+    source with the user's OK before anything else; the word diff against CCEL was otherwise
+    clean. For a CCEL-derived file, check `—` and quote spacing this way in Phase 1.
+  - The note offset score was clearly best at shift 0; the low scorers were the American
+    editor's bracketed remarks, Novatian's Old Latin/LXX wording and 14 misprinted references
+    (`Heb. iii. 3` = Habakkuk 3:3, `Isa. xiii. 2, 3` = 42:2-3, `Ps. lxviii. 18` = 68:17,
+    Chapter III's notes one quotation late, as CCEL prints them too), all named in the notes.
+  - Pilot of 3 pieces (Part001, Part005, Part008), then the other 5 in one background run
+    (~15 min): 107 blocks, every check clean; the pilot left 2 files out of order (fixed by
+    cutting the file text). Generous, like the other selective runs: Chapter VI whole under the
+    7 anthropomorphisms it explains, a Chapter XXVIII stretch under 6 prophecies (kept, the
+    user's choice); Chapters II, V, XI, XXIII and XXVI (chains of "If Christ is only man…"
+    premises or of proof-texts) gave nothing.
+  - **Old blocks**: 49 url-less ACCS excerpts (`ON THE TRINITY 18:15–17`, `THE TRINITY 29.16`,
+    46 spellings), all this work by word overlap, deleted by `--titles-file`; the 13 excerpts of
+    his other works (Jewish Foods, In Praise of Purity, On the Spectacles, Letter One) stayed.
+    Old verse ranges vs new blocks left 16 misses; 4 added (the user's choice): Deuteronomy
+    32:8 (the Babel argument, copy of `Genesis 11_5-7`), Matthew 1:23 (the Emmanuel block quotes
+    Matthew's wording), and Chapter IX whole, the agent's left-out catalogue of prophecies,
+    under Exodus 4:13 and Deuteronomy 28:66 for its unusual readings. Final: 111 blocks in 105
+    files, all new.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
