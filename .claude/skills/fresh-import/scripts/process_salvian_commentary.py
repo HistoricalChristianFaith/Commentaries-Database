@@ -376,7 +376,7 @@ PROMPT1_TEMPLATE = (
     "which stand where Sanford printed the chapter number at the start of a paragraph: the "
     "number is not part of the text, so a block starting a chapter begins with its first "
     "word).{speakers} Keep the printed text's quotation marks (including doubled single quotes "
-    "like '' and spaces inside quotation marks), the four-hyphen dashes \"----\", run-together "
+    "like '' and spaces inside quotation marks), the dashes \"—\", run-together "
     "words and misprints as they are. Don't add headings, verse numbers or notes of your own. "
     "Don't write a python script to do this; process the file yourself manually.\n\n"
     "SOURCE FIELDS. For EVERY block you import from this {unit}, set:\n"

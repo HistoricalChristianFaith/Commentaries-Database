@@ -273,9 +273,9 @@ NOTE_GAP = "\x01"
 GAP_RUN_RE = re.compile(r"(?:\s|&nbsp;)*[\x00\x01](?:(?:\s|&nbsp;)*[\x00\x01])*(?:\s|&nbsp;)*")
 # An opening quotation mark or bracket just before the gap ('&quot;{6a}&nbsp;Go' is '"Go').
 _OPENER_RE = re.compile(r"(?:^|[\s>(\[])(?:&quot;|[\"“‘(\[])$|(?:^|<br\s*/?>\s*)$")
-# Closing punctuation or a dash just after it ('rejoice&quot; [[John xvi. 20]]----the' is
-# 'rejoice"----the').
-_TIGHT_RE = re.compile(r"-|[,.;:!?)\]”’]|&quot;(?=[\s<,.;:)]|$)|<br|$")
+# Closing punctuation or a dash just after it ('rejoice&quot; [[John xvi. 20]]—the' is
+# 'rejoice"—the').
+_TIGHT_RE = re.compile(r"[-—–]|[,.;:!?)\]”’]|&quot;(?=[\s<,.;:)]|$)|<br|$")
 
 
 def _settle(m):
@@ -495,7 +495,7 @@ PROMPT1_TEMPLATE = (
     "each, as separate files; that is welcome. But never put two overlapping blocks of this "
     "book in the SAME file, and don't split one exposition into fragments under one verse.\n\n"
     "THE TEXT. Copy Ferrar's words VERBATIM: nothing abridged, paraphrased, corrected, added or "
-    "rearranged; keep his Greek, his \"----\" dashes, the \"|\" marks dividing verse-lines in "
+    "rearranged; keep his Greek, his \"—\" dashes, the \"|\" marks dividing verse-lines in "
     "some quotations, his brackets and parentheses. Drop the html tags (italics simply become "
     "plain text; don't turn them into quotation marks) and separate paragraphs with a single "
     "blank line. LEAVE OUT: the bold headings (\"CHAPTER 5\", \"INTRODUCTION\"); Ferrar's "

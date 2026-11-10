@@ -242,7 +242,7 @@ the original's (relative to the skill folder), so it works on any checkout.
     file.
   - **Spacing around removed marks matters for `--check`**: a mark stripped beside a quote,
     dash or hyphen leaves a space the agents (rightly) don't copy (`&quot;{6a}&nbsp;Go`,
-    `rejoice&quot; [[John xvi. 20]]----the`, `Only- (232) begotten`), and a footnote mark
+    `rejoice&quot; [[John xvi. 20]]—the`, `Only- (232) begotten`), and a footnote mark
     with no space after it glues words (`Christ.<sup>39</sup>And`). `make_body` replaces
     every removed mark with a placeholder and `_settle` decides: nothing after an opening
     quote or paragraph start, before closing punctuation or a dash, or after a hyphen; a
