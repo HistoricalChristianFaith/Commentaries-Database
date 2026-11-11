@@ -649,6 +649,47 @@ the original's (relative to the skill folder), so it works on any checkout.
     Matthew's wording), and Chapter IX whole, the agent's left-out catalogue of prophecies,
     under Exodus 4:13 and Deuteronomy 28:66 for its unusual readings. Final: 111 blocks in 105
     files, all new.
+- **A Gospel harmony, selective but mostly imported, one file per book** (Augustine's *Harmony
+  of the Gospels*, Salmond/Riddle, NPNF1-06, collated against the 1888 print just before,
+  Writings-Database 39d15d66; `process_augustine_harmony_commentary.py`, keys `Harmony1` …
+  `Harmony4`, a copy of the Salvian importer). `<h2>Chapter XII.—title</h2>` chapters (the
+  editors' long titles stay in the pieces as hints), Books 2-4's `<h2>(The )Prologue.</h2>` as
+  chapter 0; the NPNF section numbers opening paragraphs (`25. `, also after `</h2>\n `) are
+  dropped from pieces AND body (the user's choice; `load_work` requires 1..n per book). Titles
+  "The Harmony of the Gospels, Book 2, Chapter 30" (the user's choice). 45 pieces of up to 25k
+  (not 30k: most of Books 2-4 is imported, often into three or four Gospel files).
+  - Phase 0 decisions (the user's): selective under rule 13, all four books; a harmonizing
+    stretch goes under EVERY Gospel's verse it actually quotes or discusses (not one merely
+    named, "Mark also records this"); a Gospel passage quoted with only "the others agree, no
+    question arises" is left out. The prompt adds: a discussion of where a passage stands in
+    the ORDER of the narrative goes under each Gospel's opening verse(s) of it (Matt 9:35, Mark
+    6:6-7, Luke 9:1 for the mission discourse), a detail under its own verses (the staff: Matt
+    10:9-10, Mark 6:8-9, Luke 9:3); the "… and so on, down to where we read …" quotations
+    never widen a range. The Prologues gave nothing (stated in the notes).
+  - The source was clean (NFC, standard markers, note offset best at shift 0 in every book,
+    English Psalm numbers); two NPNF misprints went in the notes (Book 3 n.57 "Matt. xxvi. 53"
+    = 26:55, Book 4 n.2 "Mark iv. 31" = 1:21); the agents corrected several more themselves.
+    Three note marks stand before " )" (`them<sup>…</sup> ),`): `_body` drops the space with
+    the mark (`MARK_BEFORE_PAREN_RE`), as the agents write it; found by the pilot's `--check`.
+  - Pilot of 6 pieces (~15 min), then the other 39 in one chained background run (~2 hours):
+    631 blocks in 586 files (593 in 550 Gospel files: Matthew 198, Luke 162, Mark 143, John
+    90; 38 cross-references in 36 files, e.g. Jeremiah 32:6-15 and Zechariah 11:12-13 for
+    "Jeremiah" in Matt 27:9, Isaiah 52-54, Genesis 29:16 for Leah and Rachel), every check
+    clean. Book 1 (the apologetic) gave 24 blocks from 14 of 35 chapters. Fixes: 11 new files
+    opening with a blank line; 4 files shared across BOOKS had a later book's pilot block
+    first (the per-book `order` check can't see that: check (book, chapter) order across the
+    work's urls). The agents were generous (thin one-sentence copies, a reconciliation filed
+    under a Gospel whose wording is barely discussed), kept, as in the other selective runs;
+    blocks are large where Augustine reconstructs a whole sequence (Peter's denials under
+    `John 18_17-25`, 9.5k; the resurrection morning under `John 20_1-18`/`Luke 24_1-11`, 10.5k).
+  - **Old blocks**: 12 url'd and 38 url-less ACCS excerpts (`HARMONY OF THE GOSPELS 2.79.154`,
+    `… 1:6.9`; 37 titles, each matched to its chapter by word overlap), deleted by url and
+    `--titles-file`. `Mark 6_22`'s "HARMONY OF THE GOSPELS 2.33" ("A girl dances, a mother
+    rages…") is not in the Harmony (an Augustine sermon, misattributed by ACCS) and stayed (the
+    user's choice). The Catena Aurea blocks quoting "De Cons. Evang." (Newman's translation)
+    are another source and were left alone; the prompt says so. Old verse ranges vs new blocks
+    left 2 misses of 49: `Mark 12_37` (covered by `Mark 12_35`) and Isaiah 7:14 (Book 1 ch. 26's
+    Emmanuel fulfilment), added by hand (the user's choice). Final: 632 blocks in 587 files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
