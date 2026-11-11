@@ -690,6 +690,39 @@ the original's (relative to the skill folder), so it works on any checkout.
     are another source and were left alone; the prompt says so. Old verse ranges vs new blocks
     left 2 misses of 49: `Mark 12_37` (covered by `Mark 12_35`) and Isaiah 7:14 (Book 1 ch. 26's
     Emmanuel fulfilment), added by hand (the user's choice). Final: 632 blocks in 587 files.
+- **A short anti-Pelagian treatise with its covering letters, one file, selective** (Augustine's
+  *On Grace and Free Will*, Holmes/Wallis/Warfield, NPNF1-05, collated against the print just
+  before, Writings-Database 631e2746/bf75ae93; `process_augustine_grace_commentary.py`, key
+  `GraceFreeWill`, a copy of the Novatian importer). The `<h2>`s read "Chapter 41 [XX.]—title":
+  the Arabic number is NPNF's section (1-46) and is what the titles use ("On Grace and Free
+  Will, Chapter 41" / "Chapters 41-42", the user's choice); the bracketed Roman chapter is
+  ignored, and the old division's one inline mark (" [III.]" mid-section 5, which the agents
+  rightly dropped and so failed `--check`) is stripped. The file also prints Augustine's two
+  letters to Valentinus (Ep. 214, 215), imported too and cut at NPNF's "N." paragraph numbers
+  ("…, Letter 2, Section 5"; the salutation opens Section 1; the "[The 214th of Augustin's
+  Epistles.]" line is heading matter); the Retractations extract (the user's choice), the
+  empty `<h2>`s and the editor's italic summary at the end of Letter II are dropped. Section
+  keys are 1-46 for the chapters and 1000·letter + section for the letters (`chapter_title`
+  decodes them; a block crossing a letter and the treatise gets an impossible title, so the
+  check fails). The letters form `Part001_Letters`, then 6 pieces of chapters (25k cap).
+  - Source checks: markers paired 1..321, NFC, note offset clearly best at shift 0; five
+    misprinted references (Matt 16:17 = 16:27, Rom 12:1 = 12:21, Ps 69:6 = 79:6, Ps 51:12 =
+    51:10, John 1:5 = Eph 6:23) and the Old Latin/LXX wordings (Prov 8:35, 3:16, Ps 84:6, Song
+    8:5) named in the notes; the Greek Esther addition in Chapter 42 is `Esther 15_7-8` (KJV
+    Apocrypha numbering; `kjv.sqlite`'s `esther,greek` numbers it 15:10-11).
+  - Pilot of 3 pieces (letters, Ch 1-7, Ch 42-46), then the other 4 in one background run
+    (~15 min): 135 blocks, every check clean but for a pre-existing blank line at the top of
+    `Psalms 32_9` (an agent's fix of it was reverted, to stay append-only); the pilot left 1
+    file out of order. The agents were generous, as in the other selective runs; Chapters 35-36
+    (chains of love texts) and 27 gave nothing.
+  - **Old blocks**: 4 url'd, 36 url-less ACCS excerpts (`ON GRACE AND FREE WILL 20.41`, `GRACE
+    AND FREE WILL 12.24`, `On Grace and Free Will 1.18.38`; 28 titles, `--titles-file`) and a
+    `LETTER TO VALENTINE` url'd to Letters.html (a paraphrase of Ep. 214 §3, which Letters.html
+    lacks; `--title-prefix` with that url). The `ON FREE WILL …` excerpts are *De libero
+    arbitrio* and stayed. Old verse ranges vs new blocks left 7 misses of 41: 2 covered at a
+    parallel (2 Kings 14:10 → `2 Chronicles 25_19-20`, 2 Samuel 15:31 → `17_14`), 4 chain items
+    or tags, and Isaiah 1:18, added as a copy of the Chapter 13 `Song of Solomon 8_5` block (the
+    user's choice). Final: 136 blocks in 129 files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
