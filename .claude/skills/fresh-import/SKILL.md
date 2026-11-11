@@ -723,6 +723,39 @@ the original's (relative to the skill folder), so it works on any checkout.
     parallel (2 Kings 14:10 → `2 Chronicles 25_19-20`, 2 Samuel 15:31 → `17_14`), 4 chain items
     or tags, and Isaiah 1:18, added as a copy of the Chapter 13 `Song of Solomon 8_5` block (the
     user's choice). Final: 136 blocks in 129 files.
+- **A dogmatic treatise with summary lines and NPNF section numbers, one file, selective**
+  (Basil of Caesarea's *On the Spirit*, Jackson, NPNF2-08, its 656 notes rebuilt against CCEL
+  and the print just before, Writings-Database 4622138d; `process_basil_spirit_commentary.py`,
+  key `OnSpirit`, a copy of the Novatian importer, since Basil's other importers are built for
+  Questions, Letters and Homilies). An empty title `<h2>` ("De Spiritu Sancto.") is skipped;
+  each `<h2>Chapter XII</h2>` is one section, its editor's summary (the first paragraph,
+  whatever its italics) moved into the `<h2>` the agent sees and cut from the body; the NPNF
+  section numbers 1-79 opening paragraphs are dropped from pieces and body (the user's choice;
+  `load_work` requires 1..79). Titles "On the Spirit, Chapter 12" / "Chapters 12-13" (the
+  user's choice). 15 pieces of 9-28k.
+  - Source checks: markers and notes paired 1..656, Greek not NFC (oxia forms; `_norm`
+    handles it), note offset clearly best at shift 0 (0.41 vs ≤0.22). 15 misprinted
+    references named in the notes with their quoted wording (Rom 11:38 = 11:36, Ezek 23:5 =
+    Exodus 23:5, Gal 6:4 = 4:6, Ps 14:4 = 104:4, Ps 107:13 = 108:13, the Prayer Book's 139:7 =
+    KJV 139:8, ...). Two source defects were fixed in the Writings-Database first, with the
+    user's OK (51a6f696): Chapter XII's summary `<i>` was never closed (all of §28 rendered
+    italic), and five note marks stood before " )" / " ;" (the space dropped).
+  - Pilot of 5 pieces (Ch 1-3, 8, 11-14, 23-25, 30), then the other 10 in one chained
+    background run (~30 min): 136 blocks in 118 files, every check clean; the pilot left 3
+    pre-existing files out of order (only this work's appended blocks were reordered, the old
+    ones staying first). Chapters I, III, IV, XXIII and XXX gave nothing. Generous, as in the
+    other selective runs: whole chapters filed where Basil answers an objection from one verse
+    (XIV under `1 Corinthians 10_2`, XIII under `1 Timothy 5_21`, XXII under `John 14_17`),
+    one stretch under up to four verses, a few Septuagint-based filings (`Numbers 11_25-26`,
+    `Isaiah 42_5`) kept. The agents' borderline offers (Isaiah 6:3, John 1:33, Ps 143:10 and
+    51:10, Matt 5:18, John 10:30, John 11:25, Daniel 3) were left out (the user's choice).
+  - **Old blocks**: 20 url'd and 28 url-less ACCS excerpts (`ON THE HOLY SPIRIT 8.18`, `OF THE
+    HOLY SPIRIT 9.23-10.24`; 21 title spellings, chapter.section = NPNF's; each confirmed by a
+    windowed word overlap against every Basil text, one by reading), deleted by url and
+    `--titles-file`. Old verse ranges vs new blocks left 25 misses of 48, mostly ACCS tags and
+    passing proof-texts; one genuine: Chapter XII's reading of the anointing (God anointing,
+    Son anointed, Spirit the unction) on Acts 10:38, Isaiah 61:1 and Psalms 45:7, added as
+    copies of the new Chapter XII block (the user's choice). Final: 139 blocks in 121 files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
