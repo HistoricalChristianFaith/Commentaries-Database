@@ -756,6 +756,56 @@ the original's (relative to the skill folder), so it works on any checkout.
     passing proof-texts; one genuine: Chapter XII's reading of the anointing (God anointing,
     Son anointed, Spirit the unction) on Acts 10:38, Isaiah 61:1 and Psalms 45:7, added as
     copies of the new Chapter XII block (the user's choice). Final: 139 blocks in 121 files.
+- **A history, selective, Eusebius's own words only, one file per book** (Eusebius of Caesarea's
+  *Church History*, McGiffert, NPNF2-01, collated against the print just before,
+  Writings-Database 18010805 … 5398ee31; `process_eusebius_history_commentary.py`, keys `HE01` …
+  `HE10`, a copy of the Augustine *Harmony* importer, since `process_eusebius_commentary.py` is
+  built for the Proof of the Gospel). `<h2>Chapter XII. <i>title</i></h2>` chapters (some with a
+  note mark in the `<h2>`), Books 2, 5, 7, 8's `<h2>Introduction.</h2>` as chapter 0; the NPNF
+  section numbers ("2 text", no period) are dropped from pieces and body (`NUMBERING_OK` lists
+  the five chapters whose printed numbers aren't 1..n). Book 8's file also prints the Martyrs of
+  Palestine (included, the user's choice: keys 1001-1013, "Church History, Book 8, Martyrs of
+  Palestine, Chapter 11"; a piece never crosses into it); Book 10's colophon `<h2>` is dropped.
+  Titles "Church History, Book 3, Chapter 24" / "Chapters 8-9" (the user's choice).
+  - Phase 0 decisions (the user's): selective; **Eusebius's own words only**: the documents he
+    quotes (Africanus on the genealogies, Josephus, Philo, Hegesippus, Papias, Irenaeus, Clement,
+    Origen, Dionysius on the Apocalypse, the Vienne-Lyons letter, synodal letters, edicts) are
+    not imported even where they expound Scripture; several are filed under their own authors'
+    folders already. A read-only subagent mapped every quoted document per book (exact opening
+    and closing words; the hard ones with no quote marks: 1.7's Africanus running on past the
+    letter's close, 3.20 Hegesippus in indirect speech, 6.14 Clement's *Hypotyposes*, 6.25
+    Origen's never-closed quotation, 6.41-42 Dionysius across the chapter break, 7.30's synodal
+    "we"); a second drafted the per-book notes from it. Fixed skips: Book 8 Ch. XVII's scribe's
+    appendix ("That which follows is found in Some Copies…", numbered 1-6 again) and the
+    Martyrs of Palestine's prelude (a near-copy of 8.2). The Tyre oration (10.4), printed in
+    quote marks, is Eusebius's own.
+  - McGiffert's 2,978 notes are 1.8M chars (twice the text), many of them essays: the hints are
+    cut to `NOTE_HINT_CHARS` (300). Pieces are packed greedily up to 30k (`pack_greedily`; the
+    even split gave stray tiny pieces): 59 in all; 10.4 (46k) stood alone and imported fine.
+  - Pilot of 6 pieces, then the other 53 in one chained background run (~2.5 hours): 120 blocks
+    in 116 files (90 new, 26 appended), every check clean after one `_body` fix: a note mark
+    right after an opening quote (`"<sup>98</sup> Now about that time`, 2.9) left a space the
+    agent rightly didn't copy (`MARK_AFTER_OPEN_QUOTE_RE`). Books 4, 5 and 7 gave nothing (quoted
+    documents and narrative), Book 6 one block (Origen and Matthew 19:12). One block opening
+    "They did this…" (`Acts 4_34-35`) was extended back two sentences to its referent. The
+    agents were generous, as in the other selective runs (one 3.24 stretch on the order of the
+    Gospels under six verses, the oration's bridal passage under five Isaiah ranges, thin
+    "Luke in the Acts … Josephus" juxtapositions); kept.
+  - `import_checks.py … notes` reads every text between two `"` as a quotation, prose between
+    quotes included, so its misses on notes with many quotations are noise: check the PAIRED
+    quotations (`re.findall(r'"([^"]+)"', notes)`) against the body instead.
+  - **Old blocks**: 15 url'd and 45 url-less ACCS excerpts (`ECCLESIASTICAL HISTORY 3.24.8-12`,
+    `HISTORY OF THE CHURCH 3.32`, `Ecclesiastical History 10:4`; 39 titles, each confirmed by a
+    windowed word overlap against every chapter and the other Eusebius works), deleted by url
+    and `--titles-file` (match exactly: `…1.2` is a prefix of `…1.2.2-3`, and Theodoret's own
+    *Ecclesiastical History* excerpts share the wording). Old verse ranges vs new blocks: 25 of
+    60 covered; of the 35 misses, 21 were quoted documents (excluded by the user's rule), 7
+    passing or narrative, 7 covered at a nearby or parallel verse; none was a missing
+    exposition by Eusebius. Added at the review (the user's choice): the 2.22 block copied to
+    `2 Timothy 4_6` (it reads 4:6 as foretelling Paul's martyrdom), 7.18 whole (the statue at
+    Paneas of the woman with an issue of blood) under `Matthew 9_20-22`, and 6.3's two
+    paragraphs on Origen keeping "not two coats nor shoes" literally under `Matthew 10_9-10`.
+    Final: 123 blocks in 118 files.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
