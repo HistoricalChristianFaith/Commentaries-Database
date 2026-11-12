@@ -21,10 +21,12 @@ def split_blocks(text):
 
 
 def delete_commentaries(father_name, source_url, dry_run=False, title_prefix=None,
-                        titles=None):
+                        titles=None, file_prefix=None):
     """Delete every block whose source_url is exactly `source_url` (and, if `title_prefix`
     is given, whose source_title also starts with it; if `titles` is given, whose source_title
-    is exactly one of them)."""
+    is exactly one of them). If `file_prefix` is given, only files whose name starts with it
+    are touched (e.g. "1 Corinthians ": Ambrosiaster's url-less ACCS excerpts of 1 and 2
+    Corinthians share one title, "COMMENTARY ON PAUL'S EPISTLES")."""
     if not source_url and not title_prefix and not titles:
         # An empty url alone would match every url-less block of this father.
         raise SystemExit("Refusing an empty source_url without --title-prefix or --titles-file")
@@ -35,7 +37,8 @@ def delete_commentaries(father_name, source_url, dry_run=False, title_prefix=Non
             titles is None or c.get('source_title', '') in titles)
 
     base_path = os.path.join(PROJECT_DIR, father_name)
-    files = sorted(f for f in os.listdir(base_path) if f.endswith('.toml'))
+    files = sorted(f for f in os.listdir(base_path) if f.endswith('.toml')
+                   and (file_prefix is None or f.startswith(file_prefix)))
     total_files = len(files)
 
     print(f"Total files to process: {total_files}")
@@ -111,18 +114,27 @@ if __name__ == "__main__":
         with open(argv[i + 1], encoding='utf-8') as f:
             titles = {line.rstrip("\n") for line in f if line.strip()}
         del argv[i:i + 2]
+    file_prefix = None
+    if "--file-prefix" in argv:
+        i = argv.index("--file-prefix")
+        if i + 1 >= len(argv):
+            print("--file-prefix needs a value")
+            sys.exit(1)
+        file_prefix = argv[i + 1]
+        del argv[i:i + 2]
     args = [a for a in argv if a != "--dry-run"]
     if len(args) != 2:
         print("Usage: python delete_commentaries.py <father_name> <source_url> "
-              "[--title-prefix PREFIX] [--titles-file FILE] [--dry-run]")
+              "[--title-prefix PREFIX] [--titles-file FILE] [--file-prefix P] [--dry-run]")
         print("  --title-prefix: only blocks whose source_title starts with PREFIX "
               "(or --titles-file, required when <source_url> is \"\")")
         print("  --titles-file: only blocks whose source_title is exactly one of the "
               "file's lines")
+        print("  --file-prefix: only files whose name starts with P (e.g. \"1 Corinthians \")")
         sys.exit(1)
 
     father_name = args[0]
     source_url = args[1]
 
     delete_commentaries(father_name, source_url, dry_run="--dry-run" in argv,
-                        title_prefix=title_prefix, titles=titles)
+                        title_prefix=title_prefix, titles=titles, file_prefix=file_prefix)

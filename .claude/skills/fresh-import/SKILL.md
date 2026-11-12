@@ -70,7 +70,7 @@ All are in `scripts/`. Read them before using them.
 | Tool | Use |
 |---|---|
 | `process_jerome_commentary.py <Work> …` | The importer. Splits the html on `<h2>` into pieces (one per chapter; a chapter over 30k chars is cut at section boundaries, and an oversized section stands alone). For each piece it runs `claude -p` twice in one conversation: the import prompt, then "Double check, was this fully imported properly?". Options: `--dry-run`, `--split-only`, a single piece name, `--start-after NAME`, `--through NAME`, `--check`. Per-work settings are in `WORKS` (html path, book, source_title, `notes` injected into every piece's prompt). Logs go to `work/jerome_<work>_import_logs/run-*.jsonl` (summaries) and `run-*.events.jsonl` (full event stream). |
-| `delete_commentaries.py <Father> <source_url> [--title-prefix P] [--titles-file F] [--dry-run]` | Deletes blocks whose source_url matches exactly (and whose title starts with P, or is exactly one of F's lines, if given). It cuts blocks out of the file text, so the other blocks keep their exact bytes, and it refuses an empty url without a prefix. **Never run it with an empty url and no prefix.** |
+| `delete_commentaries.py <Father> <source_url> [--title-prefix P] [--titles-file F] [--file-prefix P] [--dry-run]` | Deletes blocks whose source_url matches exactly (and whose title starts with P, or is exactly one of F's lines, if given; `--file-prefix "1 Corinthians "` limits it to files whose name starts with that, for an excerpt title shared by two works). It cuts blocks out of the file text, so the other blocks keep their exact bytes, and it refuses an empty url without a prefix. **Never run it with an empty url and no prefix.** |
 | `audit_jerome_import.py <Work> --headings` | Before importing: heading formats, headings not in the KJV, "lemma opens like KJV x:y" hints, sections not opening with italics, lemma-only sections. |
 | `audit_jerome_import.py <Work> <BASE> <pieces…>` / `--all` | After importing: verbatim + unique match of every block, overlaps, coverage gaps (with opening words), append-only status of pre-existing files, LEMMA/LEMMA CUT checks, PLACEMENT? and OUTSIDE HEADING hints, wide ranges, small blocks, where each non-verse section went, and a per-section LAYOUT. `BASE` is the deletion commit. |
 | `import_checks.py <Work> continuity\|boundaries\|pieces\|notes\|order` | Heading continuity, lemma-only sections and piece openings, reassembly of the pieces, verification of every quotation in the notes, and the source-order check after out-of-sequence runs. |
@@ -806,6 +806,38 @@ the original's (relative to the skill folder), so it works on any checkout.
     Paneas of the woman with an issue of blood) under `Matthew 9_20-22`, and 6.3's two
     paragraphs on Origen keeping "not two coats nor shoes" literally under `Matthew 10_9-10`.
     Final: 123 blocks in 118 files.
+- **A Pauline commentary from a fresh translation, labels at paragraph starts** (Ambrosiaster's
+  *Commentary on 1 Corinthians*, translated from PL 17 just before, Writings-Database d49a9075;
+  `process_ambrosiaster_commentary.py`, key `Amb1Cor`, a copy of the Cyril on Luke importer).
+  Keys are "Amb" + the book, since Jerome's importer already has `Galatians`, `Titus` and
+  `Philemon`; the work's `label` ("1 Cor.") drives `label_re`, so the other epistles can be added
+  as entries. `<h2>Prologue</h2>` and 16 `<h2>Chapter I</h2>` groups; every paragraph opening
+  with `(1 Cor. 14:24–25) <i>lemma</i>` starts a section (the label is dropped from the body;
+  the same form inside a paragraph is the translator's citation and stays), and `load_work`
+  refuses a label whose chapter doesn't match its `<h2>`. 365 sections, 18 pieces.
+  - The source was clean (no notes, NFC, one Greek phrase). The labels follow the Latin verse
+    division: six sections open with the second half of the verse before (Sosthenes = KJV 1:1
+    under "1:2"; "1:25" opens with 1:24 and there is no 1:24 label; 1:19, 1:31, 5:13,
+    15:27-28), and the 14:10 lemma sits inside "14:9"; all named in the notes, and the agents
+    filed each by wording. The translator's Psalm references keep the Latin numbers (8 of them,
+    mapped in the notes), as do "Jon. 2:1" (= KJV 1:17) and "Sir. 10:28" (= KJV 10:25).
+  - `audit_jerome_import.py`'s KJV loader didn't strip spaces from the book name ("1
+    corinthians" vs the table's "1corinthians"): fixed; the first numbered book through it.
+  - Pilot of 5 pieces, then the other 13 in one chained background run (~45 min): 429 blocks,
+    404 in 394 1 Corinthians files (384 new, 10 appended after *Questions on the Old and New
+    Testaments* blocks) and 25 cross-references (Isaiah 28:11-12 and Matthew 13:10-11 for the
+    tongues of 14:21, Deuteronomy 25:4 with Jonah 4:11 and Psalms 36:6 for the ox of 9:9,
+    Exodus 24:8 and Leviticus 17:11 for the cup of 11:25-26, 1 Thessalonians 4:16-17 for the
+    catching up in 15:51-53, ...); 100% coverage, every check clean. The chapter 6 agent left 19
+    new files opening with a blank line (stripped). Agents were careful with half-verse
+    openings (rule 2) and left a few one-sentence blocks on single verses (`7_6`, `10_6`,
+    `12_29`, `15_47`), kept as coherent.
+  - **Old blocks**: 6 url'd (one under John 14:30), a Google Books "CSEL 81.175" excerpt
+    (deleted by its url), a url-less ACCS excerpt under Sirach 10:25, and 249 url-less ACCS
+    paraphrases titled just `COMMENTARY ON PAUL'S EPISTLES`, a title shared with the 182
+    excerpts of the 2 Corinthians commentary: deleted with `--file-prefix "1 Corinthians "`
+    (word overlap barely separates ACCS's loose paraphrases from a new translation, so the
+    filing book decided, checked by reading the outliers).
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against

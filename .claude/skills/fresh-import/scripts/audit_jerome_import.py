@@ -135,9 +135,9 @@ def load_kjv(book):
     """{(chapter, verse): text} for one book of the KJV."""
     kdb = sqlite3.connect(KJV_DB)
     kjv = {(l // 1000000, l % 1000000): t for l, t in kdb.execute(
-        "select txt_location, txt from bible_kjv where book=?", (book.lower(),))}
+        "select txt_location, txt from bible_kjv where book=?", (book.lower().replace(" ", ""),))}
     if not kjv:
-        sys.exit(f"no KJV rows for book {book.lower()!r}")
+        sys.exit(f"no KJV rows for book {book!r}")
     return kjv
 
 
