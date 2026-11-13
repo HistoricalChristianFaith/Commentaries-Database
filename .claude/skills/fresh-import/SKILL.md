@@ -838,6 +838,23 @@ the original's (relative to the skill folder), so it works on any checkout.
     excerpts of the 2 Corinthians commentary: deleted with `--file-prefix "1 Corinthians "`
     (word overlap barely separates ACCS's loose paraphrases from a new translation, so the
     filing book decided, checked by reading the outliers).
+  - **The next epistle is just a `WORKS` entry** (*Commentary on 2 Corinthians*, translated
+    just before, Writings-Database e199c893; key `Amb2Cor`, `label` "2 Cor."): 218 labels, 14
+    pieces, no code changes. The notes list every section opening with the previous verse's
+    end (3:3, 5:19-21, 6:14, 6:17-18, 9:12-13, 10:15, 11:10, 12:2; the pilot agents found
+    1:14 and 12:12 too, added before the rest) and the verses with no label (1:23-24, 4:14,
+    9:14-15, 12:5, 13:12-14); Latin-numbered references Ps. 115:1 = 116:10, Ps. 81:6 = 82:6,
+    Bar. 3:38/3:36 = KJV 3:37/3:35, Sir. 3:13 = 3:11. The "11:32-33" section is its lemma
+    alone, Ambrosiaster explaining the Damascus escape under the "12:1" lemma in the next
+    piece: both went whole, as two blocks, into `2 Corinthians 11_32-12_1` (the user's choice;
+    a fixed instruction in the notes).
+  - Pilot of 5 pieces, then the other 9 in one chained background run (~25 min): 255 blocks,
+    242 in 236 2 Corinthians files (4 appended after *Questions* blocks) and 13
+    cross-references (Psalms 116:10, 112:9, Leviticus 26:12, Isaiah 49:8, John 14:9-11, 14:27,
+    21:17, Galatians 1:9, 2:4, Romans 13:3, Luke 21:3-4, Matthew 14:26-28, Revelation 14:4);
+    100% coverage, every check clean, nothing out of order, nothing to fix.
+  - **Old blocks**: 13 url'd (two under John 14:10 and 14:27) and the other 182 `COMMENTARY ON
+    PAUL'S EPISTLES` excerpts (`--file-prefix "2 Corinthians "`); 190 files removed.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
