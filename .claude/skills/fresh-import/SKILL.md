@@ -869,6 +869,23 @@ the original's (relative to the skill folder), so it works on any checkout.
     cross-references (Psalms 24:7-10, 68:18, 4:4, Ecclesiastes 7:16, Genesis 2:24, Exodus
     20:3-17, John 19:11, 20:17, Romans 8:32, Isaiah 1:4, Matthew 16:18, 1 Corinthians
     12:28); 100% coverage, every check clean, nothing out of order, nothing to fix.
+  - **Galatians, likewise** (translated just before, Writings-Database 6bf6e566; key `AmbGal`,
+    since Jerome's importer has `Galatians`; `label` "Gal."): 117 labels, 6 pieces (one per
+    chapter), no code changes. The notes list the sections running into unlabelled verses
+    (1:13 → 1:14, "3:12" opening with KJV 3:11, 3:17 → 3:18, 5:22-24 → 5:24), those opening
+    with the end of the verse before (3:3, 5:1, 6:8; 1:19 opens by repeating 1:17's "Again I
+    returned to Damascus"), a paragraph opening with a reference that is not a label ("(Deut.
+    27:26)" in 3:9-10) and two oddly placed references kept where printed ("(Acts 3:22)" after
+    3:21b, "(Acts 25:11)" after 5:11b); no Psalm references. Old blocks: 2 url'd (one, the
+    Gal 1:3 comment, misfiled under `Philemon 1_3`) and 45 url-less ACCS excerpts `EPISTLE TO
+    THE GALATIANS N.N`, each matched to its section by word overlap, deleted by url and
+    `--title-prefix`; 36 files removed. Pilot of 2 pieces (1, 3), then the other 4 in one
+    background run (~20 min): 148 blocks, 133 in 130 Galatians files (120 new, 10 appended
+    after *Questions* and *2 Corinthians* blocks) and 15 cross-references (Isaiah 10:22-23 and
+    Joshua 5:2-7 from the prologue, John 2:19-21, Luke 16:16, Acts 21:25 for the apostolic
+    decree, Acts 16:3 for Timothy's circumcision, Genesis 12:3, 15:6, 21:10, 22:18,
+    Deuteronomy 21:22-23, 27:26, Isaiah 54:1, Ephesians 2:14-15, 1 Timothy 2:5); 100%
+    coverage, every check clean, nothing out of order, nothing to fix.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
