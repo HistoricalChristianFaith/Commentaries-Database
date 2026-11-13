@@ -14,9 +14,10 @@ a fresh public-domain translation. It was worked out over the "fresh Jerome" ser
 (Commentaries-Database issues #32 onwards). Everything it needs is in this folder:
 
 - `SKILL.md` (this file): the process, the standing rules, how to review, mechanical fixes.
-- `scripts/`: the importer, the audit, the deletion tool, the extra checks and a KJV lookup.
-  The importer's `WORKS` entries record every work imported so far, with the notes that
-  described its quirks; they are the models for a new run.
+- `scripts/` (gitignored: it stays on the user's machine and is never committed): the
+  importer, the audit, the deletion tool, the extra checks and a KJV lookup. The importer's
+  `WORKS` entries record every work imported so far, with the notes that described its quirks;
+  they are the models for a new run.
 - `work/` (gitignored, created by the importer): the cut pieces and the run logs.
 
 Read the whole of this file before starting, and the project `CLAUDE.md`. The rules below were
@@ -1066,8 +1067,9 @@ the stretches that comment on a verse, under rule 13; everything else is left ou
 12. **Commits** (Commentaries-Database, directly on `master`, never pushed by you):
     - one commit for the deletion: `remove old <father> on <book> import (ahead of fresh translation, #N)`;
     - ONE commit for the whole import at the end: `<father> on <book>: import fresh translation (#N)`;
-    - one commit for this skill's changes from the run (the `WORKS` entry and any tool or rule
-      changes): `fresh-import: record <father> on <book> (#N)`.
+    - one commit for this skill's changes from the run (this file's record of the run and any
+      rule changes): `fresh-import: record <father> on <book> (#N)`. The `WORKS` entry and
+      tool changes in `scripts/` are gitignored and stay local.
     - With no issue, leave out ` (#N)` / `, #N`.
     - Ask before making the import commit and the record commit, because the user sometimes makes
       them (and pushes) themselves. Never commit in the Writings-Database.
@@ -1203,8 +1205,8 @@ Run the deletion(s) for real, then verify:
 - each trimmed file holds exactly its other blocks, unchanged (compare the parsed blocks with
   `git show HEAD:<path>` minus the deleted ones).
 
-Commit only the deleted/trimmed `<Father>/` files, with the deletion message (not the skill's
-`WORKS` edit, which goes in the record commit). That commit is **BASE** for every audit.
+Commit only the deleted/trimmed `<Father>/` files, with the deletion message (not this file's
+edits, which go in the record commit). That commit is **BASE** for every audit.
 
 ### Phase 3: Pilot
 
@@ -1300,7 +1302,8 @@ The `WORKS` entry (with its final notes) is the record a later import will model
 the run changed or added a standing rule, or extended a tool (e.g. a new lemma layout in the
 audit's detector), update this file's text for that too, e.g. the detector's list of known
 layouts under *Gotchas with the tools*. Then, after asking, make the record commit (rule 12) with
-the `WORKS` entry, the tool changes and these edits.
+these edits (the `WORKS` entry and tool changes are in the gitignored `scripts/`, so they stay
+local).
 
 ## 5. Reviewing a batch
 
