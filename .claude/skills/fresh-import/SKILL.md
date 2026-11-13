@@ -886,6 +886,20 @@ the original's (relative to the skill folder), so it works on any checkout.
     decree, Acts 16:3 for Timothy's circumcision, Genesis 12:3, 15:6, 21:10, 22:18,
     Deuteronomy 21:22-23, 27:26, Isaiah 54:1, Ephesians 2:14-15, 1 Timothy 2:5); 100%
     coverage, every check clean, nothing out of order, nothing to fix.
+  - **Philippians, likewise** (translated just before, Writings-Database b172db57; key `AmbPhil`,
+    `label` "Phil."): 45 labels, 4 pieces (one per chapter), no code changes. There is no "2:7-8"
+    label (the "But he emptied himself…" lemma opens the "2:5-6" section's second paragraph; the
+    agent filed it as `Philippians 2_7-8`) and no 4:14 lemma (the 4:11-13 comment's last sentence
+    touches it; filed as `Philippians 4_11-14`); the notes also list 1:5's end opening the
+    "1:3-5" section's second paragraph, KJV 1:16-17 in the Latin order in the "1:12-17" lemma,
+    "3:5-7" opening with 3:4b, "4:22" opening with 4:21b, and the loose or Latin-numbered
+    references (Ps. 127:2 = 128:2, 1 Thess. 4:12 = 4:13). Old blocks: 43 url-less ACCS excerpts
+    `EPISTLE TO THE PHILIPPIANS N.N`, all in Philippians files (word overlap matched each to its
+    section or a neighbour), deleted by `--title-prefix`; 32 files removed. Pilot of 2 pieces
+    (1, 2), then the other 2 in one background run (~5 min): 71 blocks, 68 in 66 Philippians
+    files (65 new, 1 appended after *Questions* blocks) and 3 cross-references (1 Thessalonians
+    4:13, Matthew 16:25, Malachi 1:6); 100% coverage, every check clean, nothing out of order,
+    nothing to fix. Philippians 2:4 has no file (quoted only in the 2:1-4 lemma).
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
