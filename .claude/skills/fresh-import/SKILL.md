@@ -856,6 +856,19 @@ the original's (relative to the skill folder), so it works on any checkout.
     100% coverage, every check clean, nothing out of order, nothing to fix.
   - **Old blocks**: 13 url'd (two under John 14:10 and 14:27) and the other 182 `COMMENTARY ON
     PAUL'S EPISTLES` excerpts (`--file-prefix "2 Corinthians "`); 190 files removed.
+  - **Ephesians, also just a `WORKS` entry** (translated just before, Writings-Database
+    7939cd5a; key `AmbEph`, `label` "Eph."): 105 labels, 6 pieces (one per chapter), no code
+    changes. The labels in 2:5-10 run one verse ahead (the translator's note says so: "2:6" is
+    the end of 2:5 and became a second block in `Ephesians 2_5`; "2:9-10" is KJV 2:8-10); the
+    notes also list the sections opening with the previous verse's end (1:6, 1:8, 1:20-21,
+    2:17-18, 3:18, 5:9, 5:12, 5:19, 6:3) and the unlabelled 5:13, 5:33 and 6:23-24. Old
+    blocks: 64 url-less ACCS excerpts `EPISTLE TO THE EPHESIANS N.N`, all in Ephesians files
+    (word overlap matched each to its section), deleted by `--title-prefix`; 57 files removed.
+    Pilot of 2 pieces, then the other 4 in one background run (~10 min): 132 blocks, 120 in
+    117 Ephesians files (112 new, 5 appended after other works' blocks) and 12
+    cross-references (Psalms 24:7-10, 68:18, 4:4, Ecclesiastes 7:16, Genesis 2:24, Exodus
+    20:3-17, John 19:11, 20:17, Romans 8:32, Isaiah 1:4, Matthew 16:18, 1 Corinthians
+    12:28); 100% coverage, every check clean, nothing out of order, nothing to fix.
 - **Old excerpts under several titles:** survey url-less blocks by every title form of the work
   (Cyril on Luke had both `COMMENTARY ON LUKE, HOMILY n` and `HOMILIES ON THE GOSPEL OF LUKE n`;
   the second was found only after the import, by the log digest), and match their text against
