@@ -129,6 +129,7 @@ has one — see [Run history](#run-history)):
 | Questions and answers | `process_basil_commentary.py` |
 | Letters, one file per letter | `process_athanasius_commentary.py`; many short letters packed into pieces: `process_basil_letters_commentary.py`; sermons packed likewise: `process_leo_commentary.py`; orations with section numerals at paragraph starts: `process_gregory_nazianzus_commentary.py` |
 | Several works in one file sharing one url | `process_aphrahat_commentary.py` (`block_is_mine`) |
+| A glossary with no verses (names per book), imported as a CURATED selection: the session finds the candidates, the prompt shows them per piece as hints, one entry per block | `process_jerome_names_commentary.py` (`HebNames`; `locate_block` matches a block inside the list its title names, since entries recur verbatim across lists) |
 
 **Lessons from earlier runs.** Each of these cost a run something once; check for them up front.
 
@@ -307,6 +308,9 @@ verse, under rule 13; everything else is left out on purpose.
   (`bold_lemmas`). For a new layout, confirm that it finds every lemma before trusting LEMMA CUT,
   and extend it if needed; then make sure the earlier works' results don't change, except for
   improvements.
+- The audit's selective mode uses the importer's `locate_block(work, c, q, source, offs)` when it
+  has one (to find a block's text where plain search would give a false MULTI-MATCH), and
+  `WORKS[…]["small_block"]` as the "small block" threshold (default 250).
 - Editorial marks the user wants left out of the import (Migne brackets, edition section numbers)
   go in `WORKS[…]["strip"]`: a list of regexes that `load_work` removes from the sections (not the
   preamble), so the pieces, `--check`, the audit and `import_checks.py` all see the same text. Say
