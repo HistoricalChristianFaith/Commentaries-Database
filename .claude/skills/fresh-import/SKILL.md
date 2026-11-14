@@ -120,6 +120,7 @@ has one — see [Run history](#run-history)):
 | Bare verse numbers mid-sentence | `process_theodoret_commentary.py` (`label_sections`) |
 | Numbered propositions with no verse labels (verse guessed as a hint) | `process_augustine_romans_commentary.py` (`intro_lemmas`) |
 | Homily series, one file per sermon, no lemmas | `process_augustine_commentary.py` (Tractates, `"homily": True`), `process_jerome_psalms_commentary.py`, `process_basil_hexaemeron_commentary.py` |
+| Homily series in ONE file, `<h3>` chapters, one section per chapter (`cont` for a homily's later chapters) | `process_ambrose_hexameron_commentary.py` |
 | One file per psalm, long psalms cut into pieces | `process_augustine_psalms_commentary.py` |
 | Selective, chapters under `<h2>` (with or without summary lines) | `process_cassian_commentary.py` (the original), `process_damascene_commentary.py`, `process_novatian_commentary.py`, `process_basil_spirit_commentary.py`, `process_augustine_grace_commentary.py`, `process_isaac_commentary.py` |
 | Selective, one file per book, chapters/sections numbered at paragraph starts | `process_salvian_commentary.py`, `process_augustine_harmony_commentary.py`, `process_eusebius_history_commentary.py` |
