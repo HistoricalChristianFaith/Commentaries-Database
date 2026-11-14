@@ -215,6 +215,9 @@ has one — see [Run history](#run-history)):
 - `import_checks.py … notes` reads every text between two `"` as a quotation, prose between
   quotations included; with many quotations check the PAIRED ones
   (`re.findall(r'"([^"]+)"', notes)`) against the body instead.
+- A heresiology or a refutation reports the heretics' own exegesis: tell the agents in the prompt
+  that a reported reading is never the father's (README FAQ), with examples from the work, and
+  read every block for whose voice it is in.
 - A collection can reuse a passage in two of its works (sermons, orations): survey every pair of
   sections by loose word overlap, not only shared n-grams (a looser translation of the same text
   hides from n-grams), and ask the user which work files it before the pilot.
