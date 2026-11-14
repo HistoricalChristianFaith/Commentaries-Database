@@ -119,7 +119,7 @@ has one — see [Run history](#run-history)):
 | Verse labels at paragraph starts, `7:36-50. <i>…</i>` / `(1 Cor. 1:1) <i>…</i>` | `process_cyril_commentary.py`; `process_ambrosiaster_commentary.py` (`Amb1Cor` … `AmbPhil`: a new epistle is just a `WORKS` entry) |
 | Bare verse numbers mid-sentence | `process_theodoret_commentary.py` (`label_sections`) |
 | Numbered propositions with no verse labels (verse guessed as a hint) | `process_augustine_romans_commentary.py` (`intro_lemmas`) |
-| Homily series, one file per sermon, no lemmas | `process_augustine_commentary.py` (Tractates, `"homily": True`), `process_jerome_psalms_commentary.py`, `process_basil_hexaemeron_commentary.py` |
+| Homily series, one file per sermon, no lemmas | `process_augustine_commentary.py` (Tractates, `"homily": True`), `process_jerome_psalms_commentary.py`, `process_basil_psalms_commentary.py` (Douay verse offsets in the notes), `process_basil_hexaemeron_commentary.py` |
 | Homily series in ONE file, `<h3>` chapters, one section per chapter (`cont` for a homily's later chapters) | `process_ambrose_hexameron_commentary.py` |
 | Treatise expounding a passage in order, `<h2>Chapter N</h2>`, imported in full, titled per chapter ("…, Chapter N" / "Chapters N-M", checked by `--check` and the audit via WORKS `chapter_titles`) | `process_ambrose_hexameron_commentary.py` (`"kind": "chapters"`, key `AmbParadise`; with `<h2>Book One</h2>` books and chapters numbered per book, titled "…, Book N, Chapter M": `"books": True`, key `AmbCain`; each work's prompt wording in `CHAPTERS_WORDING`) |
 | One file per psalm, long psalms cut into pieces | `process_augustine_psalms_commentary.py` |
@@ -161,6 +161,8 @@ has one — see [Run history](#run-history)):
 - A fresh translation: compare it with its Latin section by section (note markers, length ratio,
   notes' references), then two read-only subagents proofread half each against the Latin for
   substantive errors.
+- A transcription can move a paragraph's last words into a footnote at a page break: look for
+  stray text at the end of notes and for paragraphs ending without punctuation.
 - Footnotes: check that markers and notes pair 1..n, and that each note's reference matches the
   words before its marker (score at shift 0 and ±1..6, per file and per run of ten markers; a
   one-note swap doesn't move the score, so compare with an authoritative copy as well). CCEL swaps
