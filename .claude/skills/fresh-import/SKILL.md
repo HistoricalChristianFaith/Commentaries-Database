@@ -126,7 +126,7 @@ has one — see [Run history](#run-history)):
 | Selective, one file per book, chapters/sections numbered at paragraph starts | `process_salvian_commentary.py`, `process_augustine_harmony_commentary.py`, `process_eusebius_history_commentary.py` |
 | Selective, bold chapter headings and a printed apparatus to drop | `process_eusebius_commentary.py` |
 | Questions and answers | `process_basil_commentary.py` |
-| Letters, one file per letter | `process_athanasius_commentary.py`; many short letters packed into pieces: `process_basil_letters_commentary.py`; sermons packed likewise: `process_leo_commentary.py` |
+| Letters, one file per letter | `process_athanasius_commentary.py`; many short letters packed into pieces: `process_basil_letters_commentary.py`; sermons packed likewise: `process_leo_commentary.py`; orations with section numerals at paragraph starts: `process_gregory_nazianzus_commentary.py` |
 | Several works in one file sharing one url | `process_aphrahat_commentary.py` (`block_is_mine`) |
 
 **Lessons from earlier runs.** Each of these cost a run something once; check for them up front.
@@ -215,6 +215,9 @@ has one — see [Run history](#run-history)):
 - `import_checks.py … notes` reads every text between two `"` as a quotation, prose between
   quotations included; with many quotations check the PAIRED ones
   (`re.findall(r'"([^"]+)"', notes)`) against the body instead.
+- A collection can reuse a passage in two of its works (sermons, orations): survey every pair of
+  sections by loose word overlap, not only shared n-grams (a looser translation of the same text
+  hides from n-grams), and ask the user which work files it before the pilot.
 
 *Reviewing the output*
 - Agents name Psalm files `Psalm 69_28` and open new files with a blank line; `--check` flags
