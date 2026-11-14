@@ -1,6 +1,6 @@
 ---
 name: fresh-import
-description: Replace an old import of a church father's commentary with a fresh public-domain translation (resolve the work, survey, delete the old blocks, pilot, chunks, final review, close the issue). Takes a Writings-Database html path, or a historicalchristian.faith / GitHub url of one.
+description: Replace an old import of a church father's commentary with a fresh public-domain translation (resolve the work, survey, delete the old blocks, pilot, chunks, final review, close the issue), autonomously unless the user asks for checkpoints. Takes a Writings-Database html path, or a historicalchristian.faith / GitHub url of one.
 argument-hint: <work html path or url>
 disable-model-invocation: true
 ---
@@ -62,9 +62,10 @@ point them elsewhere.
   books. All of them get deleted first. Blocks from the father's other works are never touched.
 - **Who does what:** the Python driver cuts the work into pieces and hands each piece to a
   headless `claude` agent, which decides the verse file for every stretch of text. You, the
-  orchestrating agent, prepare the notes, review each batch, fix mechanical problems, and bring
-  the judgment calls to the user. The user runs the long import commands in their own terminal,
-  except for the pilot, which you run yourself if the user asks you to (Phase 3).
+  orchestrating agent, prepare the notes, run the deletion, the pilot and the rest of the import
+  yourself (in the background), review each batch, fix mechanical problems, commit, and bring the
+  user only the decisions that are theirs. By default the whole run is autonomous; the user can
+  ask for checkpoints at every stage instead (see [Run modes](#run-modes)).
 
 ## 2. Tools
 
@@ -370,8 +371,10 @@ verse, under rule 13; everything else is left out on purpose.
       routine run makes no skill commit: its record goes in the gitignored `RUNS.md`, and the
       `WORKS` entry and tool changes in `scripts/` are gitignored too.
     - With no issue, leave out ` (#N)` / `, #N`.
-    - Ask before making the import commit and any skill commit, because the user sometimes makes
-      them (and pushes) themselves. Never commit in the Writings-Database.
+    - In the default autonomous mode, make the deletion, import and skill commits yourself; in
+      checkpoint mode, ask before the import commit and any skill commit, because the user
+      sometimes makes them (and pushes) themselves. Either way, check `git log` first that the
+      user hasn't already made one. Never commit in the Writings-Database.
 13. **What to import from a selective work** (§2, "Selective works"; the user chose this
     threshold for Cassian's *Conferences*). Import a stretch when the father quotes or plainly
     refers to a specific verse AND DOES SOMETHING WITH IT: says what it means, interprets its
@@ -389,9 +392,42 @@ verse, under rule 13; everything else is left out on purpose.
 
 ## 4. The process
 
-Stop and wait for the user at every ⏸. At each stop, start your message with where you are and
-what comes next, e.g. "**Phase 2 (deletion) done, BASE = abc1234. Next: Phase 3 (pilot).**", so
-the run can resume cleanly after a pause or a context summary.
+### Run modes
+
+**Autonomous (the default).** Unless the user asks for checkpoints, run the whole job yourself:
+prep, the deletion and its commit, the pilot, and, if the pilot is clean, the rest of the work,
+then the final review, the import commit, the issue's closing and the run record. A ⏸ is then
+not a stop: post a short status there and go on. Stop and ask only:
+- where a step says to stop and ask (Phase 0: a path or url that can't be resolved, a checkout
+  that is behind and not clean, a work that isn't verse-by-verse, an existing `WORKS` entry or
+  an earlier fresh import);
+- for the decisions that belong to the user: which book prefaces and closing notes to keep or
+  skip (rules 6 and 7; a prologue alone needs no decision, rule 5), old blocks whose identity is
+  unclear (strays filed under the father, possible excerpts of another work, out-of-book blocks
+  you can't match to this work's text), a fix to the Writings-Database source, and a change to a
+  standing rule;
+- when the pilot or a chunk isn't clean.
+
+Ask everything you need in one go, with the facts the user needs to decide, then carry on
+autonomously after the answer.
+
+**Clean** means: no piece aborted; after mechanical fixes (§6) the audit has no NOT VERBATIM,
+MULTI-MATCH, OVERLAP, LEMMA, LEMMA CUT or NOT APPEND-ONLY entry; every coverage gap is an
+intended skip; every PLACEMENT? and OUTSIDE HEADING flag checks out against the KJV wording; and
+the run summaries raise nothing the notes didn't foresee. If a pilot shows only that the notes
+need a sharper instruction, roll it back (Phase 3), amend the notes and run the pilot again; stop
+and ask if the second pilot isn't clean either.
+
+The run ends with one report: the Phase 5 summary, the commits, and the issue's closing comment.
+
+**Checkpoints (when the user asks for them,** e.g. "with checkpoints", "stop at each stage", "let
+me review each step"). Stop and wait for the user at every ⏸, ask before the import commit and
+any skill commit (rule 12), and ask (with AskUserQuestion) whether the user or you runs the pilot
+and each chunk.
+
+In either mode, start every ⏸ message with where you are and what comes next, e.g.
+"**Phase 2 (deletion) done, BASE = abc1234. Next: Phase 3 (pilot).**", so the run can resume
+cleanly after a pause or a context summary.
 
 ### Phase 0: Resolve the work (no changes anywhere)
 
@@ -496,7 +532,9 @@ the run can resume cleanly after a pause or a context summary.
    delete `work/jerome_<work>_units/`.
 8. **⏸ Show the user:** the preface/closing-note table with recommendations, a summary of the
    notes, the heading findings, and the deletion dry runs with the combined after-state, including
-   the old cross-references outside the book.
+   the old cross-references outside the book. In autonomous mode this is a status, not a stop,
+   unless the table has prefaces or closing notes to decide or the old blocks have strays (see
+   [Run modes](#run-modes)).
 
 ### Phase 2: Deletion
 
@@ -519,24 +557,24 @@ Choose 2–6 pieces that exercise the risky parts:
 - one with a closing note;
 - the last piece.
 
-Propose the pilot pieces, each with the risk it exercises, and one command per piece, to run one
-at a time from the Commentaries-Database root, e.g.
+Name the pilot pieces, each with the risk it exercises, and one command per piece, run from the
+Commentaries-Database root, e.g.
 `python3 .claude/skills/fresh-import/scripts/process_jerome_commentary.py <Work> Part003_Ch02.html`.
 
-Then ask the user (with AskUserQuestion) who runs the pilot:
-- **The user runs it** in their own terminal and tells you when it's done. Wait for that.
-- **You run it.** Run the commands yourself, in the order given, chained with `&&` in ONE
-  background Bash call (`run_in_background`), so a failed piece stops the rest. Each piece
-  takes minutes, beyond the foreground timeout. Send the output to a log in your scratchpad,
-  not into your context. Wait for the completion notification; don't poll. Then check the tail
-  of that log for an `ABORTING` line before reviewing.
+**Run them yourself,** in the order given, chained with `&&` in ONE background Bash call
+(`run_in_background`), so a failed piece stops the rest. Each piece takes minutes, beyond the
+foreground timeout. Send the output to a log in your scratchpad, not into your context. Wait for
+the completion notification; don't poll. Then check the tail of that log for an `ABORTING` line
+before reviewing. (In checkpoint mode, first ask the user with AskUserQuestion whether they run
+it in their own terminal instead; if so, wait until they say it's done.)
 
 **⏸ After the pilot:**
 - `audit_jerome_import.py <Work> <BASE> <pilot pieces…>`.
 - Read every run summary (prompt 1 and prompt 2) in the `run-*.jsonl` logs.
 - Check every PLACEMENT? flag (see [Reviewing](#5-reviewing-a-batch)).
 - Fix mechanical problems in place.
-- Bring the user the judgment calls.
+- If the pilot is clean (see [Run modes](#run-modes)), go straight on to the rest of the work in
+  autonomous mode. Otherwise, or in checkpoint mode, bring the user the judgment calls.
 
 If the notes need changing, the pilot can be rolled back cleanly, because everything of this work
 after BASE is pilot output. Restore the pre-existing files that hold this work's url from BASE, and
@@ -545,19 +583,22 @@ imports* above).
 
 ### Phase 4: Chunks
 
-- **Size:** 20–35 pieces per chunk with `--start-after/--through`, run by the user. Chain ranges
-  around the pilot pieces, e.g. `Part002` alone, then `--start-after Part003 --through Part028`.
+- **Size:** 20–35 pieces per chunk with `--start-after/--through`, run by you as one background
+  Bash call, the same way as the pilot (or by the user, if they choose so in checkpoint mode).
+  Chain ranges around the pilot pieces, e.g. `Part002` alone, then
+  `--start-after Part003 --through Part028`.
 - **⏸ After each chunk:**
   - Audit the chunk's pieces.
   - Have a read-only subagent digest the run logs' summaries. The prompt is in
     [Reviewing](#5-reviewing-a-batch); don't read the `.events.jsonl` files into your own context.
   - Run `import_checks.py <Work> order`.
   - Fix mechanical problems (see [Mechanical fixes](#6-mechanical-fixes)).
-  - Bring the user the judgment calls.
+  - If the chunk is clean, go on to the next one in autonomous mode; otherwise, or in checkpoint
+    mode, bring the user the judgment calls.
 - **Once a chunk comes back clean,** the rest can go in one chained command.
 
 Small works (Obadiah, Joel, Haggai: 1–6 pieces) need no chunk loop: a pilot of 2 pieces, then
-everything else in one command.
+everything else in one command. A run that ends on the last piece runs `--check` by itself.
 
 ### Phase 5: Final review
 
@@ -579,11 +620,16 @@ everything else in one command.
 4. Counts for the closing comment: blocks and files in the book; cross-ref blocks and files; new
    vs appended files (`git status --porcelain --untracked-files=all -- <Father>`, and
    `git diff --stat BASE -- <Father>`, which should show only insertions).
-5. **⏸ Summarize** for the user and include a draft of the closing comment.
+5. **⏸ Summarize** for the user and include a draft of the closing comment. In autonomous mode,
+   if the review is clean, go straight on to Phase 6 and make this summary part of the final
+   report; if it isn't, stop here and ask.
 
 ### Phase 6: Finish
 
-After approval, commit the import (unless the user did it). If there is an issue, close it with
+Commit the import (in checkpoint mode, only after approval; in either mode, not if the user has
+already done it). Stage only this work's files: every new or changed `<Father>/` file since BASE
+whose text holds this work's source_url, never another session's (see *Concurrent imports*).
+If there is an issue, close it with
 `gh issue close N --repo HistoricalChristianFaith/Commentaries-Database --comment "…"`.
 
 The comment is ONE paragraph, in the style of #35, #36 and #37 (read them with `gh issue view N
@@ -611,8 +657,9 @@ Then:
    row in *Models by layout* for a new importer, or a lesson any future run should check for (one
    to three lines under *Lessons from earlier runs*, with no counts or dates). Nothing about this
    run alone goes here.
-3. If `SKILL.md` changed, ask, then make the skill commit (rule 12). Otherwise there is nothing to
-   commit.
+3. If `SKILL.md` changed, make the skill commit (rule 12; in checkpoint mode, ask first).
+   Otherwise there is nothing to commit. Then send the final report (see
+   [Run modes](#run-modes)).
 
 ## Run history
 
