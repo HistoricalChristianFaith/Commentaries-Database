@@ -308,6 +308,15 @@ verse, under rule 13; everything else is left out on purpose.
   roll back with a blanket checkout or delete of untracked files without checking which work each
   file belongs to. Both sessions also edit `WORKS` in the same importer file, so edit only your
   own entry and don't revert the other's.
+  **Assume the user has other imports running, and commit only your own changes, at the
+  appropriate times** (the deletion commit at the end of Phase 2, the import commit in Phase 6).
+  Stage by an explicit list of paths (`git add --pathspec-from-file=<list>`), never with
+  `git add -A`/`-u`/`.` on the father folder or a directory, which would sweep in the other
+  session's deletions and appends. A shell glob (`"<Father>/<Book> "*`) doesn't match deleted
+  files, so build the deletion's list from the dry run's file list. Before each commit, read
+  `git diff --cached --stat` and check that every staged path is yours. A shared file (a
+  cross-reference appended to a file the other session also writes to) goes in only if all
+  of its changes since HEAD are this work's blocks.
 
 ## 3. Standing rules (approved by the user)
 
@@ -550,8 +559,9 @@ Run the deletion(s) for real, then verify:
 - each trimmed file holds exactly its other blocks, unchanged (compare the parsed blocks with
   `git show HEAD:<path>` minus the deleted ones).
 
-Commit only the deleted/trimmed `<Father>/` files, with the deletion message (never with
-edits to this skill). That commit is **BASE** for every audit.
+Commit only the deleted/trimmed `<Father>/` files, staged by an explicit path list (see
+*Concurrent imports*), with the deletion message (never with edits to this skill). That commit
+is **BASE** for every audit.
 
 ### Phase 3: Pilot
 
@@ -634,7 +644,9 @@ everything else in one command. A run that ends on the last piece runs `--check`
 
 Commit the import (in checkpoint mode, only after approval; in either mode, not if the user has
 already done it). Stage only this work's files: every new or changed `<Father>/` file since BASE
-whose text holds this work's source_url, never another session's (see *Concurrent imports*).
+whose text holds this work's source_url, never another session's (see *Concurrent imports*):
+write those paths to a list, check that every other block in each file is unchanged since HEAD,
+and `git add --pathspec-from-file=<list>`.
 If there is an issue, close it with
 `gh issue close N --repo HistoricalChristianFaith/Commentaries-Database --comment "…"`.
 
