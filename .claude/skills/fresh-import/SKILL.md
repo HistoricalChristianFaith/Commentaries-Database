@@ -80,6 +80,12 @@ All are in `scripts/`. Read them before using them.
 | `import_checks.py <Work> continuity\|boundaries\|pieces\|notes\|order` | Heading continuity, lemma-only sections and piece openings, reassembly of the pieces, verification of every quotation in the notes, and the source-order check after out-of-sequence runs. |
 | `kjv_lookup.py "<Book> <C>:<V>[-<V>]"` | KJV text of a verse or range (e.g. `"Psalms 118:8-9"`). The data is `kjv.sqlite` (table `bible_kjv`, `book` lowercase without spaces, `txt_location = chapter*1000000 + verse`), which the audit also reads. The import prompt tells the piece agents to use this lookup. |
 
+**Many short chapters:** `WORKS[…]["pack_chars"]` makes the Jerome importer pack whole chapters
+greedily into pieces up to that size (`Part001_Ch01-03.html`) instead of one piece per chapter
+(Hebrew Questions on Genesis: 46 pieces → 12 at 15000). `WORKS[…]["lemma_formula"]` (a regex) lets
+the audit's lemma check and `boundaries` accept a lead-in before the italic lemma ("Then there
+follows <i>…</i>").
+
 **Chapter-headed works:** when the `<h2>` headings are chapters and each paragraph opens with its
 own lemma (Matthew, Jeremiah), set `chapter_re` and `lemma_paragraphs` in `WORKS`. Rules 3 and 4 then
 apply per paragraph, and `audit --headings` lists every paragraph's guessed verse ("LOW" = weak match).
