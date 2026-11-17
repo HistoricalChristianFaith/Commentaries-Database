@@ -84,7 +84,10 @@ All are in `scripts/`. Read them before using them.
 greedily into pieces up to that size (`Part001_Ch01-03.html`) instead of one piece per chapter
 (Hebrew Questions on Genesis: 46 pieces → 12 at 15000). `WORKS[…]["lemma_formula"]` (a regex) lets
 the audit's lemma check and `boundaries` accept a lead-in before the italic lemma ("Then there
-follows <i>…</i>").
+follows <i>…</i>"). `WORKS[…]["attach_next"]` (a list of headings) puts a lemma-only section
+whose exposition is in the next section into that section's piece, so one agent sees both (tell
+the agents in the notes to join the two in one block; the audit then reports `LEMMA [next]`, which
+is expected). Prefer it to merging blocks by hand after a piece boundary.
 
 **Chapter-headed works:** when the `<h2>` headings are chapters and each paragraph opens with its
 own lemma (Matthew, Jeremiah), set `chapter_re` and `lemma_paragraphs` in `WORKS`. Rules 3 and 4 then
