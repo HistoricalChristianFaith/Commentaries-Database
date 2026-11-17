@@ -92,6 +92,8 @@ prompt 2 with no per-piece checks (`reference/new-importer.md`). A `WORKS` entry
   `--dry-run` for every work of that importer and run what's left by explicit piece names. After
   any source or `load_work` change, re-run `--check` on everything already imported.
 - Never re-serialize TOML (rtoml, tomlkit): edit the text and verify by re-parsing.
+- Don't fix files in the father's folder while a run is going: the running piece's snapshot sees a
+  file you merged or renamed as DELETED (HARD) and the run aborts. Note fixes, apply them after.
 - **Concurrent imports:** assume the user has other imports running, maybe in the same father
   folder and the same `WORKS`. Scope `git status`, the audit's changed files and any rollback by
   this work's source_url; never blanket-checkout or delete untracked files; edit only your own
