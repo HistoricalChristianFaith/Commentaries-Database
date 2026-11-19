@@ -32,8 +32,8 @@ work unchanged.
 
 ### Prompt 2 and the per-piece checks
 
-Only `process_jerome_commentary.py` and its copy `process_ambrose_luke_commentary.py` run the
-per-piece checks and the targeted prompt 2 (`piece_review.py`, SKILL.md §2): copy one of those
+Only `process_jerome_commentary.py` and its copies `process_ambrose_luke_commentary.py` and
+`process_ambrose_psalms_commentary.py` run the per-piece checks and the targeted prompt 2 (`piece_review.py`, SKILL.md §2): copy one of those
 when you can. Every other importer still sends
 the old generic prompt 2, "Double check, was this fully imported properly?": no check records in
 its logs, no BASE needed before the pilot, and no abort on HARD problems; review its batches with
@@ -66,6 +66,7 @@ All in `scripts/`; `RUNS.md` has an account of each run, if this checkout has on
 | Numbered propositions with no verse labels (verse guessed as a hint) | `process_augustine_romans_commentary.py` (`intro_lemmas`) |
 | Homily series, one file per sermon, no lemmas | `process_augustine_commentary.py` (Tractates, `"homily": True`), `process_jerome_psalms_commentary.py`, `process_basil_psalms_commentary.py` (Douay verse offsets in the notes), `process_basil_hexaemeron_commentary.py` |
 | No verse labels at all: numbered paragraphs (the edition's section numbers) under `<h2>` books, imported in full | `process_ambrose_luke_commentary.py` (key `AmbLuke`; a copy of Jerome's, per-piece checks included): one section per paragraph, the number moved into an `<h3>` the agent sees; each section's heading is a GUESSED verse (`1:5 ¶B1.14`: a monotone word-overlap path through the book, `guess_verses`), an audit hint never shown to the agent (WORKS `guessed`); every section `cont` under `homily`, so blocks run across paragraphs and only each book's first needs a START; skipped prefaces/closing notes are WORKS `nonverse`. Pieces pack paragraphs of one book, cutting before an italic lemma. |
+| Several psalms explained in ONE file, `<h2>On Psalm 35 (36)</h2>` (Latin, then KJV), numbered paragraphs per psalm, no verse labels | `process_ambrose_psalms_commentary.py` (key `AmbTwelvePs`; a copy of Ambrose's Luke importer): guesses per psalm over that KJV psalm only, START per psalm, footnotes shown as hints after their paragraph, WORKS `own_chapter` so other-psalm blocks count as cross-references. |
 | Homily series in ONE file, `<h3>` chapters, one section per chapter (`cont` for a homily's later chapters) | `process_ambrose_hexameron_commentary.py` |
 | Treatise expounding a passage in order, `<h2>Chapter N</h2>`, imported in full, titled per chapter ("…, Chapter N" / "Chapters N-M", checked by `--check` and the audit via WORKS `chapter_titles`) | `process_ambrose_hexameron_commentary.py` (`"kind": "chapters"`, key `AmbParadise`; with `<h2>Book One</h2>` books and chapters numbered per book, titled "…, Book N, Chapter M": `"books": True`, key `AmbCain`; each work's prompt wording in `CHAPTERS_WORDING`) |
 | One file per psalm, long psalms cut into pieces | `process_augustine_psalms_commentary.py` |
@@ -120,7 +121,9 @@ All in `scripts/`; `RUNS.md` has an account of each run, if this checkout has on
   `WORKS[…]["small_block"]` as the "small block" threshold (default 250).
 - Psalm works (homilies on the psalms, one file per psalm): cross-psalm parallels count as the
   book's own files, so check coverage and duplicates per psalm by its OWN files, and that no
-  OUTSIDE HEADING block lies inside the homily's own psalm.
+  OUTSIDE HEADING block lies inside the homily's own psalm. One importer key covering several
+  psalms needs WORKS `own_chapter`, or every cross-psalm parallel is a HARD OVERLAP that aborts
+  the run.
 - Source order: many per-father copies (grep `fix-order`; not Jerome's, whose runs use
   `import_checks.py order`) have `--order` / `--fix-order BASE` (only
   this work's appended blocks move; old blocks stay first). The per-book order check can't see a

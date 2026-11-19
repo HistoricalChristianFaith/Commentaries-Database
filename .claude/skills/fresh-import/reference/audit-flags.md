@@ -37,6 +37,9 @@ naming the HARD lines left. A new audit problem code must be added to `PROBLEM_C
   than the filed psalm: the psalm one number up or down, with the verse shifted by up to 2 (a
   shifted verse must also score at least 0.4), or the Hebrew place of a joined/split Latin psalm
   (9-10, 113-116, 146-147): almost always Latin numbering; rename. It skips cross-chapter ranges.
+  An Old Latin text far from the KJV's wording can lose to a short neighbour verse sharing only
+  "Lord" or "David" (Vg 130:2 "If I was not humbly minded" = KJV 131:2, flagged as 132:1): check
+  by the Latin, and list a false positive in WORKS `psalm_neighbour_ok` rather than move it.
 - **STRAY:** a block added since BASE, in ANY father's folder, holding this work's text under the
   wrong url: a missing or unknown url and 60+ shared characters (outside this father's folder also
   at least 60% of the block); another known work's url and at least max(250 characters, 60%); or
