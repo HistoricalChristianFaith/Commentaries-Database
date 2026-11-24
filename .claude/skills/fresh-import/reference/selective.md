@@ -21,6 +21,8 @@ question it answers, in a dialogue, when needed), under the smallest verse range
 addresses. The same stretch may be filed under two verses when it really expounds both (the
 project `CLAUDE.md` welcomes this), but never two overlapping blocks of the work in one file.
 
+**Hybrid works.** A treatise can mix parts that follow a book verse by verse (import in full) with parts that don't (selective): ask the user part by part in Phase 0. Ambrose's importer supports this with WORKS `parts` (`reference/new-importer.md`, *Models by layout*).
+
 **Phase 0 questions** for the user, beyond "selective?": which parts to skip (letters written TO
 the father, untranslated or duplicate parts, an editor's introduction), the title form, and, for
 a history or anthology, whether documents the father quotes are imported.
