@@ -19,3 +19,5 @@ If the user instructs you to "flesh out this context" (or similar) and passes in
 Always use KJV verse numberings - deuterocanonical books are valid (they are in the early KJV bibles).
 
 For the list of accepted book names and their exact spellings, refer to book_names.json in the project root. Use only names from that list in filenames.
+
+Susanna and Bel and the Dragon have no names of their own in book_names.json, but they are NOT skipped: file them as Daniel 13 and Daniel 14 (KJV Apocrypha verse numbers, e.g. Susanna 22 → "Daniel 13_22").
