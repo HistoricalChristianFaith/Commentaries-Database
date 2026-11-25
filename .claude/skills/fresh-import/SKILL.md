@@ -300,7 +300,9 @@ abc1234. Next: Phase 3 (pilot).**", so the run can resume after a pause or a con
    - **Psalm and other numbering:** it differs by translator and within one work (Latin, Hebrew,
      the title as verse 1, misprints): name every non-KJV reference with its wording and tell the
      agents to place by wording; likewise Latin-numbered Sirach, Baruch, Jonah, and Greek Esther
-     (KJV Apocrypha numbering, which `kjv.sqlite`'s `esther,greek` doesn't follow);
+     (KJV Apocrypha numbering, which `kjv.sqlite`'s `esther,greek` doesn't follow). Susanna and
+     Bel are filed as `Daniel 13_N` and `Daniel 14_N` (KJV Apocrypha verse numbers): they aren't
+     in `book_names.json` under their own names, but never tell agents to skip them;
    - **rule 2**, with an example from this book, and the double pass with "don't fragment";
    - **"Earlier pieces of THIS run"** leave blocks of this work in the files: leave them and
      append; name files holding other works' blocks if useful;
