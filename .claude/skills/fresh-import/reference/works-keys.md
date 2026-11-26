@@ -31,7 +31,7 @@ a key set in an importer that its reader doesn't consult does nothing.
 | `small_block` | audit (selective mode) | The "small block" threshold (default 250). |
 | `chapter_titles`, `books` | Ambrose's Hexameron importer; audit (`chapter_titles`) | Titles per chapter, "…, Chapter N" / "Chapters N-M", checked by `--check` and the audit; with `books`, "…, Book N, Chapter M" for chapters numbered per book. |
 | `kind` | Ambrose's Hexameron, Aphrahat, Athanasius, Augustine (Harmony), Cassian, Damascene, Eusebius (History), Salvian | Picks work-specific parsing or prompt wording inside one importer (e.g. `"chapters"` with `CHAPTERS_WORDING`). |
-| others | their importer only | `label`, `latin_psalm`, `number`, `passage(s)`, `work_ref`, `drop_paras`, `cut_from`, `head`, `gaps`, `one_chapter`, `intro_label`, `skip`, `exclude`, `epilogue`, `rubrics`, `candidates`, `split_chars`, `wording`, `para_dot`, `para_chapter`, `unnumbered`, `drop`, `italic_spaces`: read that importer's docstring and its existing entries. |
+| others | their importer only | `label`, `latin_psalm`, `number`, `passage(s)`, `work_ref`, `drop_paras`, `cut_from`, `head`, `gaps`, `one_chapter`, `intro_label`, `skip`, `exclude`, `epilogue`, `rubrics`, `candidates`, `split_chars`, `wording`, `para_dot`, `para_chapter`, `unnumbered`, `drop`, `italic_spaces`, `first_verse`: read that importer's docstring and its existing entries. |
 
 Module-level hooks, not keys: `locate_block(work, c, q, source, offs)` (the audit's selective
 mode and `--check` use it to find a block's text where plain search would give a false
