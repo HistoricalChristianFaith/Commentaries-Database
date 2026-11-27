@@ -477,7 +477,9 @@ rearrange or cut the block texts, re-join, parse, and assert the result equals t
 - **Two sections joined in one block:** split at the section start into two blocks with identical
   source fields, same file, in order.
 - **Blocks out of source order:** reorder the block texts, only in files new since BASE (old blocks
-  stay first in pre-existing files).
+  stay first in pre-existing files). In a pre-existing file, rebuild it as BASE's exact text plus
+  this work's blocks in order: re-joining every block changes the old blocks' separators (NOT
+  APPEND-ONLY).
 - **A lemma-only block at a piece boundary:** join it with its continuation (consecutive in the
   source: use the source's separator) in the first file, and delete the continuation block.
 - **A wrong source_url or source_title** on this work's block: fix the string in place.
